@@ -1,0 +1,3 @@
+total exports: 9200
+PRESENT (41): user-circle, code, briefcase, stack, terminal-window, folder-open, file-text, envelope-simple, gear-six, squares-four, compass, sun, moon, magnifying-glass, app-window, minus, corners-out, corners-in, x, caret-left, caret-right, arrow-right, arrows-clockwise, image, camera, check, check-circle, info, desktop, hard-drive, palette, warning-circle, circle-notch, map-pin, user, monitor, calendar-blank, link-simple, arrow-square-out, sliders-horizontal, eye
+MISSING (1): selects
