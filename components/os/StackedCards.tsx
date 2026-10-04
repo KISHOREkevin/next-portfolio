@@ -8,7 +8,6 @@ import { profileData } from "@/data/profile";
 import { experienceData } from "@/data/experience";
 import { projectsData } from "@/data/projects";
 import { skillsData } from "@/data/skills";
-import { socialData } from "@/data/social";
 import { useWindowManager } from "./WindowManager";
 import { FastfetchCard } from "./FastfetchCard";
 
@@ -44,6 +43,7 @@ export function StackedCards() {
   const accDelta = useRef(0);
   const lastWheelTs = useRef(0);
   const touchStartY = useRef(0);
+  const touchStartX = useRef(0);
 
   const pages: Page[] = [
     {
@@ -82,14 +82,14 @@ export function StackedCards() {
     {
       id: "skills",
       eyebrow: "03 / SKILLS",
-      title: "Working stack",
+      title: "Technical Skills",
       appId: "skills",
       content: (
         <div className="stacked-skill-groups">
-          {skillsData.slice(0, 4).map((category) => (
+          {skillsData.map((category) => (
             <div key={category.id}>
               <span>{category.name}</span>
-              <p>{category.skills.slice(0, 4).map((s) => s.name).join(" · ")}</p>
+              <p>{category.skills.map((s) => s.name).join(" · ")}</p>
             </div>
           ))}
         </div>
@@ -98,7 +98,7 @@ export function StackedCards() {
     {
       id: "projects",
       eyebrow: "04 / PROJECTS",
-      title: "Selected work",
+      title: "Projects & Contributions",
       appId: "projects",
       content: (
         <div className="stacked-project-list">
@@ -113,41 +113,27 @@ export function StackedCards() {
       ),
     },
     {
-      id: "focus",
-      eyebrow: "05 / CURRENT FOCUS",
-      title: "Applied AI & Systems",
-      content: (
-        <>
-          <p>{profileData.motto}</p>
-          <div className="stacked-chip-row">
-            {["React", "Node.js", "Python", "FastAPI", "AI/LLM", "Linux"].map(
-              (item) => <span key={item}>{item}</span>
-            )}
-          </div>
-          <p className="stacked-card-note">
-            Building full-stack applications, AI-powered systems, and Linux/open-source tooling.
-          </p>
-        </>
-      ),
-    },
-    {
       id: "contact",
-      eyebrow: "06 / CONTACT",
+      eyebrow: "05 / CONTACT",
       title: "Start a conversation",
       appId: "contact",
       content: (
         <>
           <p>Available for full-stack engineering roles, technical architecture, and collaboration.</p>
-          <div className="stacked-contact-list">
-            <a href={`mailto:${socialData.email}`}>
-              <Icon icon={phosphorIcons.envelopeSimple} width={15}/>{socialData.email}
-            </a>
-            <a href={socialData.github} target="_blank" rel="noreferrer">
-              <Icon icon={phosphorIcons.linkSimple} width={15}/>GitHub ({socialData.github.replace("https://github.com/", "")})
-            </a>
-            <a href={socialData.portfolio} target="_blank" rel="noreferrer">
-              <Icon icon={phosphorIcons.compass} width={15}/>Portfolio website
-            </a>
+          <div className="pt-4">
+            <button
+              onClick={() => openApp("contact")}
+              className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-lg border border-[var(--border)] bg-[var(--surface-elevated)] hover:bg-[var(--foreground)] hover:text-[var(--background)] text-[var(--foreground)] font-mono text-xs font-medium transition-all duration-150 cursor-pointer group shadow-sm hover:border-[var(--foreground)]"
+              aria-label="Open Contact Application"
+            >
+              <Icon icon={phosphorIcons.envelopeSimple} width={16} />
+              <span>Open Contact App</span>
+              <Icon
+                icon={phosphorIcons.arrowRight}
+                width={13}
+                className="transition-transform duration-150 group-hover:translate-x-1"
+              />
+            </button>
           </div>
         </>
       ),
@@ -161,6 +147,15 @@ export function StackedCards() {
       setDirection(nextIndex > currentIndex ? 1 : -1);
       setCurrentIndex(nextIndex);
       isAnimating.current = true;
+
+      // Ensure every new page starts cleanly scrolled to the top
+      requestAnimationFrame(() => {
+        const bodies = document.querySelectorAll<HTMLElement>(".stacked-page-body");
+        bodies.forEach(b => { b.scrollTop = 0; });
+        const shell = document.querySelector<HTMLElement>(".kishore-shell");
+        if (shell) shell.scrollTop = 0;
+      });
+
       setTimeout(() => { isAnimating.current = false; }, ANIM_LOCK_MS);
     },
     [currentIndex, pages.length]
@@ -218,15 +213,34 @@ export function StackedCards() {
 
     const onTouchStart = (e: TouchEvent) => {
       const target = e.target as Element | null;
-      if (target?.closest(".os-window") || target?.closest(".mobile-app")) return;
+      if (target?.closest(".os-window") || target?.closest(".mobile-app") || target?.closest(".app-launcher")) return;
       touchStartY.current = e.touches[0].clientY;
+      touchStartX.current = e.touches[0].clientX;
     };
 
     const onTouchEnd = (e: TouchEvent) => {
-      const diff = touchStartY.current - e.changedTouches[0].clientY;
-      if (Math.abs(diff) > 48) {
-        navigate(diff > 0 ? currentIndex + 1 : currentIndex - 1);
+      const target = e.target as Element | null;
+      if (target?.closest(".os-window") || target?.closest(".mobile-app") || target?.closest(".app-launcher")) return;
+
+      const diffY = touchStartY.current - e.changedTouches[0].clientY;
+      const diffX = touchStartX.current - e.changedTouches[0].clientX;
+
+      // Only navigate if vertical swipe is prominent and larger than horizontal gesture
+      if (Math.abs(diffY) < 48 || Math.abs(diffX) > Math.abs(diffY)) return;
+
+      // If inside a scrollable body with scroll room, let the body scroll instead of flipping page
+      const body = target?.closest(".stacked-page-body") as HTMLElement | null;
+      if (body && body.scrollHeight > body.clientHeight) {
+        const atTop = body.scrollTop <= 2;
+        const atBottom = body.scrollTop + body.clientHeight >= body.scrollHeight - 2;
+
+        // If swiping down content (diffY > 0) but not at bottom yet, let natural scroll continue
+        if (diffY > 0 && !atBottom) return;
+        // If swiping up content (diffY < 0) but not at top yet, let natural scroll continue
+        if (diffY < 0 && !atTop) return;
       }
+
+      navigate(diffY > 0 ? currentIndex + 1 : currentIndex - 1);
     };
 
     shell.addEventListener("touchstart", onTouchStart, { passive: true });
@@ -295,19 +309,33 @@ export function StackedCards() {
           </AnimatePresence>
         </div>
 
-        {/* Page progress indicator */}
-        <nav className="stacked-progress" aria-label="Portfolio sections">
-          {pages.map((p, i) => (
-            <button
-              key={p.id}
-              className={`stacked-progress-item${i === currentIndex ? " is-active" : ""}`}
-              onClick={() => navigate(i)}
-              aria-label={`Go to ${p.eyebrow}`}
-            >
-              {String(i + 1).padStart(2, "0")}
-            </button>
-          ))}
-        </nav>
+        {/* Page scroll progress bar */}
+        <div className="stacked-scroll-bar-wrap" aria-label="Portfolio scroll progress">
+          <span className="stacked-scroll-counter">
+            <strong>{String(currentIndex + 1).padStart(2, "0")}</strong> / {String(pages.length).padStart(2, "0")}
+          </span>
+          <div
+            className="stacked-scroll-track"
+            role="progressbar"
+            aria-valuenow={currentIndex + 1}
+            aria-valuemin={1}
+            aria-valuemax={pages.length}
+            title="Click to jump to section"
+            onClick={(e) => {
+              const rect = e.currentTarget.getBoundingClientRect();
+              const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+              const target = Math.min(pages.length - 1, Math.floor(ratio * pages.length));
+              navigate(target);
+            }}
+          >
+            <motion.div
+              className="stacked-scroll-fill"
+              initial={false}
+              animate={{ width: `${((currentIndex + 1) / pages.length) * 100}%` }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            />
+          </div>
+        </div>
       </div>
     </section>
   );

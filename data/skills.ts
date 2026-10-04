@@ -61,7 +61,7 @@ export const skillsData: SkillCategory[] = [
     name: "AI / LLM",
     description: "Applied artificial intelligence, vector search pipelines, and agentic workflows.",
     skills: [
-      { name: "Large Language Models", level: "Core Production", highlight: true, tag: "LLMs" },
+      { name: "Large Language Models (LLMs)", level: "Core Production", highlight: true, tag: "LLMs" },
       { name: "Retrieval-Augmented Generation (RAG)", level: "Core Production", highlight: true, tag: "Architecture" },
       { name: "LangChain", level: "Core Production", highlight: true, tag: "Orchestration" },
       { name: "LangGraph", level: "Specialized", tag: "Agent Workflows" },

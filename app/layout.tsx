@@ -66,7 +66,15 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
-      <head><script dangerouslySetInnerHTML={{ __html: "try{var t=localStorage.getItem('kishoreos-theme')||'system';document.documentElement.dataset.theme=t==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):t}catch(e){}" }} /></head>
+      <head>
+        <script
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{var t=localStorage.getItem('kishoreos-theme')||'system';document.documentElement.dataset.theme=t==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):t}catch(e){}",
+          }}
+        />
+      </head>
       <body
         suppressHydrationWarning
         className="h-full w-full overflow-hidden bg-[#172125] text-[#f1f0eb] font-sans"
