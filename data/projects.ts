@@ -424,7 +424,6 @@ export const projectsData: ProjectItem[] = [
     liveUrl: undefined,
     isPlaceholderLinks: false,
   },
-
   {
     id: "career-cart",
     title: "Job Portal Management System — Career Cart",
