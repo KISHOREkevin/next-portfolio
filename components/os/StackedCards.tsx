@@ -102,7 +102,7 @@ export function StackedCards() {
       appId: "projects",
       content: (
         <div className="stacked-project-list">
-          {projectsData.slice(0, 4).map((project) => (
+          {projectsData.map((project) => (
             <div key={project.id}>
               <span>{project.badge}</span>
               <strong>{project.title}</strong>

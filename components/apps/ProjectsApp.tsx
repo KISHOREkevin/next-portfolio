@@ -3,205 +3,390 @@
 import React, { useMemo, useState } from "react";
 import { Icon } from "@iconify/react";
 import { phosphorIcons } from "@/lib/icons/phosphor";
-import { projectsData } from "@/data/projects";
+import { GithubIcon } from "@/components/ui/SocialIcons";
+import { projectsData, ProjectItem } from "@/data/projects";
 
-const categories = ["All", "AI / LLM", "Full-Stack", "Systems & Tools"] as const;
+const categories = [
+  "All",
+  "AI / LLM",
+  "FinTech / Trading",
+  "Full-Stack",
+  "Systems & Tools",
+] as const;
 
 export function ProjectsApp() {
   const [category, setCategory] = useState<(typeof categories)[number]>("All");
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(projectsData[0]?.id ?? "");
   const [tab, setTab] = useState<"overview" | "architecture" | "concepts">("overview");
+  const [mobileView, setMobileView] = useState<"list" | "detail">("list");
+
+  // Category counts
+  const categoryCounts = useMemo(() => {
+    return {
+      All: projectsData.length,
+      "AI / LLM": projectsData.filter((p) => p.category === "AI / LLM").length,
+      "FinTech / Trading": projectsData.filter((p) => p.category.includes("FinTech")).length,
+      "Full-Stack": projectsData.filter((p) => p.category.includes("Full-Stack")).length,
+      "Systems & Tools": projectsData.filter((p) => p.category.includes("Systems")).length,
+    };
+  }, []);
 
   const filtered = useMemo(() => {
     return projectsData.filter((project) => {
-      const matchesCategory = category === "All" || project.category === category;
-      const haystack = `${project.title} ${project.shortDescription} ${project.badge} ${project.technologies.join(" ")}`.toLowerCase();
+      let matchesCategory = false;
+      if (category === "All") {
+        matchesCategory = true;
+      } else if (category === "AI / LLM") {
+        matchesCategory = project.category === "AI / LLM";
+      } else if (category === "FinTech / Trading") {
+        matchesCategory = project.category.includes("FinTech");
+      } else if (category === "Full-Stack") {
+        matchesCategory = project.category.includes("Full-Stack");
+      } else if (category === "Systems & Tools") {
+        matchesCategory = project.category.includes("Systems");
+      }
+
+      const haystack = `${project.title} ${project.shortDescription} ${project.fullDescription} ${project.badge} ${project.technologies.join(" ")}`.toLowerCase();
       return matchesCategory && haystack.includes(query.toLowerCase());
     });
   }, [category, query]);
 
-  const selected = filtered.find((project) => project.id === selectedId) ?? filtered[0] ?? null;
+  const selected: ProjectItem | null =
+    filtered.find((project) => project.id === selectedId) ?? filtered[0] ?? null;
+
+  const handleSelectProject = (id: string) => {
+    setSelectedId(id);
+    setTab("overview");
+    setMobileView("detail");
+  };
 
   return (
-    <div className="app-workspace">
-      <div className="app-toolbar">
+    <div className="app-workspace flex flex-col h-full text-[var(--foreground)]">
+      {/* App Toolbar */}
+      <div className="pb-3 border-b border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0">
         <div>
-          <div className="app-kicker">Workspace / projects</div>
-          <h1>Project explorer</h1>
-          <p>Inspect architecture, technologies, and engineering notes.</p>
+          <div className="text-[11px] font-mono font-bold tracking-wider uppercase text-[var(--accent)]">
+            Workspace / Projects
+          </div>
+          <h1 className="text-lg sm:text-xl font-bold text-[var(--foreground)] m-0 leading-tight">
+            Project Explorer
+          </h1>
+          <p className="text-xs text-[var(--foreground-muted)] m-0 mt-0.5">
+            {filtered.length} documented production systems & architectures
+          </p>
         </div>
-        <div className="app-toolbar-actions">
-          <input
-            className="app-search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search projects"
-            aria-label="Search projects"
-          />
-          <button className="app-control" onClick={() => { setCategory("All"); setQuery(""); }}>
-            <Icon icon={phosphorIcons.arrowsClockwise} width={14} />
-            Reset
-          </button>
+
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1 sm:w-60">
+            <input
+              className="w-full h-8 px-3 pr-8 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)] text-xs text-[var(--foreground)] placeholder:text-[var(--foreground-muted)] focus:outline-none focus:border-[var(--accent)] font-sans"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search projects or tech..."
+              aria-label="Search projects"
+            />
+            {query && (
+              <button
+                onClick={() => setQuery("")}
+                className="absolute right-2 top-2 text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
+                title="Clear search"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+          {(query || category !== "All") && (
+            <button
+              className="inline-flex items-center gap-1.5 h-8 px-2.5 rounded-md border border-[var(--border)] bg-[var(--surface-elevated)] text-xs text-[var(--foreground-muted)] hover:text-[var(--foreground)] cursor-pointer shrink-0"
+              onClick={() => {
+                setCategory("All");
+                setQuery("");
+              }}
+            >
+              <Icon icon={phosphorIcons.arrowsClockwise} width={13} />
+              Reset
+            </button>
+          )}
         </div>
       </div>
 
-      <div className="app-body" style={{ gridTemplateColumns: "minmax(220px,.9fr) minmax(0,1.45fr)" }}>
-        <aside className="app-sidebar">
-          <p className="app-sidebar-label">Collections</p>
-          <nav>
-            {categories.map((item) => (
-              <button
-                key={item}
-                className={`app-nav-item ${category === item ? "is-active" : ""}`}
-                onClick={() => setCategory(item)}
+      {/* Category Filter Pills Bar */}
+      <div className="py-2.5 border-b border-[var(--border)] flex items-center gap-1.5 overflow-x-auto shrink-0 no-scrollbar">
+        {categories.map((item) => {
+          const count = categoryCounts[item];
+          const isActive = category === item;
+          return (
+            <button
+              key={item}
+              onClick={() => {
+                setCategory(item);
+                setMobileView("list");
+              }}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
+                isActive
+                  ? "bg-[var(--accent)] text-[var(--accent-foreground)] font-semibold shadow-sm"
+                  : "bg-[var(--surface-elevated)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface)] border border-[var(--border)]"
+              }`}
+            >
+              <span>{item}</span>
+              <span
+                className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
+                  isActive
+                    ? "bg-[var(--accent-foreground)]/20 text-[var(--accent-foreground)]"
+                    : "bg-[var(--surface)] text-[var(--foreground-muted)]"
+                }`}
               >
-                <Icon
-                  icon={item === "All" ? phosphorIcons.squaresFour : phosphorIcons.folderOpen}
-                  width={15}
-                />
-                {item}
-              </button>
-            ))}
-          </nav>
-          <div style={{ marginTop: 22 }}>
-            <p className="app-sidebar-label">Index</p>
-            <p className="app-muted" style={{ fontSize: 11, lineHeight: 1.6 }}>
-              {projectsData.length} documented production & engineering systems. Select an entry to open its technical inspector.
-            </p>
-          </div>
-        </aside>
+                {count}
+              </span>
+            </button>
+          );
+        })}
+      </div>
 
-        <section
-          className="app-main-pane"
-          style={{ display: "grid", gridTemplateColumns: "minmax(190px,.72fr) minmax(0,1.28fr)", gap: 16 }}
+      {/* Main Content Area: Responsive Split or Mobile Master-Detail */}
+      <div className="flex-1 min-h-0 flex flex-col md:flex-row overflow-hidden pt-3">
+        {/* Left Column: Projects List */}
+        <div
+          className={`flex-col md:w-[360px] lg:w-[380px] shrink-0 md:border-r border-[var(--border)] md:pr-3 overflow-y-auto ${
+            mobileView === "detail" ? "hidden md:flex" : "flex w-full"
+          }`}
         >
-          <div>
-            <div className="app-section-label">{filtered.length} projects</div>
-            <div className="app-list">
-              {filtered.map((project) => (
+          <div className="flex items-center justify-between text-[11px] font-mono uppercase tracking-wider text-[var(--foreground-muted)] pb-2 mb-1 px-1">
+            <span>List ({filtered.length})</span>
+            <span>Select to inspect</span>
+          </div>
+
+          <div className="space-y-2 pb-6">
+            {filtered.map((project) => {
+              const isSelected = selected?.id === project.id;
+              return (
                 <button
                   key={project.id}
-                  className={`app-list-row ${selected?.id === project.id ? "is-active" : ""}`}
-                  onClick={() => {
-                    setSelectedId(project.id);
-                    setTab("overview");
-                  }}
+                  onClick={() => handleSelectProject(project.id)}
+                  className={`w-full text-left p-3 rounded-lg border transition-all cursor-pointer group ${
+                    isSelected
+                      ? "bg-[var(--surface-elevated)] border-[var(--accent)] shadow-sm"
+                      : "bg-[var(--surface)]/50 border-[var(--border)] hover:bg-[var(--surface-elevated)] hover:border-[var(--border-strong)]"
+                  }`}
                 >
-                  <div>
-                    <div className="app-list-title">{project.title}</div>
-                    <div className="app-list-meta">
-                      {project.badge}
-                      <br />
-                      {project.shortDescription}
-                    </div>
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-[var(--surface)] border border-[var(--border)] text-[var(--foreground-muted)] group-hover:text-[var(--accent)]">
+                      {project.category}
+                    </span>
+                    <Icon
+                      icon={phosphorIcons.arrowRight}
+                      width={13}
+                      className={`transition-transform duration-150 ${
+                        isSelected
+                          ? "text-[var(--accent)] translate-x-0.5"
+                          : "text-[var(--foreground-muted)] group-hover:translate-x-0.5"
+                      }`}
+                    />
                   </div>
-                  <Icon icon={phosphorIcons.arrowRight} width={14} style={{ marginTop: 3 }} />
-                </button>
-              ))}
-              {filtered.length === 0 && (
-                <div className="app-empty">
-                  <div>
-                    <strong>No matching projects</strong>
-                    Adjust the search or collection filter.
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
 
+                  <h3 className="text-sm font-semibold text-[var(--foreground)] m-0 mb-1 leading-snug">
+                    {project.title}
+                  </h3>
+
+                  <p className="text-xs text-[var(--foreground-muted)] line-clamp-2 m-0 leading-relaxed mb-2">
+                    {project.shortDescription}
+                  </p>
+
+                  <div className="flex flex-wrap gap-1">
+                    {project.technologies.slice(0, 3).map((tech) => (
+                      <span
+                        key={tech}
+                        className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[var(--surface-elevated)] text-[var(--foreground-muted)] border border-[var(--border)]/60"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                    {project.technologies.length > 3 && (
+                      <span className="text-[10px] font-mono px-1 py-0.5 text-[var(--foreground-muted)]">
+                        +{project.technologies.length - 3}
+                      </span>
+                    )}
+                  </div>
+                </button>
+              );
+            })}
+
+            {filtered.length === 0 && (
+              <div className="p-8 text-center rounded-lg border border-dashed border-[var(--border)] my-4">
+                <p className="text-sm font-medium text-[var(--foreground)] m-0">No matching projects</p>
+                <p className="text-xs text-[var(--foreground-muted)] m-0 mt-1">
+                  Try adjusting your search query or collection filter.
+                </p>
+                <button
+                  onClick={() => {
+                    setCategory("All");
+                    setQuery("");
+                  }}
+                  className="mt-3 px-3 py-1.5 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)] text-xs text-[var(--foreground)] cursor-pointer"
+                >
+                  Clear filters
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Right Column: Project Detail Inspector */}
+        <div
+          className={`flex-1 min-w-0 md:pl-4 overflow-y-auto pb-8 ${
+            mobileView === "list" ? "hidden md:block" : "block w-full"
+          }`}
+        >
           {selected ? (
-            <div>
-              <div className="app-detail-header">
-                <div>
-                  <div className="app-kicker">{selected.category}</div>
-                  <h2>{selected.title}</h2>
-                  <p>{selected.badge}</p>
+            <div className="space-y-4">
+              {/* Mobile Back Button */}
+              <div className="md:hidden pb-2 mb-2 border-b border-[var(--border)]">
+                <button
+                  onClick={() => setMobileView("list")}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)] text-xs font-medium text-[var(--foreground)] cursor-pointer"
+                >
+                  <Icon icon={phosphorIcons.caretLeft} width={14} />
+                  <span>← Back to all projects ({filtered.length})</span>
+                </button>
+              </div>
+
+              {/* Detail Header */}
+              <div className="p-4 rounded-lg bg-[var(--surface-elevated)] border border-[var(--border)] space-y-3">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="text-[11px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded bg-[var(--surface)] text-[var(--accent)] font-semibold border border-[var(--border)]">
+                    {selected.category}
+                  </span>
+                  <span className="text-[11px] font-mono text-[var(--foreground-muted)]">
+                    {selected.badge}
+                  </span>
                 </div>
-                <div className="app-toolbar-actions">
-                  {selected.githubUrl && !selected.isPlaceholderLinks && (
-                    <a
-                      className="app-control"
-                      href={selected.githubUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Icon icon={phosphorIcons.linkSimple} width={13} />
-                      GitHub
-                    </a>
-                  )}
+
+                <h2 className="text-xl sm:text-2xl font-bold text-[var(--foreground)] m-0 leading-snug">
+                  {selected.title}
+                </h2>
+
+                <p className="text-xs sm:text-sm text-[var(--foreground-muted)] leading-relaxed m-0">
+                  {selected.shortDescription}
+                </p>
+
+                {/* External Action Links */}
+                <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-[var(--border)]">
                   {selected.liveUrl && (
                     <a
-                      className="app-control app-control-primary"
                       href={selected.liveUrl}
                       target="_blank"
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-[var(--accent)] text-[var(--accent-foreground)] font-semibold text-xs shadow-sm hover:opacity-95 transition-all cursor-pointer"
                     >
-                      Open project
+                      <Icon icon={phosphorIcons.linkSimple} width={14} />
+                      Open Live Project
+                    </a>
+                  )}
+
+                  {selected.githubUrl && !selected.isPlaceholderLinks && (
+                    <a
+                      href={selected.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[var(--surface)] text-[var(--foreground)] hover:bg-[var(--surface-hover)] border border-[var(--border)] text-xs font-medium transition-all cursor-pointer"
+                    >
+                      <GithubIcon className="w-3.5 h-3.5" />
+                      View Repository
                     </a>
                   )}
                 </div>
               </div>
 
-              <div
-                style={{
-                  display: "flex",
-                  gap: 4,
-                  borderBottom: "1px solid var(--border)",
-                  marginTop: 12
-                }}
-              >
-                {(["overview", "architecture", "concepts"] as const).map((item) => (
+              {/* Segmented Tabs */}
+              <div className="flex items-center gap-1 border-b border-[var(--border)] pb-1">
+                {(["overview", "architecture", "concepts"] as const).map((tabItem) => (
                   <button
-                    key={item}
-                    className={`app-nav-item ${tab === item ? "is-active" : ""}`}
-                    style={{ width: "auto", borderRadius: 0, textTransform: "capitalize" }}
-                    onClick={() => setTab(item)}
+                    key={tabItem}
+                    onClick={() => setTab(tabItem)}
+                    className={`px-3.5 py-2 text-xs font-medium rounded-md transition-all capitalize cursor-pointer ${
+                      tab === tabItem
+                        ? "bg-[var(--surface-elevated)] text-[var(--foreground)] font-semibold border border-[var(--border)]"
+                        : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
+                    }`}
                   >
-                    {item}
+                    {tabItem === "concepts" ? "Key Concepts & Impact" : tabItem}
                   </button>
                 ))}
               </div>
 
+              {/* Tab 1: Overview */}
               {tab === "overview" && (
-                <>
-                  <div className="app-detail-block">
-                    <h3>Overview</h3>
-                    <p>{selected.fullDescription}</p>
+                <div className="space-y-4">
+                  <div className="p-4 rounded-lg bg-[var(--surface)] border border-[var(--border)] space-y-2">
+                    <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[var(--foreground-muted)] m-0">
+                      System Overview & Execution
+                    </h3>
+                    <p className="text-sm text-[var(--foreground)] leading-relaxed m-0 whitespace-pre-line">
+                      {selected.fullDescription}
+                    </p>
                   </div>
-                  <div className="app-detail-block">
-                    <h3>Technologies & Tools</h3>
-                    <div className="app-inline-list">
-                      {selected.technologies.map((technology) => (
-                        <span key={technology}>{technology}</span>
+
+                  <div className="p-4 rounded-lg bg-[var(--surface)] border border-[var(--border)] space-y-2.5">
+                    <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[var(--foreground-muted)] m-0">
+                      Technologies & Tools ({selected.technologies.length})
+                    </h3>
+                    <div className="flex flex-wrap gap-1.5">
+                      {selected.technologies.map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-2.5 py-1 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)] text-xs font-mono text-[var(--foreground)]"
+                        >
+                          {tech}
+                        </span>
                       ))}
                     </div>
                   </div>
-                </>
+                </div>
               )}
 
+              {/* Tab 2: Architecture */}
               {tab === "architecture" && (
-                <div className="app-detail-block">
-                  <h3>Architecture / Data Flow</h3>
-                  <div className="app-list">
+                <div className="p-4 rounded-lg bg-[var(--surface)] border border-[var(--border)] space-y-3">
+                  <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[var(--foreground-muted)] m-0">
+                    Architecture & Data Flow
+                  </h3>
+                  <div className="space-y-2">
                     {selected.architecturePoints.map((point, index) => (
-                      <div className="app-list-row" key={point}>
-                        <span className="app-kicker">0{index + 1}</span>
-                        <span style={{ flex: 1 }} className="app-muted">{point}</span>
+                      <div
+                        key={point}
+                        className="flex items-start gap-3 p-3 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)]"
+                      >
+                        <span className="text-xs font-mono font-bold text-[var(--accent)] shrink-0 px-2 py-0.5 rounded bg-[var(--surface)] border border-[var(--border)]">
+                          0{index + 1}
+                        </span>
+                        <p className="text-xs sm:text-sm text-[var(--foreground)] leading-relaxed m-0 flex-1">
+                          {point}
+                        </p>
                       </div>
                     ))}
                   </div>
                 </div>
               )}
 
+              {/* Tab 3: Key Concepts */}
               {tab === "concepts" && (
-                <div className="app-detail-block">
-                  <h3>Key Concepts & Impact</h3>
-                  <div className="app-list">
+                <div className="p-4 rounded-lg bg-[var(--surface)] border border-[var(--border)] space-y-3">
+                  <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[var(--foreground-muted)] m-0">
+                    Key Concepts & Engineering Principles
+                  </h3>
+                  <div className="space-y-2">
                     {selected.keyConcepts.map((concept) => (
-                      <div className="app-list-row" key={concept}>
-                        <Icon icon={phosphorIcons.check} width={14} style={{ flexShrink: 0, marginTop: 2 }} />
-                        <span className="app-muted" style={{ flex: 1 }}>{concept}</span>
+                      <div
+                        key={concept}
+                        className="flex items-start gap-3 p-3 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)]"
+                      >
+                        <div className="w-5 h-5 rounded-full bg-[var(--accent)]/15 text-[var(--accent)] flex items-center justify-center shrink-0 mt-0.5">
+                          <Icon icon={phosphorIcons.check} width={13} />
+                        </div>
+                        <p className="text-xs sm:text-sm text-[var(--foreground)] leading-relaxed m-0 flex-1">
+                          {concept}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -209,19 +394,22 @@ export function ProjectsApp() {
               )}
             </div>
           ) : (
-            <div className="app-empty">
-              <div>
-                <strong>No project selected</strong>
-                Select a project from the list to inspect it.
-              </div>
+            <div className="h-64 flex flex-col items-center justify-center text-center p-6 rounded-lg border border-dashed border-[var(--border)]">
+              <p className="text-sm font-medium text-[var(--foreground)] m-0">No project selected</p>
+              <p className="text-xs text-[var(--foreground-muted)] m-0 mt-1">
+                Select an entry from the list to inspect technical details.
+              </p>
             </div>
           )}
-        </section>
+        </div>
       </div>
 
-      <div className="app-statusbar">
+      {/* Status Bar */}
+      <div className="pt-2 mt-auto border-t border-[var(--border)] flex items-center justify-between text-[11px] font-mono text-[var(--foreground-muted)] shrink-0">
         <span>projects.index</span>
-        <span>{projectsData.length} documented systems · AI, Systems & Full-Stack</span>
+        <span>
+          {projectsData.length} documented production systems · KishoreOS
+        </span>
       </div>
     </div>
   );
