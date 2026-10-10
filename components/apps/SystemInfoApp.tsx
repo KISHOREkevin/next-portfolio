@@ -29,7 +29,7 @@ export function SystemInfoApp() {
   ];
 
   return (
-    <div className="app-workspace flex flex-col h-full text-[var(--foreground)]">
+    <div className="app-workspace flex flex-col h-auto md:h-full text-[var(--foreground)]">
       {/* Top Toolbar */}
       <div className="pb-3 border-b border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-2 shrink-0">
         <div>
@@ -50,8 +50,8 @@ export function SystemInfoApp() {
         </span>
       </div>
 
-      {/* Responsive Tabs on Mobile / Clean Split on Desktop */}
-      <div className="py-2.5 border-b border-[var(--border)] flex items-center gap-1.5 overflow-x-auto shrink-0 md:hidden no-scrollbar">
+      {/* Responsive Tabs on Mobile - Sticky on mobile */}
+      <div className="py-2.5 border-b border-[var(--border)] flex items-center gap-1.5 overflow-x-auto shrink-0 md:hidden no-scrollbar sticky top-0 z-10 bg-[var(--surface)]">
         {sections.map((item) => (
           <button
             key={item.id}
@@ -69,7 +69,7 @@ export function SystemInfoApp() {
       </div>
 
       {/* Main Body */}
-      <div className="flex-1 min-h-0 flex flex-col md:flex-row overflow-hidden pt-3">
+      <div className="flex-1 flex flex-col md:flex-row md:min-h-0 md:overflow-hidden pt-3">
         {/* Left Sidebar on Desktop */}
         <aside className="hidden md:flex flex-col w-48 shrink-0 border-r border-[var(--border)] pr-3 overflow-y-auto">
           <p className="text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--foreground-muted)] mb-2 px-2">
@@ -94,7 +94,7 @@ export function SystemInfoApp() {
         </aside>
 
         {/* Right Main Content */}
-        <section className="flex-1 min-w-0 md:pl-4 overflow-y-auto pb-8 space-y-4">
+        <section className="flex-1 min-w-0 md:pl-4 md:overflow-y-auto pb-8 space-y-4">
           {section === "System" && (
             <div className="space-y-4">
               <div className="p-4 rounded-lg bg-[var(--surface-elevated)] border border-[var(--border)]">

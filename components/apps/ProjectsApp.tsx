@@ -62,7 +62,7 @@ export function ProjectsApp() {
   };
 
   return (
-    <div className="app-workspace flex flex-col h-full text-[var(--foreground)]">
+    <div className="app-workspace flex flex-col h-auto md:h-full text-[var(--foreground)]">
       {/* App Toolbar */}
       <div className="pb-3 border-b border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0">
         <div>
@@ -111,8 +111,8 @@ export function ProjectsApp() {
         </div>
       </div>
 
-      {/* Category Filter Pills Bar */}
-      <div className="py-2.5 border-b border-[var(--border)] flex items-center gap-1.5 overflow-x-auto shrink-0 no-scrollbar">
+      {/* Category Filter Pills Bar - Sticky on mobile for effortless navigation */}
+      <div className="py-2.5 border-b border-[var(--border)] flex items-center gap-1.5 overflow-x-auto shrink-0 no-scrollbar sticky top-0 z-10 bg-[var(--surface)]">
         {categories.map((item) => {
           const count = categoryCounts[item];
           const isActive = category === item;
@@ -145,10 +145,10 @@ export function ProjectsApp() {
       </div>
 
       {/* Main Content Area: Responsive Split or Mobile Master-Detail */}
-      <div className="flex-1 min-h-0 flex flex-col md:flex-row overflow-hidden pt-3">
+      <div className="flex-1 flex flex-col md:flex-row md:min-h-0 md:overflow-hidden pt-3">
         {/* Left Column: Projects List */}
         <div
-          className={`flex-col md:w-[360px] lg:w-[380px] shrink-0 md:border-r border-[var(--border)] md:pr-3 overflow-y-auto ${
+          className={`flex-col md:w-[360px] lg:w-[380px] shrink-0 md:border-r border-[var(--border)] md:pr-3 md:overflow-y-auto ${
             mobileView === "detail" ? "hidden md:flex" : "flex w-full"
           }`}
         >
@@ -234,7 +234,7 @@ export function ProjectsApp() {
 
         {/* Right Column: Project Detail Inspector */}
         <div
-          className={`flex-1 min-w-0 md:pl-4 overflow-y-auto pb-8 ${
+          className={`flex-1 min-w-0 md:pl-4 md:overflow-y-auto pb-8 ${
             mobileView === "list" ? "hidden md:block" : "block w-full"
           }`}
         >

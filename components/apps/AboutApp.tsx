@@ -20,7 +20,7 @@ export function AboutApp() {
   const [section, setSection] = useState<(typeof tabs)[number]["id"]>("overview");
 
   return (
-    <div className="app-workspace flex flex-col h-full text-[var(--foreground)]">
+    <div className="app-workspace flex flex-col h-auto md:h-full text-[var(--foreground)]">
       {/* Top Toolbar */}
       <div className="pb-3 border-b border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0">
         <div>
@@ -53,8 +53,8 @@ export function AboutApp() {
         </div>
       </div>
 
-      {/* Navigation Tabs Bar */}
-      <div className="py-2.5 border-b border-[var(--border)] flex items-center gap-1.5 overflow-x-auto shrink-0 no-scrollbar">
+      {/* Navigation Tabs Bar - Sticky on mobile */}
+      <div className="py-2.5 border-b border-[var(--border)] flex items-center gap-1.5 overflow-x-auto shrink-0 no-scrollbar sticky top-0 z-10 bg-[var(--surface)]">
         {tabs.map((tab) => {
           const isActive = section === tab.id;
           return (
@@ -75,7 +75,7 @@ export function AboutApp() {
       </div>
 
       {/* Main Content Pane */}
-      <div className="flex-1 min-h-0 overflow-y-auto pt-3 pb-8 space-y-6">
+      <div className="flex-1 md:min-h-0 md:overflow-y-auto pt-3 pb-8 space-y-6">
         {section === "overview" && (
           <div className="space-y-4 max-w-4xl">
             {/* Status Card */}

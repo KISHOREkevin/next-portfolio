@@ -43,7 +43,7 @@ export function SkillsApp() {
   );
 
   return (
-    <div className="app-workspace flex flex-col h-full text-[var(--foreground)]">
+    <div className="app-workspace flex flex-col h-auto md:h-full text-[var(--foreground)]">
       {/* Top Toolbar */}
       <div className="pb-3 border-b border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0">
         <div>
@@ -92,8 +92,8 @@ export function SkillsApp() {
         </div>
       </div>
 
-      {/* Categories Filter Pills */}
-      <div className="py-2.5 border-b border-[var(--border)] flex items-center gap-1.5 overflow-x-auto shrink-0 no-scrollbar">
+      {/* Categories Filter Pills - Sticky on mobile */}
+      <div className="py-2.5 border-b border-[var(--border)] flex items-center gap-1.5 overflow-x-auto shrink-0 no-scrollbar sticky top-0 z-10 bg-[var(--surface)]">
         <button
           onClick={() => setSelectedId("all")}
           className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
@@ -144,7 +144,7 @@ export function SkillsApp() {
       </div>
 
       {/* Main Content: Grouped Responsive Skill Cards Grid */}
-      <div className="flex-1 min-h-0 overflow-y-auto pt-3 pb-8 space-y-6">
+      <div className="flex-1 md:min-h-0 md:overflow-y-auto pt-3 pb-8 space-y-6">
         {visibleCategories.length > 0 ? (
           visibleCategories.map((category) => (
             <div key={category.id} className="space-y-3">

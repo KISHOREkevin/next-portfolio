@@ -27,7 +27,7 @@ export function ExperienceApp() {
   };
 
   return (
-    <div className="app-workspace flex flex-col h-full text-[var(--foreground)]">
+    <div className="app-workspace flex flex-col h-auto md:h-full text-[var(--foreground)]">
       {/* Top Toolbar */}
       <div className="pb-3 border-b border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0">
         <div>
@@ -47,8 +47,8 @@ export function ExperienceApp() {
         </div>
       </div>
 
-      {/* Filter Tabs */}
-      <div className="py-2.5 border-b border-[var(--border)] flex items-center gap-1.5 overflow-x-auto shrink-0 no-scrollbar">
+      {/* Filter Tabs - Sticky on mobile */}
+      <div className="py-2.5 border-b border-[var(--border)] flex items-center gap-1.5 overflow-x-auto shrink-0 no-scrollbar sticky top-0 z-10 bg-[var(--surface)]">
         {filterCategories.map((item) => {
           const count =
             item.id === "all"
@@ -84,10 +84,10 @@ export function ExperienceApp() {
       </div>
 
       {/* Master-Detail Body */}
-      <div className="flex-1 min-h-0 flex flex-col md:flex-row overflow-hidden pt-3">
+      <div className="flex-1 flex flex-col md:flex-row md:min-h-0 md:overflow-hidden pt-3">
         {/* Left Column: Timeline List */}
         <div
-          className={`flex-col md:w-[350px] shrink-0 md:border-r border-[var(--border)] md:pr-3 overflow-y-auto ${
+          className={`flex-col md:w-[350px] shrink-0 md:border-r border-[var(--border)] md:pr-3 md:overflow-y-auto ${
             mobileView === "detail" ? "hidden md:flex" : "flex w-full"
           }`}
         >
@@ -144,7 +144,7 @@ export function ExperienceApp() {
 
         {/* Right Column: Role Inspector */}
         <div
-          className={`flex-1 min-w-0 md:pl-4 overflow-y-auto pb-8 ${
+          className={`flex-1 min-w-0 md:pl-4 md:overflow-y-auto pb-8 ${
             mobileView === "list" ? "hidden md:block" : "block w-full"
           }`}
         >

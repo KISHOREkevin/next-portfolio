@@ -68,7 +68,7 @@ export function FileExplorerApp() {
   };
 
   return (
-    <div className="app-workspace h-full flex flex-col font-mono text-xs text-[var(--foreground)] select-text">
+    <div className="app-workspace h-auto md:h-full flex flex-col font-mono text-xs text-[var(--foreground)] select-text">
       {/* Header */}
       <div className="pb-3 border-b border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-2 shrink-0">
         <div>
@@ -136,9 +136,9 @@ export function FileExplorerApp() {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-12 gap-3 pb-4 overflow-hidden">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-12 gap-3 pb-4 md:min-h-0 md:overflow-hidden">
         {/* File Browser Grid */}
-        <div className="md:col-span-7 bg-[var(--surface)] border border-[var(--border)] rounded-lg p-3.5 overflow-y-auto">
+        <div className="md:col-span-7 bg-[var(--surface)] border border-[var(--border)] rounded-lg p-3.5 md:overflow-y-auto">
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
             {currentFiles.map((file) => {
               const isSelected = selectedFile?.id === file.id;
@@ -175,7 +175,7 @@ export function FileExplorerApp() {
         </div>
 
         {/* File Preview Pane */}
-        <div className="md:col-span-5 bg-[var(--surface)] border border-[var(--border)] rounded-lg p-4 flex flex-col justify-between shadow-sm overflow-hidden">
+        <div className="md:col-span-5 bg-[var(--surface)] border border-[var(--border)] rounded-lg p-4 flex flex-col justify-between shadow-sm overflow-visible md:overflow-hidden min-h-[220px] md:min-h-0">
           {selectedFile ? (
             <div className="space-y-3 flex-1 flex flex-col min-h-0">
               <div className="flex items-center justify-between border-b border-[var(--border)] pb-2.5 shrink-0">

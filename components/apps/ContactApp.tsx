@@ -49,7 +49,7 @@ export function ContactApp() {
   };
 
   return (
-    <div className="app-workspace flex flex-col h-full text-[var(--foreground)]">
+    <div className="app-workspace flex flex-col h-auto md:h-full text-[var(--foreground)]">
       {/* Top Toolbar */}
       <div className="pb-3 border-b border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-2 shrink-0">
         <div>
@@ -82,7 +82,7 @@ export function ContactApp() {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 min-h-0 overflow-y-auto pt-4 pb-8 space-y-5 max-w-3xl mx-auto w-full">
+      <div className="flex-1 md:min-h-0 md:overflow-y-auto pt-4 pb-8 space-y-5 max-w-3xl mx-auto w-full">
         {/* Direct Channels Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {/* Email Card */}
