@@ -40,7 +40,7 @@ export const profileData: ProfileData = {
   availableForHire: true,
   phone: "+91 7904702577",
   email: "kishorekevin3289@gmail.com",
-  portfolio: "https://kishorekevin.netlify.app/",
+  portfolio: "https://kishorekevin.vercel.app/",
   github: "https://github.com/KISHOREkevin",
   systemSpecs: {
     os: "KishoreOS v3.0 (Linux Developer Workstation)",

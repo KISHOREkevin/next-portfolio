@@ -42,10 +42,7 @@ export function ResumeApp() {
     setTimeout(() => setDownloadAlert(false), 5000);
   };
 
-  const handlePrint = () => {
-    playUiClick();
-    window.print();
-  };
+
 
   return (
     <div className="app-workspace space-y-4 max-w-4xl mx-auto font-sans text-sm text-[var(--foreground)] pb-6 select-text">
@@ -55,7 +52,7 @@ export function ResumeApp() {
           <FileText className="w-5 h-5 text-[var(--accent)]" />
           <div>
             <h1 className="text-sm sm:text-base font-bold text-[var(--foreground)] m-0 leading-tight">
-              Curriculum Vitae / Resume
+               Resume
             </h1>
             <span className="text-xs font-mono text-[var(--foreground-muted)]">
               {profileData.name} — {profileData.title}
@@ -84,14 +81,7 @@ export function ResumeApp() {
             </button>
           </div>
 
-          <button
-            onClick={handlePrint}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[var(--surface)] hover:bg-[var(--surface-hover)] text-xs font-mono text-[var(--foreground)] border border-[var(--border)] transition-colors cursor-pointer"
-            title="Print or save as PDF"
-          >
-            <Printer className="w-3.5 h-3.5 text-[var(--accent)]" />
-            <span>Print</span>
-          </button>
+         
 
           <button
             onClick={handleDownload}
