@@ -24,9 +24,38 @@ const appViews = { about: AboutApp, projects: ProjectsApp, experience: Experienc
 export function Desktop() {
   const { isMobile } = useWindowManager();
   useEffect(() => { initSoundPreference(); }, []);
-  return <div className="kishore-shell"><AmbientBackground /><main className="desktop-stage">
-    <header className="desktop-topbar"><span className="topbar-wordmark">KISHOREOS</span><span className="topbar-path">/ home / kishore</span></header>
-    {!isMobile && <aside className="desktop-shortcuts" aria-label="Desktop shortcuts"><DesktopIcon appId="about"/><DesktopIcon appId="projects"/><DesktopIcon appId="experience"/><DesktopIcon appId="terminal"/></aside>}
-    <HomeDashboard /><div className="window-layer">{Object.entries(appViews).map(([id, Component]) => <Window key={id} id={id}><Component /></Window>)}</div>
-  </main>{!isMobile && <Taskbar />}<MobileOrb /><AppLauncher /></div>;
+
+  return (
+    <div className="kishore-shell">
+      <AmbientBackground />
+      <main className="desktop-stage">
+
+        {!isMobile && (
+          <aside className="desktop-shortcuts" aria-label="Desktop shortcuts">
+            <DesktopIcon appId="about" />
+            <DesktopIcon appId="projects" />
+            <DesktopIcon appId="experience" />
+            <DesktopIcon appId="skills" />
+            <DesktopIcon appId="terminal" />
+            <DesktopIcon appId="files" />
+            <DesktopIcon appId="resume" />
+          </aside>
+        )}
+
+        <HomeDashboard />
+
+        <div className="window-layer">
+          {Object.entries(appViews).map(([id, Component]) => (
+            <Window key={id} id={id}>
+              <Component />
+            </Window>
+          ))}
+        </div>
+      </main>
+
+      {!isMobile && <Taskbar />}
+      <MobileOrb />
+      <AppLauncher />
+    </div>
+  );
 }
