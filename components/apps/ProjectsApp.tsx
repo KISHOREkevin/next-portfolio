@@ -62,12 +62,14 @@ export function ProjectsApp() {
   };
 
   return (
-    <div className="app-workspace flex flex-col h-auto md:h-full text-[var(--foreground)]">
+    <div className="app-workspace flex flex-col h-full text-[var(--foreground)] min-h-0">
       {/* App Toolbar */}
       <div className="pb-3 border-b border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0">
         <div>
-          <div className="text-[11px] font-mono font-bold tracking-wider uppercase text-[var(--accent)]">
-            Workspace / Projects
+          <div className="text-[11px] font-mono font-bold tracking-wider uppercase text-[var(--accent)] flex items-center gap-1.5">
+            <span>Workspace</span>
+            <span className="text-[var(--border-strong)]">/</span>
+            <span>Projects</span>
           </div>
           <h1 className="text-lg sm:text-xl font-bold text-[var(--foreground)] m-0 leading-tight">
             Project Explorer
@@ -78,9 +80,12 @@ export function ProjectsApp() {
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="relative flex-1 sm:w-60">
+          <div className="relative flex-1 sm:w-64">
+            <span className="absolute left-2.5 top-2 text-[var(--foreground-muted)] pointer-events-none">
+              <Icon icon={phosphorIcons.magnifyingGlass} width={13} />
+            </span>
             <input
-              className="w-full h-8 px-3 pr-8 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)] text-xs text-[var(--foreground)] placeholder:text-[var(--foreground-muted)] focus:outline-none focus:border-[var(--accent)] font-sans"
+              className="w-full h-8 pl-8 pr-7 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)] text-xs text-[var(--foreground)] placeholder:text-[var(--foreground-muted)] focus:outline-none focus:border-[var(--accent)] font-sans transition-colors"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Search projects or tech..."
@@ -89,7 +94,7 @@ export function ProjectsApp() {
             {query && (
               <button
                 onClick={() => setQuery("")}
-                className="absolute right-2 top-2 text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
+                className="absolute right-2 top-2 text-[var(--foreground-muted)] hover:text-[var(--foreground)] cursor-pointer"
                 title="Clear search"
               >
                 ✕
@@ -98,7 +103,7 @@ export function ProjectsApp() {
           </div>
           {(query || category !== "All") && (
             <button
-              className="inline-flex items-center gap-1.5 h-8 px-2.5 rounded-md border border-[var(--border)] bg-[var(--surface-elevated)] text-xs text-[var(--foreground-muted)] hover:text-[var(--foreground)] cursor-pointer shrink-0"
+              className="inline-flex items-center gap-1.5 h-8 px-2.5 rounded-md border border-[var(--border)] bg-[var(--surface-elevated)] text-xs text-[var(--foreground-muted)] hover:text-[var(--foreground)] cursor-pointer shrink-0 transition-colors"
               onClick={() => {
                 setCategory("All");
                 setQuery("");
@@ -111,8 +116,8 @@ export function ProjectsApp() {
         </div>
       </div>
 
-      {/* Category Filter Pills Bar - Sticky on mobile for effortless navigation */}
-      <div className="py-2.5 border-b border-[var(--border)] flex items-center gap-1.5 overflow-x-auto shrink-0 no-scrollbar sticky top-0 z-10 bg-[var(--surface)]">
+      {/* Category Filter Pills Bar */}
+      <div className="py-2.5 border-b border-[var(--border)] flex items-center gap-1.5 overflow-x-auto shrink-0 no-scrollbar">
         {categories.map((item) => {
           const count = categoryCounts[item];
           const isActive = category === item;
@@ -123,17 +128,17 @@ export function ProjectsApp() {
                 setCategory(item);
                 setMobileView("list");
               }}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
+              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
                 isActive
                   ? "bg-[var(--accent)] text-[var(--accent-foreground)] font-semibold shadow-sm"
-                  : "bg-[var(--surface-elevated)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface)] border border-[var(--border)]"
+                  : "bg-[var(--surface-elevated)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)] border border-[var(--border)]"
               }`}
             >
               <span>{item}</span>
               <span
-                className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
+                className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
                   isActive
-                    ? "bg-[var(--accent-foreground)]/20 text-[var(--accent-foreground)]"
+                    ? "bg-[var(--accent-foreground)]/20 text-[var(--accent-foreground)] font-bold"
                     : "bg-[var(--surface)] text-[var(--foreground-muted)]"
                 }`}
               >
@@ -145,47 +150,47 @@ export function ProjectsApp() {
       </div>
 
       {/* Main Content Area: Responsive Split or Mobile Master-Detail */}
-      <div className="flex-1 flex flex-col md:flex-row md:min-h-0 md:overflow-hidden pt-3">
+      <div className="flex-1 flex flex-col md:flex-row min-h-0 overflow-hidden pt-3">
         {/* Left Column: Projects List */}
         <div
-          className={`flex-col md:w-[360px] lg:w-[380px] shrink-0 md:border-r border-[var(--border)] md:pr-3 md:overflow-y-auto ${
+          className={`flex-col md:w-[320px] lg:w-[350px] shrink-0 md:border-r border-[var(--border)] md:pr-3 overflow-y-auto ${
             mobileView === "detail" ? "hidden md:flex" : "flex w-full"
           }`}
         >
-          <div className="flex items-center justify-between text-[11px] font-mono uppercase tracking-wider text-[var(--foreground-muted)] pb-2 mb-1 px-1">
-            <span>List ({filtered.length})</span>
+          <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-[var(--foreground-muted)] pb-2 mb-1 px-1">
+            <span>Systems ({filtered.length})</span>
             <span>Select to inspect</span>
           </div>
 
-          <div className="space-y-2 pb-6">
+          <div className="space-y-1.5 pb-4">
             {filtered.map((project) => {
               const isSelected = selected?.id === project.id;
               return (
                 <button
                   key={project.id}
                   onClick={() => handleSelectProject(project.id)}
-                  className={`w-full text-left p-3 rounded-lg border transition-all cursor-pointer group ${
+                  className={`w-full text-left p-3 rounded-lg border transition-all cursor-pointer group relative ${
                     isSelected
-                      ? "bg-[var(--surface-elevated)] border-[var(--accent)] shadow-sm"
-                      : "bg-[var(--surface)]/50 border-[var(--border)] hover:bg-[var(--surface-elevated)] hover:border-[var(--border-strong)]"
+                      ? "bg-[var(--surface-elevated)] border-[var(--border-strong)] border-l-[3px] border-l-[var(--accent)] shadow-sm"
+                      : "bg-[var(--surface)]/40 border-transparent hover:border-[var(--border)] hover:bg-[var(--surface-elevated)]/60"
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2 mb-1">
-                    <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-[var(--surface)] border border-[var(--border)] text-[var(--foreground-muted)] group-hover:text-[var(--accent)]">
+                    <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-[var(--surface)] border border-[var(--border)] text-[var(--foreground-muted)] group-hover:text-[var(--accent)] font-medium">
                       {project.category}
                     </span>
                     <Icon
                       icon={phosphorIcons.arrowRight}
-                      width={13}
-                      className={`transition-transform duration-150 ${
+                      width={12}
+                      className={`transition-all duration-150 ${
                         isSelected
-                          ? "text-[var(--accent)] translate-x-0.5"
-                          : "text-[var(--foreground-muted)] group-hover:translate-x-0.5"
+                          ? "text-[var(--accent)] translate-x-0.5 opacity-100"
+                          : "text-[var(--foreground-muted)] opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5"
                       }`}
                     />
                   </div>
 
-                  <h3 className="text-sm font-semibold text-[var(--foreground)] m-0 mb-1 leading-snug">
+                  <h3 className="text-[13px] font-semibold text-[var(--foreground)] m-0 mb-1 leading-snug">
                     {project.title}
                   </h3>
 
@@ -197,7 +202,7 @@ export function ProjectsApp() {
                     {project.technologies.slice(0, 3).map((tech) => (
                       <span
                         key={tech}
-                        className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[var(--surface-elevated)] text-[var(--foreground-muted)] border border-[var(--border)]/60"
+                        className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[var(--surface)] text-[var(--foreground-secondary)] border border-[var(--border)]/70"
                       >
                         {tech}
                       </span>
@@ -223,7 +228,7 @@ export function ProjectsApp() {
                     setCategory("All");
                     setQuery("");
                   }}
-                  className="mt-3 px-3 py-1.5 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)] text-xs text-[var(--foreground)] cursor-pointer"
+                  className="mt-3 px-3 py-1.5 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)] text-xs text-[var(--foreground)] hover:text-[var(--accent)] cursor-pointer"
                 >
                   Clear filters
                 </button>
@@ -234,7 +239,7 @@ export function ProjectsApp() {
 
         {/* Right Column: Project Detail Inspector */}
         <div
-          className={`flex-1 min-w-0 md:pl-4 md:overflow-y-auto pb-8 ${
+          className={`flex-1 min-w-0 md:pl-5 overflow-y-auto pb-4 ${
             mobileView === "list" ? "hidden md:block" : "block w-full"
           }`}
         >
@@ -251,66 +256,74 @@ export function ProjectsApp() {
                 </button>
               </div>
 
-              {/* Detail Header */}
-              <div className="p-4 rounded-lg bg-[var(--surface-elevated)] border border-[var(--border)] space-y-3">
+              {/* Detail Header Hero */}
+              <div className="p-4 sm:p-5 rounded-lg bg-[var(--surface-elevated)]/60 border border-[var(--border)] space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <span className="text-[11px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded bg-[var(--surface)] text-[var(--accent)] font-semibold border border-[var(--border)]">
-                    {selected.category}
-                  </span>
-                  <span className="text-[11px] font-mono text-[var(--foreground-muted)]">
-                    {selected.badge}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded bg-[var(--surface)] text-[var(--accent)] font-semibold border border-[var(--border)]">
+                      {selected.category}
+                    </span>
+                    <span className="text-[11px] font-mono text-[var(--foreground-muted)]">
+                      {selected.badge}
+                    </span>
+                  </div>
+
+                  {/* External Action Links */}
+                  <div className="flex flex-wrap items-center gap-2">
+                    {selected.liveUrl && (
+                      <a
+                        href={selected.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[var(--accent)] text-[var(--accent-foreground)] font-semibold text-xs shadow-sm hover:opacity-95 transition-all cursor-pointer"
+                      >
+                        <Icon icon={phosphorIcons.linkSimple} width={13} />
+                        Live Demo
+                      </a>
+                    )}
+
+                    {selected.githubUrl && !selected.isPlaceholderLinks && (
+                      <a
+                        href={selected.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[var(--surface)] text-[var(--foreground)] hover:bg-[var(--surface-hover)] border border-[var(--border)] text-xs font-medium transition-all cursor-pointer"
+                      >
+                        <GithubIcon className="w-3.5 h-3.5" />
+                        Repository
+                      </a>
+                    )}
+                  </div>
                 </div>
 
-                <h2 className="text-xl sm:text-2xl font-bold text-[var(--foreground)] m-0 leading-snug">
+                <h2 className="text-xl sm:text-2xl font-bold text-[var(--foreground)] m-0 leading-tight">
                   {selected.title}
                 </h2>
 
-                <p className="text-xs sm:text-sm text-[var(--foreground-muted)] leading-relaxed m-0">
+                <p className="text-xs sm:text-sm text-[var(--foreground-secondary)] leading-relaxed m-0">
                   {selected.shortDescription}
                 </p>
-
-                {/* External Action Links */}
-                <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-[var(--border)]">
-                  {selected.liveUrl && (
-                    <a
-                      href={selected.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-[var(--accent)] text-[var(--accent-foreground)] font-semibold text-xs shadow-sm hover:opacity-95 transition-all cursor-pointer"
-                    >
-                      <Icon icon={phosphorIcons.linkSimple} width={14} />
-                      Open Live Project
-                    </a>
-                  )}
-
-                  {selected.githubUrl && !selected.isPlaceholderLinks && (
-                    <a
-                      href={selected.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[var(--surface)] text-[var(--foreground)] hover:bg-[var(--surface-hover)] border border-[var(--border)] text-xs font-medium transition-all cursor-pointer"
-                    >
-                      <GithubIcon className="w-3.5 h-3.5" />
-                      View Repository
-                    </a>
-                  )}
-                </div>
               </div>
 
               {/* Segmented Tabs */}
-              <div className="flex items-center gap-1 border-b border-[var(--border)] pb-1">
-                {(["overview", "architecture", "concepts"] as const).map((tabItem) => (
+              <div className="flex items-center gap-1 border-b border-[var(--border)] pb-1.5">
+                {(
+                  [
+                    { id: "overview", label: "Overview & Stack" },
+                    { id: "architecture", label: "Architecture" },
+                    { id: "concepts", label: "Key Concepts" },
+                  ] as const
+                ).map((tabItem) => (
                   <button
-                    key={tabItem}
-                    onClick={() => setTab(tabItem)}
-                    className={`px-3.5 py-2 text-xs font-medium rounded-md transition-all capitalize cursor-pointer ${
-                      tab === tabItem
-                        ? "bg-[var(--surface-elevated)] text-[var(--foreground)] font-semibold border border-[var(--border)]"
-                        : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
+                    key={tabItem.id}
+                    onClick={() => setTab(tabItem.id)}
+                    className={`px-3.5 py-1.5 text-xs font-medium rounded-md transition-all cursor-pointer ${
+                      tab === tabItem.id
+                        ? "bg-[var(--surface-elevated)] text-[var(--foreground)] font-semibold border border-[var(--border)] shadow-xs"
+                        : "text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)]"
                     }`}
                   >
-                    {tabItem === "concepts" ? "Key Concepts & Impact" : tabItem}
+                    {tabItem.label}
                   </button>
                 ))}
               </div>
@@ -319,23 +332,23 @@ export function ProjectsApp() {
               {tab === "overview" && (
                 <div className="space-y-4">
                   <div className="p-4 rounded-lg bg-[var(--surface)] border border-[var(--border)] space-y-2">
-                    <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[var(--foreground-muted)] m-0">
-                      System Overview & Execution
-                    </h3>
-                    <p className="text-sm text-[var(--foreground)] leading-relaxed m-0 whitespace-pre-line">
+                    <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--accent)]">
+                      System Specification & Execution
+                    </div>
+                    <p className="text-xs sm:text-sm text-[var(--foreground)] leading-relaxed m-0 whitespace-pre-line">
                       {selected.fullDescription}
                     </p>
                   </div>
 
                   <div className="p-4 rounded-lg bg-[var(--surface)] border border-[var(--border)] space-y-2.5">
-                    <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[var(--foreground-muted)] m-0">
-                      Technologies & Tools ({selected.technologies.length})
-                    </h3>
+                    <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--accent)]">
+                      Technologies & Stack ({selected.technologies.length})
+                    </div>
                     <div className="flex flex-wrap gap-1.5">
                       {selected.technologies.map((tech) => (
                         <span
                           key={tech}
-                          className="px-2.5 py-1 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)] text-xs font-mono text-[var(--foreground)]"
+                          className="px-2.5 py-1 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)] text-xs font-mono text-[var(--foreground)] hover:border-[var(--accent)]/50 transition-colors"
                         >
                           {tech}
                         </span>
@@ -348,14 +361,14 @@ export function ProjectsApp() {
               {/* Tab 2: Architecture */}
               {tab === "architecture" && (
                 <div className="p-4 rounded-lg bg-[var(--surface)] border border-[var(--border)] space-y-3">
-                  <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[var(--foreground-muted)] m-0">
+                  <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--accent)]">
                     Architecture & Data Flow
-                  </h3>
-                  <div className="space-y-2">
+                  </div>
+                  <div className="space-y-2.5">
                     {selected.architecturePoints.map((point, index) => (
                       <div
                         key={point}
-                        className="flex items-start gap-3 p-3 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)]"
+                        className="flex items-start gap-3 p-3 rounded-md bg-[var(--surface-elevated)]/60 border border-[var(--border)]"
                       >
                         <span className="text-xs font-mono font-bold text-[var(--accent)] shrink-0 px-2 py-0.5 rounded bg-[var(--surface)] border border-[var(--border)]">
                           0{index + 1}
@@ -372,17 +385,17 @@ export function ProjectsApp() {
               {/* Tab 3: Key Concepts */}
               {tab === "concepts" && (
                 <div className="p-4 rounded-lg bg-[var(--surface)] border border-[var(--border)] space-y-3">
-                  <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[var(--foreground-muted)] m-0">
+                  <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--accent)]">
                     Key Concepts & Engineering Principles
-                  </h3>
-                  <div className="space-y-2">
+                  </div>
+                  <div className="space-y-2.5">
                     {selected.keyConcepts.map((concept) => (
                       <div
                         key={concept}
-                        className="flex items-start gap-3 p-3 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)]"
+                        className="flex items-start gap-3 p-3 rounded-md bg-[var(--surface-elevated)]/60 border border-[var(--border)]"
                       >
-                        <div className="w-5 h-5 rounded-full bg-[var(--accent)]/15 text-[var(--accent)] flex items-center justify-center shrink-0 mt-0.5">
-                          <Icon icon={phosphorIcons.check} width={13} />
+                        <div className="w-5 h-5 rounded-md bg-[var(--accent)]/15 text-[var(--accent)] flex items-center justify-center shrink-0 mt-0.5 border border-[var(--accent)]/20">
+                          <Icon icon={phosphorIcons.check} width={12} />
                         </div>
                         <p className="text-xs sm:text-sm text-[var(--foreground)] leading-relaxed m-0 flex-1">
                           {concept}
@@ -405,10 +418,12 @@ export function ProjectsApp() {
       </div>
 
       {/* Status Bar */}
-      <div className="pt-2 mt-auto border-t border-[var(--border)] flex items-center justify-between text-[11px] font-mono text-[var(--foreground-muted)] shrink-0">
-        <span>projects.index</span>
+      <div className="pt-2.5 mt-auto border-t border-[var(--border)] flex items-center justify-between text-[11px] font-mono text-[var(--foreground-muted)] shrink-0">
+        <span className="truncate max-w-[200px] sm:max-w-none">
+          projects.workspace / {selected?.id || "empty"}
+        </span>
         <span>
-          {projectsData.length} documented production systems · KishoreOS
+          {filtered.length} of {projectsData.length} systems · KishoreOS
         </span>
       </div>
     </div>

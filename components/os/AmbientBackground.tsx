@@ -12,31 +12,43 @@ interface Particle {
   alpha: number;
   alphaTarget: number;
   alphaSpeed: number;
+  colorRgbDark: string;
 }
 
 const DESKTOP_PARTICLES = 22;
 const MOBILE_PARTICLES = 10;
-const MAX_CONNECT_DIST = 160;
-const MAX_CONNECT_ALPHA = 0.35;
-const GLOW_RADIUS = 220; // 440px diameter
+const MAX_CONNECT_DIST = 150;
+const MAX_CONNECT_ALPHA = 0.18;
+const GLOW_RADIUS = 240; // 480px diameter
 const CURSOR_LERP = 0.08;
+
+// Tokyo Night / Nordic Aurora particle color palette
+const DARK_PARTICLE_COLORS = [
+  "6, 182, 212",   // Electric Cyan
+  "168, 85, 247",  // Neon Violet
+  "56, 189, 248",  // Nordic Sky Blue
+  "230, 237, 247", // Starlight White
+  "52, 211, 153",  // Aurora Green
+];
 
 function createParticle(width: number, height: number, isMobile: boolean): Particle {
   const speed = isMobile
-    ? 0.15 + Math.random() * 0.18
-    : 0.20 + Math.random() * 0.30;
+    ? 0.12 + Math.random() * 0.15
+    : 0.16 + Math.random() * 0.22;
   const angle = Math.random() * Math.PI * 2;
-  const initialAlpha = 0.40 + Math.random() * 0.35;
+  const initialAlpha = 0.18 + Math.random() * 0.22;
+  const colorIndex = Math.floor(Math.random() * DARK_PARTICLE_COLORS.length);
 
   return {
     x: Math.random() * width,
     y: Math.random() * height,
     vx: Math.cos(angle) * speed,
     vy: Math.sin(angle) * speed,
-    r: isMobile ? 1.1 + Math.random() * 0.8 : 1.2 + Math.random() * 1.3,
+    r: isMobile ? 0.9 + Math.random() * 0.6 : 1.0 + Math.random() * 1.0,
     alpha: initialAlpha,
     alphaTarget: initialAlpha,
-    alphaSpeed: 0.003 + Math.random() * 0.004,
+    alphaSpeed: 0.003 + Math.random() * 0.003,
+    colorRgbDark: DARK_PARTICLE_COLORS[colorIndex],
   };
 }
 
@@ -123,7 +135,6 @@ export function AmbientBackground() {
       ctx!.restore();
 
       const light = isLightRef.current;
-      const colorRgb = light ? "0,0,0" : "255,255,255";
 
       // ── Cursor-Following Radial Glow ─────────────────────────────
       if (!isMobile && glowRef.current && !prefersReduced && rawCursor.x > -1000) {
@@ -136,6 +147,7 @@ export function AmbientBackground() {
       if (!prefersReduced) {
         // ── Occasional Connection Lines (Desktop only) ─────────────
         if (!isMobile) {
+          const lineBaseRgb = light ? "15, 23, 42" : "56, 189, 248";
           for (let i = 0; i < particles.length - 1; i++) {
             for (let j = i + 1; j < particles.length; j++) {
               const p1 = particles[i];
@@ -150,7 +162,7 @@ export function AmbientBackground() {
                 ctx!.beginPath();
                 ctx!.moveTo(p1.x, p1.y);
                 ctx!.lineTo(p2.x, p2.y);
-                ctx!.strokeStyle = `rgba(${colorRgb},${lineAlpha.toFixed(4)})`;
+                ctx!.strokeStyle = `rgba(${lineBaseRgb},${lineAlpha.toFixed(4)})`;
                 ctx!.lineWidth = 0.6;
                 ctx!.stroke();
               }
@@ -173,12 +185,14 @@ export function AmbientBackground() {
 
           p.alpha += (p.alphaTarget - p.alpha) * p.alphaSpeed;
           if (Math.abs(p.alpha - p.alphaTarget) < 0.008) {
-            p.alphaTarget = 0.35 + Math.random() * 0.45;
+            p.alphaTarget = 0.18 + Math.random() * 0.22;
           }
+
+          const particleRgb = light ? "15, 23, 42" : p.colorRgbDark;
 
           ctx!.beginPath();
           ctx!.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx!.fillStyle = `rgba(${colorRgb},${p.alpha.toFixed(3)})`;
+          ctx!.fillStyle = `rgba(${particleRgb},${p.alpha.toFixed(3)})`;
           ctx!.fill();
         }
       }
@@ -202,24 +216,34 @@ export function AmbientBackground() {
       style={{ zIndex: 0 }}
       aria-hidden="true"
     >
-      {/* 1. Static Dot Grid Texture */}
+      {/* 1. Nordic Aurora Atmosphere Ambient Mesh (Tokyo Night gradients) */}
+      <div
+        className="absolute inset-0 pointer-events-none transition-opacity duration-700"
+        style={{
+          background: isLight
+            ? "radial-gradient(circle at 15% 15%, rgba(2, 132, 199, 0.05) 0%, transparent 45%), radial-gradient(circle at 85% 85%, rgba(124, 58, 237, 0.04) 0%, transparent 50%)"
+            : "radial-gradient(ellipse at 12% 16%, rgba(6, 182, 212, 0.12) 0%, transparent 55%), radial-gradient(ellipse at 88% 84%, rgba(168, 85, 247, 0.10) 0%, transparent 55%), radial-gradient(ellipse at 50% 12%, rgba(56, 189, 248, 0.05) 0%, transparent 45%)",
+        }}
+      />
+
+      {/* 2. Starry / Cybernetic Dot Grid */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage: isLight
-            ? "radial-gradient(circle, rgba(0, 0, 0, 0.08) 1px, transparent 1px)"
-            : "radial-gradient(circle, rgba(255, 255, 255, 0.09) 1px, transparent 1px)",
+            ? "radial-gradient(circle, rgba(15, 23, 42, 0.08) 1px, transparent 1px)"
+            : "radial-gradient(circle, rgba(56, 189, 248, 0.10) 1px, transparent 1px)",
           backgroundSize: "36px 36px",
         }}
       />
 
-      {/* 2. Particles & Connection Lines Canvas */}
+      {/* 3. Living Particles & Aurora Connection Lines */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 pointer-events-none block"
       />
 
-      {/* 3. Soft Cursor-Following Radial Glow */}
+      {/* 4. Dual-Radial Aurora Cursor-Following Glow */}
       <div
         ref={glowRef}
         className="absolute pointer-events-none rounded-full"
@@ -230,8 +254,8 @@ export function AmbientBackground() {
           left: 0,
           transform: "translate3d(-9999px, -9999px, 0)",
           background: isLight
-            ? "radial-gradient(circle at center, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.02) 45%, transparent 70%)"
-            : "radial-gradient(circle at center, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0.03) 45%, transparent 70%)",
+            ? "radial-gradient(circle at center, rgba(2, 132, 199, 0.08) 0%, rgba(15, 23, 42, 0.02) 45%, transparent 70%)"
+            : "radial-gradient(circle at center, rgba(6, 182, 212, 0.14) 0%, rgba(168, 85, 247, 0.07) 38%, rgba(56, 189, 248, 0.02) 60%, transparent 75%)",
           opacity: 0,
           transition: "opacity 0.4s ease",
           willChange: "transform",

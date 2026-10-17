@@ -14,6 +14,7 @@ export interface AppMetadata {
   description: string;
   dockItem?: boolean;
   desktopItem?: boolean;
+  accentColor: string;
 }
 
 export const APPS_REGISTRY: Record<string, AppMetadata> = {
@@ -27,19 +28,21 @@ export const APPS_REGISTRY: Record<string, AppMetadata> = {
     defaultY: 50,
     description: "Background, career trajectory & developer profile",
     dockItem: true,
-    desktopItem: true
+    desktopItem: true,
+    accentColor: "#06B6D4" // Electric Cyan
   },
   projects: {
     id: "projects",
     title: "Projects",
     icon: "FolderKanban",
-    defaultWidth: 940,
-    defaultHeight: 640,
-    defaultX: 100,
-    defaultY: 50,
+    defaultWidth: 1020,
+    defaultHeight: 670,
+    defaultX: 70,
+    defaultY: 45,
     description: "AI, Full-Stack, and Systems projects",
     dockItem: true,
-    desktopItem: true
+    desktopItem: true,
+    accentColor: "#38BDF8" // Electric Blue
   },
   experience: {
     id: "experience",
@@ -51,7 +54,8 @@ export const APPS_REGISTRY: Record<string, AppMetadata> = {
     defaultY: 60,
     description: "Production roles at Wealwin, Hashcodex, Shrika & more",
     dockItem: true,
-    desktopItem: true
+    desktopItem: true,
+    accentColor: "#F59E0B" // Warm Amber
   },
   skills: {
     id: "skills",
@@ -63,7 +67,8 @@ export const APPS_REGISTRY: Record<string, AppMetadata> = {
     defaultY: 70,
     description: "Categorized technologies, tools & AI expertise",
     dockItem: true,
-    desktopItem: true
+    desktopItem: true,
+    accentColor: "#A855F7" // Neon Violet
   },
   terminal: {
     id: "terminal",
@@ -75,7 +80,8 @@ export const APPS_REGISTRY: Record<string, AppMetadata> = {
     defaultY: 100,
     description: "Interactive zsh / developer command-line",
     dockItem: true,
-    desktopItem: true
+    desktopItem: true,
+    accentColor: "#34D399" // Matrix Green
   },
   files: {
     id: "files",
@@ -87,7 +93,8 @@ export const APPS_REGISTRY: Record<string, AppMetadata> = {
     defaultY: 90,
     description: "Virtual filesystem /home/kishore",
     dockItem: true,
-    desktopItem: true
+    desktopItem: true,
+    accentColor: "#06B6D4" // Electric Cyan
   },
   contact: {
     id: "contact",
@@ -99,7 +106,8 @@ export const APPS_REGISTRY: Record<string, AppMetadata> = {
     defaultY: 110,
     description: "Get in touch & direct communications",
     dockItem: true,
-    desktopItem: true
+    desktopItem: true,
+    accentColor: "#818CF8" // Nordic Indigo
   },
   resume: {
     id: "resume",
@@ -111,7 +119,8 @@ export const APPS_REGISTRY: Record<string, AppMetadata> = {
     defaultY: 55,
     description: "Recruiter-friendly summary and PDF download",
     dockItem: true,
-    desktopItem: true
+    desktopItem: true,
+    accentColor: "#F43F5E" // Coral / Crimson
   },
   "system-info": {
     id: "system-info",
@@ -123,7 +132,8 @@ export const APPS_REGISTRY: Record<string, AppMetadata> = {
     defaultY: 120,
     description: "KishoreOS system specs and architecture details",
     dockItem: false,
-    desktopItem: true
+    desktopItem: true,
+    accentColor: "#94A3B8" // Cool Slate
   }
 };
 

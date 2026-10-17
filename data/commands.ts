@@ -104,6 +104,6 @@ export const systemCommands: SystemCommand[] = [
     description: "Open Live Portfolio in a new tab",
     category: "social",
     actionType: "external",
-    externalUrl: process.env.NEXT_PUBLIC_PORTFOLIO_URL || "https://kishorekevin.netlify.app/"
+    externalUrl: process.env.NEXT_PUBLIC_PORTFOLIO_URL || "https://kishorekevin.vercel.app/"
   }
 ];
