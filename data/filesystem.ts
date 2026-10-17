@@ -47,7 +47,7 @@ Personal developer environment backing full-stack web applications, Applied AI s
 - Open Source: Linux System Administration, Qtile custom desktop (Codex Arch)
 - Location: Madurai, Tamil Nadu, India
 - Email: kishorekevin3289@gmail.com
-- Portfolio: https://kishorekevin.netlify.app/
+- Portfolio: https://kishorekevin.vercel.app/
 - GitHub: https://github.com/KISHOREkevin
 
 Use the bottom taskbar or launcher to inspect applications.`
@@ -256,7 +256,7 @@ Full Stack Developer & AI Systems Engineer based in Madurai, Tamil Nadu, India.
 - Email: kishorekevin3289@gmail.com
 - Phone: +91 7904702577
 - Location: Madurai, Tamil Nadu, India
-- Portfolio: https://kishorekevin.netlify.app/
+- Portfolio: https://kishorekevin.vercel.app/
 - GitHub: https://github.com/KISHOREkevin`
           },
           {
