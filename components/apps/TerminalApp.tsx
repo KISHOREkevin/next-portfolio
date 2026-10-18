@@ -210,7 +210,7 @@ export function TerminalApp() {
               <div><span className="text-[#89b4fa] font-bold">Host:</span> Developer Workstation</div>
               <div><span className="text-[#89b4fa] font-bold">Kernel:</span> {profileData.systemSpecs.kernel}</div>
               <div><span className="text-[#89b4fa] font-bold">Uptime:</span> 99.9%</div>
-              <div><span className="text-[#89b4fa] font-bold">Shell:</span> zsh 5.9 (x86_64)</div>
+              <div><span className="text-[#89b4fa] font-bold">Shell:</span> fish 5.9 (x86_64)</div>
               <div><span className="text-[#89b4fa] font-bold">Theme:</span> Catppuccin Mocha</div>
               <div><span className="text-[#89b4fa] font-bold">Stack:</span> {profileData.systemSpecs.coreStack}</div>
               <div><span className="text-[#89b4fa] font-bold">Status:</span> {profileData.status}</div>

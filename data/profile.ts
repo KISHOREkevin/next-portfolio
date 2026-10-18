@@ -45,7 +45,7 @@ export const profileData: ProfileData = {
   systemSpecs: {
     os: "KishoreOS v3.0 (Linux Developer Workstation)",
     kernel: "Linux 6.8.0-custom-x86_64",
-    shell: "zsh 5.9 (x86_64-linux)",
+    shell: "fish 5.9 (x86_64-linux)",
     environment: "Next.js 16 • React 19 • Tailwind CSS v4",
     coreStack: "React • Node.js • Python • FastAPI • AI/LLM • Linux",
     backendEngine: "Fastify / Node.js / Express / Django / FastAPI",

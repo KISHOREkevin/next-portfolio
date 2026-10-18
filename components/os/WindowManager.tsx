@@ -78,7 +78,7 @@ export const APPS_REGISTRY: Record<string, AppMetadata> = {
     defaultHeight: 460,
     defaultX: 100,
     defaultY: 100,
-    description: "Interactive zsh / developer command-line",
+    description: "Interactive fish / developer command-line",
     dockItem: true,
     desktopItem: true,
     accentColor: "#34D399" // Matrix Green

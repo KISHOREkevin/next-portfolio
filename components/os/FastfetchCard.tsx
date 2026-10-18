@@ -122,7 +122,7 @@ export function FastfetchCard({ onOpenTerminal }: FastfetchCardProps) {
         {onOpenTerminal && (
           <div className="pt-2.5 border-t border-white/5 flex items-center justify-between gap-2">
             <span className="text-[10px] text-[var(--foreground-muted)] tracking-wide hidden sm:block">
-              Interactive zsh shell available
+              Interactive fish shell available
             </span>
             <button
               onClick={onOpenTerminal}
