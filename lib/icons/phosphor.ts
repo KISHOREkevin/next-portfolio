@@ -13,6 +13,7 @@ import arrowsClockwiseIcon from "@iconify-icons/ph/arrows-clockwise";
 import briefcaseIcon from "@iconify-icons/ph/briefcase";
 import cameraIcon from "@iconify-icons/ph/camera";
 import caretLeftIcon from "@iconify-icons/ph/caret-left";
+import caretRightIcon from "@iconify-icons/ph/caret-right";
 import checkIcon from "@iconify-icons/ph/check";
 import circleNotchIcon from "@iconify-icons/ph/circle-notch";
 import codeIcon from "@iconify-icons/ph/code";
@@ -48,6 +49,7 @@ export const phosphorIcons = {
   briefcase: briefcaseIcon,
   camera: cameraIcon,
   caretLeft: caretLeftIcon,
+  caretRight: caretRightIcon,
   check: checkIcon,
   circleNotch: circleNotchIcon,
   code: codeIcon,

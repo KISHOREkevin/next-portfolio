@@ -394,7 +394,7 @@ React, Node.js, Fastify, FastAPI, Python, PostgreSQL, LLMs, RAG, Linux.`}
 
   return (
     <div
-      className="h-full min-h-[440px] md:min-h-0 flex flex-col font-mono text-xs text-[#cdd6f4] bg-[#11111b] rounded-lg p-3.5 sm:p-4 border border-[#313244] shadow-inner select-text"
+      className="h-full min-h-0 flex flex-col font-mono text-xs text-[#cdd6f4] bg-[#11111b] rounded-lg p-3.5 sm:p-4 border border-[#313244] shadow-inner select-text"
       onClick={() => inputRef.current?.focus()}
     >
       {/* Scrollable Command Log Area */}

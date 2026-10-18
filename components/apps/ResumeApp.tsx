@@ -45,53 +45,40 @@ export function ResumeApp() {
 
 
   return (
-    <div className="app-workspace space-y-4 max-w-4xl mx-auto font-sans text-sm text-[var(--foreground)] pb-6 select-text">
-      {/* Top Action Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-lg bg-[var(--surface-elevated)] border border-[var(--border)] shadow-sm shrink-0">
-        <div className="flex items-center gap-2.5">
-          <FileText className="w-5 h-5 text-[var(--accent)]" />
-          <div>
-            <h1 className="text-sm sm:text-base font-bold text-[var(--foreground)] m-0 leading-tight">
-               Resume
-            </h1>
-            <span className="text-xs font-mono text-[var(--foreground-muted)]">
-              {profileData.name} — {profileData.title}
-            </span>
-          </div>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="hidden sm:flex items-center gap-1">
-            <button
-              onClick={() => setZoom((value) => Math.max(80, value - 10))}
-              className="px-2 py-1 rounded bg-[var(--surface)] border border-[var(--border)] text-xs font-mono text-[var(--foreground)] hover:text-[var(--accent)] cursor-pointer"
-              aria-label="Zoom out"
-            >
-              −
-            </button>
-            <span className="font-mono text-xs text-[var(--foreground-muted)] min-w-[38px] text-center">
-              {zoom}%
-            </span>
-            <button
-              onClick={() => setZoom((value) => Math.min(130, value + 10))}
-              className="px-2 py-1 rounded bg-[var(--surface)] border border-[var(--border)] text-xs font-mono text-[var(--foreground)] hover:text-[var(--accent)] cursor-pointer"
-              aria-label="Zoom in"
-            >
-              +
-            </button>
-          </div>
-
-         
-
+    <div className="app-workspace font-sans text-sm text-[var(--foreground)] select-text">
+      {/* App Toolbar — functional controls */}
+      <div className="flex items-center gap-2 pb-2 border-b border-[var(--border)] shrink-0 min-w-0">
+        <span className="text-[11px] font-mono text-[var(--foreground-muted)] flex items-center gap-1.5 shrink-0">
+          <FileText className="w-3.5 h-3.5 text-[var(--accent)]" />
+          ATS-Optimized PDF
+        </span>
+        <div className="flex-1" />
+        {/* Zoom controls — desktop only */}
+        <div className="hidden sm:flex items-center gap-1 shrink-0">
           <button
-            onClick={handleDownload}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-[var(--accent)] text-[var(--accent-foreground)] text-xs font-mono font-semibold transition-all shadow-sm hover:opacity-95 cursor-pointer"
-          >
-            <Download className="w-3.5 h-3.5" />
-            <span>Download PDF</span>
-          </button>
+            onClick={() => setZoom((value) => Math.max(80, value - 10))}
+            className="px-1.5 py-0.5 rounded bg-[var(--surface)] border border-[var(--border)] text-xs font-mono text-[var(--foreground)] hover:text-[var(--accent)] cursor-pointer"
+            aria-label="Zoom out"
+          >−</button>
+          <span className="font-mono text-[10px] text-[var(--foreground-muted)] min-w-[32px] text-center">{zoom}%</span>
+          <button
+            onClick={() => setZoom((value) => Math.min(130, value + 10))}
+            className="px-1.5 py-0.5 rounded bg-[var(--surface)] border border-[var(--border)] text-xs font-mono text-[var(--foreground)] hover:text-[var(--accent)] cursor-pointer"
+            aria-label="Zoom in"
+          >+</button>
         </div>
+        <button
+          onClick={handleDownload}
+          className="flex items-center gap-1.5 px-3 py-1 rounded-md bg-[var(--accent)] text-[var(--accent-foreground)] text-xs font-mono font-semibold transition-all shadow-sm hover:opacity-95 cursor-pointer shrink-0"
+        >
+          <Download className="w-3 h-3" />
+          Download
+        </button>
       </div>
+
+      {/* Scrollable content */}
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain pb-8">
+        <div className="max-w-4xl mx-auto space-y-4 pt-3">
 
       {downloadAlert && (
         <div className="flex items-center gap-2 p-3 rounded-md bg-[var(--surface-elevated)] border border-[var(--accent)] text-xs font-mono text-[var(--accent)]">
@@ -316,6 +303,21 @@ export function ResumeApp() {
             ))}
           </div>
         </div>
+      </div>
+        </div>
+      </div>
+
+      {/* Status Bar */}
+      <div className="pt-2 mt-auto border-t border-[var(--border)] flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-[var(--foreground-muted)] shrink-0 gap-2 pb-1">
+        <span className="truncate">resume.pdf</span>
+        <span className="truncate text-right">
+          <span className="hidden sm:inline">
+            A. Kishore · ATS-Optimized · Updated October 2026
+          </span>
+          <span className="sm:hidden">
+            ATS-Optimized PDF
+          </span>
+        </span>
       </div>
     </div>
   );

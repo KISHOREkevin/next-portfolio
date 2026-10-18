@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Icon } from "@iconify/react";
 import { phosphorIcons } from "@/lib/icons/phosphor";
 import { profileData } from "@/data/profile";
@@ -18,64 +18,80 @@ const tabs = [
 export function AboutApp() {
   const { openApp } = useWindowManager();
   const [section, setSection] = useState<(typeof tabs)[number]["id"]>("overview");
+  const pillsRef = useRef<HTMLDivElement>(null);
+
+  const scrollPills = (dir: "left" | "right") => {
+    if (pillsRef.current) {
+      const amount = dir === "left" ? -140 : 140;
+      pillsRef.current.scrollBy({ left: amount, behavior: "smooth" });
+    }
+  };
 
   return (
-    <div className="app-workspace flex flex-col h-auto md:h-full text-[var(--foreground)]">
-      {/* Top Toolbar */}
-      <div className="pb-3 border-b border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0">
-        <div>
-          <div className="text-[11px] font-mono font-bold tracking-wider uppercase text-[var(--accent)]">
-            Profile / Identity
-          </div>
-          <h1 className="text-lg sm:text-xl font-bold text-[var(--foreground)] m-0 leading-tight">
-            {profileData.name}
-          </h1>
-          <p className="text-xs text-[var(--foreground-muted)] m-0 mt-0.5">
-            {profileData.title} · {profileData.location}
-          </p>
+    <div className="app-workspace">
+      {/* Single control bar: navigation arrows + tabs + action buttons */}
+      <div className="flex items-center gap-1 pb-2 border-b border-[var(--border)] shrink-0 min-w-0">
+        {/* Left Arrow Button */}
+        <button
+          onClick={() => scrollPills("left")}
+          className="w-6 h-7 rounded bg-[var(--surface-elevated)] hover:bg-[var(--surface-hover)] border border-[var(--border)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] active:scale-95 flex items-center justify-center shrink-0 cursor-pointer transition-all"
+          title="Scroll tabs left"
+          aria-label="Previous tabs"
+        >
+          <Icon icon={phosphorIcons.caretLeft} width={13} />
+        </button>
+
+        {/* Scrollable Tabs */}
+        <div ref={pillsRef} className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth flex-1 min-w-0">
+          {tabs.map((tab) => {
+            const isActive = section === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setSection(tab.id)}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition-all cursor-pointer shrink-0 ${
+                  isActive
+                    ? "bg-[var(--accent)] text-[var(--accent-foreground)] font-semibold shadow-sm"
+                    : "bg-[var(--surface-elevated)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] border border-[var(--border)]"
+                }`}
+              >
+                <Icon icon={tab.icon} width={13} />
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
         </div>
 
-        <div className="flex items-center gap-2">
-          <button
-            className="inline-flex items-center gap-1.5 h-8 px-3 rounded-md border border-[var(--border)] bg-[var(--surface-elevated)] text-xs text-[var(--foreground)] hover:text-[var(--accent)] cursor-pointer"
-            onClick={() => openApp("terminal")}
-          >
-            <Icon icon={phosphorIcons.terminalWindow} width={14} />
-            Terminal
-          </button>
-          <button
-            className="inline-flex items-center gap-1.5 h-8 px-3 rounded-md bg-[var(--accent)] text-[var(--accent-foreground)] font-semibold text-xs shadow-sm hover:opacity-95 cursor-pointer"
-            onClick={() => openApp("projects")}
-          >
-            <Icon icon={phosphorIcons.folderOpen} width={14} />
-            Projects
-          </button>
-        </div>
+        {/* Right Arrow Button */}
+        <button
+          onClick={() => scrollPills("right")}
+          className="w-6 h-7 rounded bg-[var(--surface-elevated)] hover:bg-[var(--surface-hover)] border border-[var(--border)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] active:scale-95 flex items-center justify-center shrink-0 cursor-pointer transition-all"
+          title="Scroll tabs right"
+          aria-label="Next tabs"
+        >
+          <Icon icon={phosphorIcons.caretRight} width={13} />
+        </button>
+
+        <div className="hidden sm:block flex-1" />
+        <button
+          className="inline-flex items-center gap-1 h-7 px-2.5 rounded-md border border-[var(--border)] bg-[var(--surface-elevated)] text-xs text-[var(--foreground)] hover:text-[var(--accent)] cursor-pointer shrink-0"
+          onClick={() => openApp("terminal")}
+        >
+          <Icon icon={phosphorIcons.terminalWindow} width={13} />
+          <span className="hidden sm:inline">Terminal</span>
+        </button>
+        <button
+          className="inline-flex items-center gap-1 h-7 px-2.5 rounded-md bg-[var(--accent)] text-[var(--accent-foreground)] font-semibold text-xs hover:opacity-95 cursor-pointer shrink-0"
+          onClick={() => openApp("projects")}
+        >
+          <Icon icon={phosphorIcons.folderOpen} width={13} />
+          <span className="hidden sm:inline">Projects</span>
+        </button>
       </div>
 
-      {/* Navigation Tabs Bar - Sticky on mobile */}
-      <div className="py-2.5 border-b border-[var(--border)] flex items-center gap-1.5 overflow-x-auto shrink-0 no-scrollbar sticky top-0 z-10 bg-[var(--surface)]">
-        {tabs.map((tab) => {
-          const isActive = section === tab.id;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setSection(tab.id)}
-              className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
-                isActive
-                  ? "bg-[var(--accent)] text-[var(--accent-foreground)] font-semibold shadow-sm"
-                  : "bg-[var(--surface-elevated)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface)] border border-[var(--border)]"
-              }`}
-            >
-              <Icon icon={tab.icon} width={14} />
-              <span>{tab.label}</span>
-            </button>
-          );
-        })}
-      </div>
 
       {/* Main Content Pane */}
-      <div className="flex-1 md:min-h-0 md:overflow-y-auto pt-3 pb-8 space-y-6">
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain pt-3 pb-8 space-y-6">
         {section === "overview" && (
           <div className="space-y-4 max-w-4xl">
             {/* Status Card */}
@@ -321,9 +337,16 @@ export function AboutApp() {
       </div>
 
       {/* Status Bar */}
-      <div className="pt-2 mt-auto border-t border-[var(--border)] flex items-center justify-between text-[11px] font-mono text-[var(--foreground-muted)] shrink-0">
-        <span>profile.bio</span>
-        <span>A. Kishore · Full Stack & AI Systems Engineer · KishoreOS</span>
+      <div className="pt-2 mt-auto border-t border-[var(--border)] flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-[var(--foreground-muted)] shrink-0 gap-2 pb-1">
+        <span className="truncate">profile.bio</span>
+        <span className="truncate text-right">
+          <span className="hidden sm:inline">
+            A. Kishore · Full Stack & AI Systems Engineer · KishoreOS
+          </span>
+          <span className="sm:hidden">
+            A. Kishore
+          </span>
+        </span>
       </div>
     </div>
   );

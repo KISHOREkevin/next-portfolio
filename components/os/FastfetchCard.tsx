@@ -12,13 +12,9 @@ export function FastfetchCard({ onOpenTerminal }: FastfetchCardProps) {
   const [expanded, setExpanded] = useState(false);
 
   const specs = [
-    { label: "os",     value: "KishoreOS v3.2 (Aurora)" },
+    { label: "os",     value: "KishoreOS" },
     { label: "host",   value: "Full-Stack & Systems Engineer" },
-    { label: "kernel", value: "Node.js 20 · Python 3.12 · TS 5.6" },
-    { label: "uptime", value: "Nov 2025 – Present · Wealwin" },
-    { label: "shell",  value: "zsh 5.9 (x86_64-arch)" },
-    { label: "stack",  value: "React · FastAPI · Fastify · Postgres" },
-    { label: "ai",     value: "RAG · LangChain · Ollama · LLMs" },
+    { label: "shell",  value: "fish (x86_64-arch)" },
     { label: "status", value: "Available for Hire" },
   ];
 

@@ -20,6 +20,14 @@ export function ProjectsApp() {
   const [selectedId, setSelectedId] = useState(projectsData[0]?.id ?? "");
   const [tab, setTab] = useState<"overview" | "architecture" | "concepts">("overview");
   const [mobileView, setMobileView] = useState<"list" | "detail">("list");
+  const pillsRef = React.useRef<HTMLDivElement>(null);
+
+  const scrollPills = (dir: "left" | "right") => {
+    if (pillsRef.current) {
+      const amount = dir === "left" ? -140 : 140;
+      pillsRef.current.scrollBy({ left: amount, behavior: "smooth" });
+    }
+  };
 
   // Category counts
   const categoryCounts = useMemo(() => {
@@ -62,106 +70,84 @@ export function ProjectsApp() {
   };
 
   return (
-    <div className="app-workspace flex flex-col h-full text-[var(--foreground)] min-h-0">
-      {/* App Toolbar */}
-      <div className="pb-3 border-b border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0">
-        <div>
-          <div className="text-[11px] font-mono font-bold tracking-wider uppercase text-[var(--accent)] flex items-center gap-1.5">
-            <span>Workspace</span>
-            <span className="text-[var(--border-strong)]">/</span>
-            <span>Projects</span>
-          </div>
-          <h1 className="text-lg sm:text-xl font-bold text-[var(--foreground)] m-0 leading-tight">
-            Project Explorer
-          </h1>
-          <p className="text-xs text-[var(--foreground-muted)] m-0 mt-0.5">
-            {filtered.length} documented production systems & architectures
-          </p>
-        </div>
+    <div className="app-workspace">
+      {/* Control bar: navigation arrows + category filters + search */}
+      <div className="flex items-center gap-1 pb-2 border-b border-[var(--border)] shrink-0 min-w-0">
+        {/* Left Arrow Button */}
+        <button
+          onClick={() => scrollPills("left")}
+          className="w-6 h-7 rounded bg-[var(--surface-elevated)] hover:bg-[var(--surface-hover)] border border-[var(--border)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] active:scale-95 flex items-center justify-center shrink-0 cursor-pointer transition-all"
+          title="Scroll filters left"
+          aria-label="Previous filters"
+        >
+          <Icon icon={phosphorIcons.caretLeft} width={13} />
+        </button>
 
-        <div className="flex items-center gap-2">
-          <div className="relative flex-1 sm:w-64">
-            <span className="absolute left-2.5 top-2 text-[var(--foreground-muted)] pointer-events-none">
-              <Icon icon={phosphorIcons.magnifyingGlass} width={13} />
-            </span>
-            <input
-              className="w-full h-8 pl-8 pr-7 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)] text-xs text-[var(--foreground)] placeholder:text-[var(--foreground-muted)] focus:outline-none focus:border-[var(--accent)] font-sans transition-colors"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search projects or tech..."
-              aria-label="Search projects"
-            />
-            {query && (
+        {/* Scrollable Category pills */}
+        <div ref={pillsRef} className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth flex-1 min-w-0">
+          {categories.map((item) => {
+            const count = categoryCounts[item];
+            const isActive = category === item;
+            return (
               <button
-                onClick={() => setQuery("")}
-                className="absolute right-2 top-2 text-[var(--foreground-muted)] hover:text-[var(--foreground)] cursor-pointer"
-                title="Clear search"
-              >
-                ✕
-              </button>
-            )}
-          </div>
-          {(query || category !== "All") && (
-            <button
-              className="inline-flex items-center gap-1.5 h-8 px-2.5 rounded-md border border-[var(--border)] bg-[var(--surface-elevated)] text-xs text-[var(--foreground-muted)] hover:text-[var(--foreground)] cursor-pointer shrink-0 transition-colors"
-              onClick={() => {
-                setCategory("All");
-                setQuery("");
-              }}
-            >
-              <Icon icon={phosphorIcons.arrowsClockwise} width={13} />
-              Reset
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Category Filter Pills Bar */}
-      <div className="py-2.5 border-b border-[var(--border)] flex items-center gap-1.5 overflow-x-auto shrink-0 no-scrollbar">
-        {categories.map((item) => {
-          const count = categoryCounts[item];
-          const isActive = category === item;
-          return (
-            <button
-              key={item}
-              onClick={() => {
-                setCategory(item);
-                setMobileView("list");
-              }}
-              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
-                isActive
-                  ? "bg-[var(--accent)] text-[var(--accent-foreground)] font-semibold shadow-sm"
-                  : "bg-[var(--surface-elevated)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)] border border-[var(--border)]"
-              }`}
-            >
-              <span>{item}</span>
-              <span
-                className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
+                key={item}
+                onClick={() => { setCategory(item); setMobileView("list"); }}
+                className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium whitespace-nowrap transition-all cursor-pointer shrink-0 ${
                   isActive
-                    ? "bg-[var(--accent-foreground)]/20 text-[var(--accent-foreground)] font-bold"
-                    : "bg-[var(--surface)] text-[var(--foreground-muted)]"
+                    ? "bg-[var(--accent)] text-[var(--accent-foreground)] font-semibold"
+                    : "bg-[var(--surface-elevated)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] border border-[var(--border)]"
                 }`}
               >
-                {count}
-              </span>
-            </button>
-          );
-        })}
+                <span>{item}</span>
+                <span className={`text-[10px] px-1 rounded font-mono ${isActive ? "bg-white/20 text-[var(--accent-foreground)]" : "text-[var(--foreground-muted)]"}`}>{count}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Right Arrow Button */}
+        <button
+          onClick={() => scrollPills("right")}
+          className="w-6 h-7 rounded bg-[var(--surface-elevated)] hover:bg-[var(--surface-hover)] border border-[var(--border)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] active:scale-95 flex items-center justify-center shrink-0 cursor-pointer transition-all"
+          title="Scroll filters right"
+          aria-label="Next filters"
+        >
+          <Icon icon={phosphorIcons.caretRight} width={13} />
+        </button>
+
+        {/* Search */}
+        <div className="relative shrink-0 w-28 sm:w-44">
+          <span className="absolute left-2 top-1.5 text-[var(--foreground-muted)] pointer-events-none">
+            <Icon icon={phosphorIcons.magnifyingGlass} width={12} />
+          </span>
+          <input
+            className="w-full h-7 pl-6 pr-5 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)] text-xs text-[var(--foreground)] placeholder:text-[var(--foreground-muted)] focus:outline-none focus:border-[var(--accent)] font-sans"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search..."
+          />
+          {query && <button onClick={() => setQuery("")} className="absolute right-1.5 top-1.5 text-[var(--foreground-muted)] hover:text-[var(--foreground)] text-[10px] cursor-pointer">✕</button>}
+        </div>
+        {(query || category !== "All") && (
+          <button
+            className="inline-flex items-center gap-1 h-7 px-2 rounded-md border border-[var(--border)] bg-[var(--surface-elevated)] text-[10px] text-[var(--foreground-muted)] hover:text-[var(--foreground)] cursor-pointer shrink-0"
+            onClick={() => { setCategory("All"); setQuery(""); }}
+            title="Reset filters"
+          >
+            <Icon icon={phosphorIcons.arrowsClockwise} width={11} />
+          </button>
+        )}
       </div>
 
+
       {/* Main Content Area: Responsive Split or Mobile Master-Detail */}
-      <div className="flex-1 flex flex-col md:flex-row min-h-0 overflow-hidden pt-3">
+      <div className="flex-1 min-h-0 overflow-hidden flex flex-col md:flex-row pt-0">
         {/* Left Column: Projects List */}
         <div
-          className={`flex-col md:w-[320px] lg:w-[350px] shrink-0 md:border-r border-[var(--border)] md:pr-3 overflow-y-auto ${
-            mobileView === "detail" ? "hidden md:flex" : "flex w-full"
+          className={`flex-col md:w-[320px] lg:w-[340px] shrink-0 md:border-r border-[var(--border)] md:pr-3 overflow-y-auto overscroll-contain pt-1 ${
+            mobileView === "detail" ? "hidden md:flex" : "flex flex-1 w-full min-h-0 h-full"
           }`}
         >
-          <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-[var(--foreground-muted)] pb-2 mb-1 px-1">
-            <span>Systems ({filtered.length})</span>
-            <span>Select to inspect</span>
-          </div>
-
           <div className="space-y-1.5 pb-4">
             {filtered.map((project) => {
               const isSelected = selected?.id === project.id;
@@ -169,14 +155,14 @@ export function ProjectsApp() {
                 <button
                   key={project.id}
                   onClick={() => handleSelectProject(project.id)}
-                  className={`w-full text-left p-3 rounded-lg border transition-all cursor-pointer group relative ${
+                  className={`w-full text-left p-2.5 rounded-lg border transition-all cursor-pointer group relative ${
                     isSelected
                       ? "bg-[var(--surface-elevated)] border-[var(--border-strong)] border-l-[3px] border-l-[var(--accent)] shadow-sm"
                       : "bg-[var(--surface)]/40 border-transparent hover:border-[var(--border)] hover:bg-[var(--surface-elevated)]/60"
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2 mb-1">
-                    <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-[var(--surface)] border border-[var(--border)] text-[var(--foreground-muted)] group-hover:text-[var(--accent)] font-medium">
+                    <span className="text-[10px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded bg-[var(--surface)] border border-[var(--border)] text-[var(--foreground-muted)] group-hover:text-[var(--accent)] font-medium">
                       {project.category}
                     </span>
                     <Icon
@@ -190,11 +176,11 @@ export function ProjectsApp() {
                     />
                   </div>
 
-                  <h3 className="text-[13px] font-semibold text-[var(--foreground)] m-0 mb-1 leading-snug">
+                  <h3 className="text-xs font-semibold text-[var(--foreground)] m-0 mb-0.5 leading-snug">
                     {project.title}
                   </h3>
 
-                  <p className="text-xs text-[var(--foreground-muted)] line-clamp-2 m-0 leading-relaxed mb-2">
+                  <p className="text-[11px] text-[var(--foreground-muted)] line-clamp-2 m-0 leading-relaxed mb-1.5">
                     {project.shortDescription}
                   </p>
 
@@ -202,13 +188,13 @@ export function ProjectsApp() {
                     {project.technologies.slice(0, 3).map((tech) => (
                       <span
                         key={tech}
-                        className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[var(--surface)] text-[var(--foreground-secondary)] border border-[var(--border)]/70"
+                        className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[var(--surface)] text-[var(--foreground-secondary)] border border-[var(--border)]/70"
                       >
                         {tech}
                       </span>
                     ))}
                     {project.technologies.length > 3 && (
-                      <span className="text-[10px] font-mono px-1 py-0.5 text-[var(--foreground-muted)]">
+                      <span className="text-[9px] font-mono px-1 py-0.5 text-[var(--foreground-muted)]">
                         +{project.technologies.length - 3}
                       </span>
                     )}
@@ -239,12 +225,12 @@ export function ProjectsApp() {
 
         {/* Right Column: Project Detail Inspector */}
         <div
-          className={`flex-1 min-w-0 md:pl-5 overflow-y-auto pb-4 ${
-            mobileView === "list" ? "hidden md:block" : "block w-full"
+          className={`flex-1 min-w-0 min-h-0 md:pl-4 overflow-y-auto overscroll-contain pb-4 pt-1 ${
+            mobileView === "list" ? "hidden md:block" : "block w-full h-full"
           }`}
         >
           {selected ? (
-            <div className="space-y-4">
+            <div className="space-y-3">
               {/* Mobile Back Button */}
               <div className="md:hidden pb-2 mb-2 border-b border-[var(--border)]">
                 <button
@@ -252,32 +238,32 @@ export function ProjectsApp() {
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)] text-xs font-medium text-[var(--foreground)] cursor-pointer"
                 >
                   <Icon icon={phosphorIcons.caretLeft} width={14} />
-                  <span>← Back to all projects ({filtered.length})</span>
+                  <span>← Back to list ({filtered.length})</span>
                 </button>
               </div>
 
-              {/* Detail Header Hero */}
-              <div className="p-4 sm:p-5 rounded-lg bg-[var(--surface-elevated)]/60 border border-[var(--border)] space-y-3">
+              {/* Compact Detail Header */}
+              <div className="pb-3 border-b border-[var(--border)] space-y-1.5">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="text-[11px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded bg-[var(--surface)] text-[var(--accent)] font-semibold border border-[var(--border)]">
+                    <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-[var(--surface-elevated)] text-[var(--accent)] font-semibold border border-[var(--border)]">
                       {selected.category}
                     </span>
-                    <span className="text-[11px] font-mono text-[var(--foreground-muted)]">
+                    <span className="text-[10px] font-mono text-[var(--foreground-muted)]">
                       {selected.badge}
                     </span>
                   </div>
 
                   {/* External Action Links */}
-                  <div className="flex flex-wrap items-center gap-2">
+                  <div className="flex items-center gap-1.5">
                     {selected.liveUrl && (
                       <a
                         href={selected.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[var(--accent)] text-[var(--accent-foreground)] font-semibold text-xs shadow-sm hover:opacity-95 transition-all cursor-pointer"
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[var(--accent)] text-[var(--accent-foreground)] font-semibold text-xs shadow-sm hover:opacity-95 transition-all cursor-pointer"
                       >
-                        <Icon icon={phosphorIcons.linkSimple} width={13} />
+                        <Icon icon={phosphorIcons.linkSimple} width={12} />
                         Live Demo
                       </a>
                     )}
@@ -287,20 +273,20 @@ export function ProjectsApp() {
                         href={selected.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[var(--surface)] text-[var(--foreground)] hover:bg-[var(--surface-hover)] border border-[var(--border)] text-xs font-medium transition-all cursor-pointer"
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[var(--surface-elevated)] text-[var(--foreground)] hover:bg-[var(--surface-hover)] border border-[var(--border)] text-xs font-medium transition-all cursor-pointer"
                       >
-                        <GithubIcon className="w-3.5 h-3.5" />
-                        Repository
+                        <GithubIcon className="w-3 h-3" />
+                        Code
                       </a>
                     )}
                   </div>
                 </div>
 
-                <h2 className="text-xl sm:text-2xl font-bold text-[var(--foreground)] m-0 leading-tight">
+                <h2 className="text-base sm:text-lg font-bold text-[var(--foreground)] m-0 leading-snug">
                   {selected.title}
                 </h2>
 
-                <p className="text-xs sm:text-sm text-[var(--foreground-secondary)] leading-relaxed m-0">
+                <p className="text-xs text-[var(--foreground-secondary)] leading-relaxed m-0">
                   {selected.shortDescription}
                 </p>
               </div>
@@ -418,12 +404,17 @@ export function ProjectsApp() {
       </div>
 
       {/* Status Bar */}
-      <div className="pt-2.5 mt-auto border-t border-[var(--border)] flex items-center justify-between text-[11px] font-mono text-[var(--foreground-muted)] shrink-0">
-        <span className="truncate max-w-[200px] sm:max-w-none">
+      <div className="pt-2 mt-auto border-t border-[var(--border)] flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-[var(--foreground-muted)] shrink-0 gap-2 pb-1">
+        <span className="truncate max-w-[150px] sm:max-w-none">
           projects.workspace / {selected?.id || "empty"}
         </span>
-        <span>
-          {filtered.length} of {projectsData.length} systems · KishoreOS
+        <span className="truncate text-right">
+          <span className="hidden sm:inline">
+            {filtered.length} of {projectsData.length} systems · KishoreOS
+          </span>
+          <span className="sm:hidden">
+            {filtered.length}/{projectsData.length} systems
+          </span>
         </span>
       </div>
     </div>

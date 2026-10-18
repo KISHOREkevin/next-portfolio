@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Icon } from "@iconify/react";
 import { phosphorIcons } from "@/lib/icons/phosphor";
 import { experienceData } from "@/data/experience";
@@ -14,9 +14,17 @@ const filterCategories = [
 ] as const;
 
 export function ExperienceApp() {
+  const pillsRef = useRef<HTMLDivElement>(null);
   const [selectedId, setSelectedId] = useState(experienceData[0]?.id ?? "");
   const [filter, setFilter] = useState("all");
   const [mobileView, setMobileView] = useState<"list" | "detail">("list");
+
+  const scrollPills = (dir: "left" | "right") => {
+    if (pillsRef.current) {
+      const amount = dir === "left" ? -140 : 140;
+      pillsRef.current.scrollBy({ left: amount, behavior: "smooth" });
+    }
+  };
 
   const filtered = experienceData.filter((item) => filter === "all" || item.category === filter);
   const selected = filtered.find((item) => item.id === selectedId) ?? filtered[0] ?? null;
@@ -27,68 +35,63 @@ export function ExperienceApp() {
   };
 
   return (
-    <div className="app-workspace flex flex-col h-auto md:h-full text-[var(--foreground)]">
-      {/* Top Toolbar */}
-      <div className="pb-3 border-b border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0">
-        <div>
-          <div className="text-[11px] font-mono font-bold tracking-wider uppercase text-[var(--accent)]">
-            Workspace / Career
-          </div>
-          <h1 className="text-lg sm:text-xl font-bold text-[var(--foreground)] m-0 leading-tight">
-            Experience Timeline
-          </h1>
-          <p className="text-xs text-[var(--foreground-muted)] m-0 mt-0.5">
-            Production engineering roles, responsibilities, and technical environments
-          </p>
-        </div>
+    <div className="app-workspace">
+      {/* Control bar: navigation arrows + filter pills */}
+      <div className="flex items-center gap-1 pb-2 border-b border-[var(--border)] shrink-0 min-w-0">
+        {/* Left Arrow Button */}
+        <button
+          onClick={() => scrollPills("left")}
+          className="w-6 h-7 rounded bg-[var(--surface-elevated)] hover:bg-[var(--surface-hover)] border border-[var(--border)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] active:scale-95 flex items-center justify-center shrink-0 cursor-pointer transition-all"
+          title="Scroll filters left"
+          aria-label="Previous filters"
+        >
+          <Icon icon={phosphorIcons.caretLeft} width={13} />
+        </button>
 
-        <div className="text-xs font-mono text-[var(--foreground-muted)]">
-          {experienceData.length} documented career records
-        </div>
-      </div>
-
-      {/* Filter Tabs - Sticky on mobile */}
-      <div className="py-2.5 border-b border-[var(--border)] flex items-center gap-1.5 overflow-x-auto shrink-0 no-scrollbar sticky top-0 z-10 bg-[var(--surface)]">
-        {filterCategories.map((item) => {
-          const count =
-            item.id === "all"
-              ? experienceData.length
-              : experienceData.filter((exp) => exp.category === item.id).length;
-          const isActive = filter === item.id;
-          return (
-            <button
-              key={item.id}
-              onClick={() => {
-                setFilter(item.id);
-                setMobileView("list");
-              }}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
-                isActive
-                  ? "bg-[var(--accent)] text-[var(--accent-foreground)] font-semibold shadow-sm"
-                  : "bg-[var(--surface-elevated)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface)] border border-[var(--border)]"
-              }`}
-            >
-              <span>{item.label}</span>
-              <span
-                className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
+        {/* Scrollable Filter pills */}
+        <div ref={pillsRef} className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth flex-1 min-w-0">
+          {filterCategories.map((item) => {
+            const count =
+              item.id === "all"
+                ? experienceData.length
+                : experienceData.filter((exp) => exp.category === item.id).length;
+            const isActive = filter === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => { setFilter(item.id); setMobileView("list"); }}
+                className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition-all cursor-pointer shrink-0 ${
                   isActive
-                    ? "bg-[var(--accent-foreground)]/20 text-[var(--accent-foreground)]"
-                    : "bg-[var(--surface)] text-[var(--foreground-muted)]"
+                    ? "bg-[var(--accent)] text-[var(--accent-foreground)] font-semibold shadow-sm"
+                    : "bg-[var(--surface-elevated)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] border border-[var(--border)]"
                 }`}
               >
-                {count}
-              </span>
-            </button>
-          );
-        })}
+                <span>{item.label}</span>
+                <span className={`text-[10px] px-1 rounded font-mono ${isActive ? "bg-white/20 text-[var(--accent-foreground)]" : "text-[var(--foreground-muted)]"}`}>{count}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Right Arrow Button */}
+        <button
+          onClick={() => scrollPills("right")}
+          className="w-6 h-7 rounded bg-[var(--surface-elevated)] hover:bg-[var(--surface-hover)] border border-[var(--border)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] active:scale-95 flex items-center justify-center shrink-0 cursor-pointer transition-all"
+          title="Scroll filters right"
+          aria-label="Next filters"
+        >
+          <Icon icon={phosphorIcons.caretRight} width={13} />
+        </button>
+
+        <span className="text-[10px] font-mono text-[var(--foreground-muted)] shrink-0 hidden sm:inline pl-1">{filtered.length} roles</span>
       </div>
 
       {/* Master-Detail Body */}
-      <div className="flex-1 flex flex-col md:flex-row md:min-h-0 md:overflow-hidden pt-3">
+      <div className="flex-1 min-h-0 flex flex-col md:flex-row overflow-hidden pt-0">
         {/* Left Column: Timeline List */}
         <div
-          className={`flex-col md:w-[350px] shrink-0 md:border-r border-[var(--border)] md:pr-3 md:overflow-y-auto ${
-            mobileView === "detail" ? "hidden md:flex" : "flex w-full"
+          className={`min-h-0 flex-col md:w-[350px] shrink-0 md:border-r border-[var(--border)] md:pr-3 overflow-y-auto overscroll-contain ${
+            mobileView === "detail" ? "hidden md:flex" : "flex flex-1 w-full min-h-0 h-full"
           }`}
         >
           <div className="flex items-center justify-between text-[11px] font-mono uppercase tracking-wider text-[var(--foreground-muted)] pb-2 mb-1 px-1">
@@ -144,8 +147,8 @@ export function ExperienceApp() {
 
         {/* Right Column: Role Inspector */}
         <div
-          className={`flex-1 min-w-0 md:pl-4 md:overflow-y-auto pb-8 ${
-            mobileView === "list" ? "hidden md:block" : "block w-full"
+          className={`flex-1 min-w-0 min-h-0 md:pl-4 overflow-y-auto overscroll-contain pb-8 ${
+            mobileView === "list" ? "hidden md:block" : "block w-full h-full"
           }`}
         >
           {selected ? (
@@ -161,10 +164,10 @@ export function ExperienceApp() {
                 </button>
               </div>
 
-              {/* Role Header */}
-              <div className="p-4 rounded-lg bg-[var(--surface-elevated)] border border-[var(--border)] space-y-2">
+              {/* Compact Role Header */}
+              <div className="pb-3 border-b border-[var(--border)] space-y-1.5">
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <span className="text-[11px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded bg-[var(--surface)] text-[var(--accent)] font-semibold border border-[var(--border)]">
+                  <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-[var(--surface-elevated)] text-[var(--accent)] font-semibold border border-[var(--border)]">
                     {selected.category.toUpperCase()}
                   </span>
                   <span className="inline-flex items-center gap-1 text-[11px] font-mono text-[var(--foreground-muted)]">
@@ -173,7 +176,7 @@ export function ExperienceApp() {
                   </span>
                 </div>
 
-                <h2 className="text-xl sm:text-2xl font-bold text-[var(--foreground)] m-0 leading-snug">
+                <h2 className="text-base sm:text-lg font-bold text-[var(--foreground)] m-0 leading-snug">
                   {selected.role}
                 </h2>
 
@@ -245,10 +248,15 @@ export function ExperienceApp() {
       </div>
 
       {/* Status Bar */}
-      <div className="pt-2 mt-auto border-t border-[var(--border)] flex items-center justify-between text-[11px] font-mono text-[var(--foreground-muted)] shrink-0">
-        <span>career.timeline</span>
-        <span>
-          {experienceData.length} professional positions · Wealwin, Hashcodex, Krutanic, Shrika
+      <div className="pt-2 mt-auto border-t border-[var(--border)] flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-[var(--foreground-muted)] shrink-0 gap-2 pb-1">
+        <span className="truncate">career.timeline</span>
+        <span className="truncate text-right">
+          <span className="hidden sm:inline">
+            {experienceData.length} professional positions · Wealwin, Hashcodex, Krutanic, Shrika
+          </span>
+          <span className="sm:hidden">
+            {experienceData.length} positions
+          </span>
         </span>
       </div>
     </div>

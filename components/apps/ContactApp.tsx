@@ -49,27 +49,19 @@ export function ContactApp() {
   };
 
   return (
-    <div className="app-workspace flex flex-col h-auto md:h-full text-[var(--foreground)]">
-      {/* Top Toolbar */}
-      <div className="pb-3 border-b border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-2 shrink-0">
-        <div>
-          <div className="text-[11px] font-mono font-bold tracking-wider uppercase text-[var(--accent)]">
-            Workspace / Communication
-          </div>
-          <h1 className="text-lg sm:text-xl font-bold text-[var(--foreground)] m-0 leading-tight">
-            Contact & Collaboration
-          </h1>
-          <p className="text-xs text-[var(--foreground-muted)] m-0 mt-0.5">
-            Available for full-stack engineering roles, systems architecture, and partnerships
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3 text-xs font-mono text-[var(--foreground-muted)]">
-          <span className="flex items-center gap-1 text-[var(--foreground)]">
-            <Icon icon={phosphorIcons.mapPin} width={13} className="text-[var(--accent)]" />
+    <div className="app-workspace">
+      {/* Quick Status / Info Bar */}
+      <div className="flex items-center justify-between pb-2 border-b border-[var(--border)] shrink-0 text-xs font-mono text-[var(--foreground-muted)]">
+        <span className="flex items-center gap-1.5 text-[var(--foreground)]">
+          <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
+          Available for opportunities
+        </span>
+        <div className="flex items-center gap-2.5">
+          <span className="flex items-center gap-1 hidden sm:inline-flex">
+            <Icon icon={phosphorIcons.mapPin} width={12} className="text-[var(--accent)]" />
             {profileData.location}
           </span>
-          <span>·</span>
+          <span className="text-[var(--border-strong)] hidden sm:inline">·</span>
           <button
             onClick={handleCopyPhone}
             className="hover:text-[var(--foreground)] underline underline-offset-2 cursor-pointer flex items-center gap-1"
@@ -82,7 +74,7 @@ export function ContactApp() {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 md:min-h-0 md:overflow-y-auto pt-4 pb-8 space-y-5 max-w-3xl mx-auto w-full">
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain pt-4 pb-8 space-y-5 max-w-3xl mx-auto w-full">
         {/* Direct Channels Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {/* Email Card */}
@@ -259,9 +251,16 @@ export function ContactApp() {
       </div>
 
       {/* Status Bar */}
-      <div className="pt-2 mt-auto border-t border-[var(--border)] flex items-center justify-between text-[11px] font-mono text-[var(--foreground-muted)] shrink-0">
-        <span>contact.mail</span>
-        <span>A. Kishore · Responses typically within 24 hours · KishoreOS</span>
+      <div className="pt-2 mt-auto border-t border-[var(--border)] flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-[var(--foreground-muted)] shrink-0 gap-2 pb-1">
+        <span className="truncate">contact.mail</span>
+        <span className="truncate text-right">
+          <span className="hidden sm:inline">
+            A. Kishore · Responses typically within 24 hours · KishoreOS
+          </span>
+          <span className="sm:hidden">
+            Responses within 24h
+          </span>
+        </span>
       </div>
     </div>
   );

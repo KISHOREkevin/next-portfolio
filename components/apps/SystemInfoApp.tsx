@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Icon } from "@iconify/react";
 import { phosphorIcons } from "@/lib/icons/phosphor";
 import { profileData } from "@/data/profile";
@@ -16,6 +16,14 @@ const sections = [
 export function SystemInfoApp() {
   const { preference, resolvedTheme, setPreference } = useTheme();
   const [section, setSection] = useState<(typeof sections)[number]["id"]>("System");
+  const pillsRef = useRef<HTMLDivElement>(null);
+
+  const scrollPills = (dir: "left" | "right") => {
+    if (pillsRef.current) {
+      const amount = dir === "left" ? -140 : 140;
+      pillsRef.current.scrollBy({ left: amount, behavior: "smooth" });
+    }
+  };
 
   const specs = [
     ["Operating System", profileData.systemSpecs.os],
@@ -29,72 +37,55 @@ export function SystemInfoApp() {
   ];
 
   return (
-    <div className="app-workspace flex flex-col h-auto md:h-full text-[var(--foreground)]">
-      {/* Top Toolbar */}
-      <div className="pb-3 border-b border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-2 shrink-0">
-        <div>
-          <div className="text-[11px] font-mono font-bold tracking-wider uppercase text-[var(--accent)]">
-            KishoreOS / Settings
-          </div>
-          <h1 className="text-lg sm:text-xl font-bold text-[var(--foreground)] m-0 leading-tight">
-            System Information
-          </h1>
-          <p className="text-xs text-[var(--foreground-muted)] m-0 mt-0.5">
-            Runtime telemetry, environment architecture, and display preferences
-          </p>
+    <div className="app-workspace">
+      {/* Single control bar: navigation arrows + section pills + status */}
+      <div className="flex items-center gap-1 pb-2 border-b border-[var(--border)] shrink-0 min-w-0">
+        {/* Left Arrow Button */}
+        <button
+          onClick={() => scrollPills("left")}
+          className="w-6 h-7 rounded bg-[var(--surface-elevated)] hover:bg-[var(--surface-hover)] border border-[var(--border)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] active:scale-95 flex items-center justify-center shrink-0 cursor-pointer transition-all"
+          title="Scroll sections left"
+          aria-label="Previous sections"
+        >
+          <Icon icon={phosphorIcons.caretLeft} width={13} />
+        </button>
+
+        {/* Scrollable Section Pills */}
+        <div ref={pillsRef} className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth flex-1 min-w-0">
+          {sections.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setSection(item.id)}
+              className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition-all cursor-pointer shrink-0 ${
+                section === item.id
+                  ? "bg-[var(--accent)] text-[var(--accent-foreground)] font-semibold shadow-sm"
+                  : "bg-[var(--surface-elevated)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] border border-[var(--border)]"
+              }`}
+            >
+              <Icon icon={item.icon} width={13} />
+              <span>{item.id}</span>
+            </button>
+          ))}
         </div>
 
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--accent)]/15 text-[var(--accent)] text-xs font-mono font-semibold self-start sm:self-auto border border-[var(--accent)]/30">
-          <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-pulse" />
-          System Online
+        {/* Right Arrow Button */}
+        <button
+          onClick={() => scrollPills("right")}
+          className="w-6 h-7 rounded bg-[var(--surface-elevated)] hover:bg-[var(--surface-hover)] border border-[var(--border)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] active:scale-95 flex items-center justify-center shrink-0 cursor-pointer transition-all"
+          title="Scroll sections right"
+          aria-label="Next sections"
+        >
+          <Icon icon={phosphorIcons.caretRight} width={13} />
+        </button>
+
+        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[var(--accent)]/15 text-[var(--accent)] text-[10px] font-mono font-semibold border border-[var(--accent)]/30 shrink-0 ml-1">
+          <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
+          Online
         </span>
       </div>
 
-      {/* Responsive Tabs on Mobile - Sticky on mobile */}
-      <div className="py-2.5 border-b border-[var(--border)] flex items-center gap-1.5 overflow-x-auto shrink-0 md:hidden no-scrollbar sticky top-0 z-10 bg-[var(--surface)]">
-        {sections.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => setSection(item.id)}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
-              section === item.id
-                ? "bg-[var(--accent)] text-[var(--accent-foreground)] font-semibold shadow-sm"
-                : "bg-[var(--surface-elevated)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface)] border border-[var(--border)]"
-            }`}
-          >
-            <Icon icon={item.icon} width={13} />
-            <span>{item.id}</span>
-          </button>
-        ))}
-      </div>
-
-      {/* Main Body */}
-      <div className="flex-1 flex flex-col md:flex-row md:min-h-0 md:overflow-hidden pt-3">
-        {/* Left Sidebar on Desktop */}
-        <aside className="hidden md:flex flex-col w-48 shrink-0 border-r border-[var(--border)] pr-3 overflow-y-auto">
-          <p className="text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--foreground-muted)] mb-2 px-2">
-            Categories
-          </p>
-          <nav className="space-y-1">
-            {sections.map((item) => (
-              <button
-                key={item.id}
-                className={`w-full flex items-center gap-2 px-3 py-2 rounded-md text-xs font-medium transition-all text-left cursor-pointer ${
-                  section === item.id
-                    ? "bg-[var(--surface-elevated)] text-[var(--foreground)] font-semibold border border-[var(--border)]"
-                    : "text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface)]"
-                }`}
-                onClick={() => setSection(item.id)}
-              >
-                <Icon icon={item.icon} width={15} />
-                <span>{item.id}</span>
-              </button>
-            ))}
-          </nav>
-        </aside>
-
-        {/* Right Main Content */}
-        <section className="flex-1 min-w-0 md:pl-4 md:overflow-y-auto pb-8 space-y-4">
+      {/* Main Content */}
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain pt-3 pb-8 space-y-4">
           {section === "System" && (
             <div className="space-y-4">
               <div className="p-4 rounded-lg bg-[var(--surface-elevated)] border border-[var(--border)]">
@@ -261,13 +252,19 @@ export function SystemInfoApp() {
               </div>
             </div>
           )}
-        </section>
       </div>
 
       {/* Status Bar */}
-      <div className="pt-2 mt-auto border-t border-[var(--border)] flex items-center justify-between text-[11px] font-mono text-[var(--foreground-muted)] shrink-0">
-        <span>system-info</span>
-        <span>KishoreOS v3.0 · {resolvedTheme}</span>
+      <div className="pt-2 mt-auto border-t border-[var(--border)] flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-[var(--foreground-muted)] shrink-0 gap-2 pb-1">
+        <span className="truncate">system-info</span>
+        <span className="truncate text-right">
+          <span className="hidden sm:inline">
+            KishoreOS v3.0 · {resolvedTheme}
+          </span>
+          <span className="sm:hidden">
+            v3.0 · {resolvedTheme}
+          </span>
+        </span>
       </div>
     </div>
   );

@@ -68,77 +68,56 @@ export function FileExplorerApp() {
   };
 
   return (
-    <div className="app-workspace h-auto md:h-full flex flex-col font-mono text-xs text-[var(--foreground)] select-text">
-      {/* Header */}
-      <div className="pb-3 border-b border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-2 shrink-0">
-        <div>
-          <div className="text-[11px] font-mono font-bold tracking-wider uppercase text-[var(--accent)]">
-            Archive / Filesystem
-          </div>
-          <h1 className="text-lg sm:text-xl font-bold text-[var(--foreground)] m-0 leading-tight">
-            File Explorer
-          </h1>
-          <p className="text-xs text-[var(--foreground-muted)] m-0 mt-0.5">
-            Browse the public portfolio filesystem & project documentation
-          </p>
-        </div>
-
-        <div className="flex items-center gap-2">
+    <div className="app-workspace font-mono text-xs text-[var(--foreground)] select-text">
+      {/* App Toolbar — compact: breadcrumb + actions in one row */}
+      <div className="flex items-center gap-2 pb-2.5 border-b border-[var(--border)] shrink-0 min-w-0">
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar flex-1 min-w-0 text-xs font-mono text-[var(--foreground-muted)]">
+          <HardDrive className="w-3.5 h-3.5 text-[var(--accent)] shrink-0" />
           <button
-            className="inline-flex items-center gap-1.5 h-8 px-3 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)] text-xs text-[var(--foreground)] hover:text-[var(--accent)] cursor-pointer"
-            onClick={() => setCurrentPath("/home/kishore")}
-          >
-            <HardDrive className="w-3.5 h-3.5" />
-            Home
-          </button>
-          {selectedFile && (
-            <button
-              className="inline-flex items-center gap-1.5 h-8 px-2.5 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)] text-xs text-[var(--foreground-muted)] hover:text-[var(--foreground)] cursor-pointer"
-              onClick={() => setSelectedFile(null)}
-            >
-              Clear
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Breadcrumb Path Bar */}
-      <div className="flex items-center justify-between px-3 py-2 bg-[var(--surface-elevated)] border border-[var(--border)] rounded-md my-3 shrink-0">
-        <div className="flex items-center gap-1.5 overflow-x-auto text-[var(--foreground-muted)]">
-          <HardDrive className="w-4 h-4 text-[var(--accent)] shrink-0" />
-          <button
-            onClick={() => {
-              setCurrentPath("/home/kishore");
-              setSelectedFile(null);
-            }}
-            className="hover:text-[var(--foreground)] font-medium transition-colors cursor-pointer"
+            onClick={() => { setCurrentPath("/home/kishore"); setSelectedFile(null); }}
+            className="hover:text-[var(--foreground)] font-medium transition-colors cursor-pointer whitespace-nowrap shrink-0"
           >
             /home/kishore
           </button>
           {currentPath !== "/home/kishore" && (
             <>
-              <span className="text-[var(--border-strong)]">/</span>
-              <span className="text-[var(--foreground)] font-semibold">
+              <span className="text-[var(--border-strong)] shrink-0">/</span>
+              <span className="text-[var(--foreground)] font-semibold whitespace-nowrap shrink-0">
                 {currentPath.replace("/home/kishore/", "")}
               </span>
             </>
           )}
         </div>
-
         {currentPath !== "/home/kishore" && (
           <button
             onClick={() => setCurrentPath("/home/kishore")}
-            className="text-[11px] text-[var(--accent)] hover:underline px-2 py-0.5 rounded bg-[var(--surface)] border border-[var(--border)] cursor-pointer"
+            className="text-[10px] text-[var(--accent)] hover:underline px-2 py-0.5 rounded bg-[var(--surface)] border border-[var(--border)] cursor-pointer shrink-0"
           >
-            ↑ Parent Dir
+            ↑ Parent
+          </button>
+        )}
+        <button
+          className="inline-flex items-center gap-1 h-7 px-2.5 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)] text-xs text-[var(--foreground)] hover:text-[var(--accent)] cursor-pointer shrink-0"
+          onClick={() => setCurrentPath("/home/kishore")}
+        >
+          <HardDrive className="w-3 h-3" />
+          Home
+        </button>
+        {selectedFile && (
+          <button
+            className="inline-flex items-center gap-1 h-7 px-2 rounded-md bg-[var(--surface-elevated)] border border-[var(--border)] text-xs text-[var(--foreground-muted)] hover:text-[var(--foreground)] cursor-pointer shrink-0"
+            onClick={() => setSelectedFile(null)}
+          >
+            Clear
           </button>
         )}
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 grid grid-cols-1 md:grid-cols-12 gap-3 pb-4 md:min-h-0 md:overflow-hidden">
+      <div className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-12 gap-3 pb-4 overflow-hidden">
         {/* File Browser Grid */}
-        <div className="md:col-span-7 bg-[var(--surface)] border border-[var(--border)] rounded-lg p-3.5 md:overflow-y-auto">
+        <div className="md:col-span-7 bg-[var(--surface)] border border-[var(--border)] rounded-lg p-3.5 overflow-y-auto overscroll-contain">
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
             {currentFiles.map((file) => {
               const isSelected = selectedFile?.id === file.id;
@@ -175,7 +154,7 @@ export function FileExplorerApp() {
         </div>
 
         {/* File Preview Pane */}
-        <div className="md:col-span-5 bg-[var(--surface)] border border-[var(--border)] rounded-lg p-4 flex flex-col justify-between shadow-sm overflow-visible md:overflow-hidden min-h-[220px] md:min-h-0">
+        <div className="md:col-span-5 bg-[var(--surface)] border border-[var(--border)] rounded-lg p-4 flex flex-col justify-between shadow-sm overflow-hidden min-h-[220px] md:min-h-0">
           {selectedFile ? (
             <div className="space-y-3 flex-1 flex flex-col min-h-0">
               <div className="flex items-center justify-between border-b border-[var(--border)] pb-2.5 shrink-0">
@@ -216,6 +195,19 @@ export function FileExplorerApp() {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Status Bar */}
+      <div className="pt-2 mt-auto border-t border-[var(--border)] flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-[var(--foreground-muted)] shrink-0 gap-2 pb-1">
+        <span className="truncate">{currentPath}</span>
+        <span className="truncate text-right">
+          <span className="hidden sm:inline">
+            {currentFiles.length} items · KishoreOS Filesystem
+          </span>
+          <span className="sm:hidden">
+            {currentFiles.length} items
+          </span>
+        </span>
       </div>
     </div>
   );
