@@ -24,44 +24,7 @@ export const projectsData: ProjectItem[] = [
   // ==========================================
   // EXISTING PERSONAL PROJECTS — PRESERVED
   // ==========================================
-  // ==========================================
-  // HASHCODEX — COMPANY PROJECT
-  // ==========================================
-  {
-    id: "bitget-trading",
-    title: "Bitget — Trading Module",
-    category: "FinTech / Trading",
-    badge: "Hashcodex / Chart Integration / Order Lifecycle",
-    shortDescription:
-      "Trading module connecting chart-based trading workflows with order matching, execution, and order-closing operations.",
-    fullDescription:
-      "Worked on the Bitget project at Hashcodex, contributing to its trading module. Worked on integrating trading charts with the application and connecting chart interactions to trading workflows. Contributed to order matching, execution-related flows, and order-closing functionality, helping connect the trading interface with the underlying order-management logic.",
-    technologies: [
-      "React",
-      "JavaScript",
-      "Node.js",
-      "Trading APIs",
-      "Chart Integration",
-      "Order Management",
-    ],
-    keyConcepts: [
-      "Trading chart integration",
-      "Chart-to-order workflow integration",
-      "Order matching workflows",
-      "Order execution lifecycle",
-      "Order closing and status updates",
-      "Frontend and backend trading integration",
-    ],
-    architecturePoints: [
-      "The trading interface connects chart-related interactions with application trading workflows.",
-      "Order-management logic supports matching and order lifecycle operations.",
-      "Application integrations connect trading requests with relevant backend functionality.",
-      "Order status changes are reflected in the corresponding application workflows.",
-    ],
-    githubUrl: undefined,
-    liveUrl: "https://www.bitget.com/",
-    isPlaceholderLinks: true,
-  },
+  
 
   // ==========================================
   // WEALWIN TECHNOLOGIES — COMPANY PROJECTS
@@ -111,47 +74,7 @@ export const projectsData: ProjectItem[] = [
     liveUrl: "https://www.finowizprime.com/",
     isPlaceholderLinks: true,
   },
-
-  {
-    id: "metiers",
-    title: "Metiers — Multi-Provider Service Marketplace",
-    category: "Full-Stack / Marketplace",
-    badge: "Fastify / Sequelize / PostgreSQL",
-    shortDescription:
-      "Service marketplace that lets customers order services from multiple providers across cleaning, gardening, plumbing, and other categories.",
-    fullDescription:
-      "Contributed to Metiers, a multi-provider service marketplace designed to connect customers with service providers offering cleaning, gardening, plumbing, and other services. Developed backend functionality using Node.js, Fastify, Sequelize, and PostgreSQL, working on API development, relational data operations, and the backend workflows required to support a service marketplace.",
-    technologies: [
-      "Node.js",
-      "Fastify",
-      "Sequelize",
-      "PostgreSQL",
-      "SQL",
-      "REST APIs",
-      "JavaScript",
-    ],
-    keyConcepts: [
-      "Multi-provider service marketplace",
-      "Service discovery and ordering",
-      "Provider-oriented business workflows",
-      "REST API development with Fastify",
-      "Relational database modeling",
-      "ORM-based database operations with Sequelize",
-      "PostgreSQL integration",
-    ],
-    architecturePoints: [
-      "Fastify provides the backend API layer for marketplace operations.",
-      "Sequelize manages relational models and database interactions.",
-      "PostgreSQL stores structured marketplace data.",
-      "API endpoints support service-related operations and customer orders.",
-      "Backend modules organize marketplace business logic and persistence.",
-    ],
-    githubUrl: undefined,
-    liveUrl: "https://metiers.cd/",
-    isPlaceholderLinks: true,
-  },
-
-  {
+ {
     id: "regulus",
     title: "Regulus — Trading Platform",
     category: "FinTech / Trading Infrastructure",
@@ -192,6 +115,46 @@ export const projectsData: ProjectItem[] = [
     liveUrl: "https://app.regulus.org/",
     isPlaceholderLinks: true,
   },
+  {
+    id: "metiers",
+    title: "Metiers — Multi-Provider Service Marketplace",
+    category: "Full-Stack / Marketplace",
+    badge: "Fastify / Sequelize / PostgreSQL",
+    shortDescription:
+      "Service marketplace that lets customers order services from multiple providers across cleaning, gardening, plumbing, and other categories.",
+    fullDescription:
+      "Contributed to Metiers, a multi-provider service marketplace designed to connect customers with service providers offering cleaning, gardening, plumbing, and other services. Developed backend functionality using Node.js, Fastify, Sequelize, and PostgreSQL, working on API development, relational data operations, and the backend workflows required to support a service marketplace.",
+    technologies: [
+      "Node.js",
+      "Fastify",
+      "Sequelize",
+      "PostgreSQL",
+      "SQL",
+      "REST APIs",
+      "JavaScript",
+    ],
+    keyConcepts: [
+      "Multi-provider service marketplace",
+      "Service discovery and ordering",
+      "Provider-oriented business workflows",
+      "REST API development with Fastify",
+      "Relational database modeling",
+      "ORM-based database operations with Sequelize",
+      "PostgreSQL integration",
+    ],
+    architecturePoints: [
+      "Fastify provides the backend API layer for marketplace operations.",
+      "Sequelize manages relational models and database interactions.",
+      "PostgreSQL stores structured marketplace data.",
+      "API endpoints support service-related operations and customer orders.",
+      "Backend modules organize marketplace business logic and persistence.",
+    ],
+    githubUrl: undefined,
+    liveUrl: "https://metiers.cd/",
+    isPlaceholderLinks: true,
+  },
+
+ 
 
   {
     id: "broking-bridge",
@@ -229,6 +192,86 @@ export const projectsData: ProjectItem[] = [
     ],
     githubUrl: undefined,
     liveUrl: "https://demo.brokingbridge.com/",
+    isPlaceholderLinks: true,
+  },
+ {
+  id: "dopamine-trading",
+  title: "Dopamine — Trading Platform",
+  category: "FinTech / Trading Infrastructure",
+  badge: "Wealwin Technologies / Trade Engine / Blockchain Integration",
+  shortDescription:
+    "A trading platform built from scratch, featuring a Rust-powered trade engine and order book management, Node.js APIs, and blockchain-integrated deposits and withdrawals.",
+  fullDescription:
+    "Dopamine is an internal product of Wealwin Technologies, developed with core trading infrastructure built from scratch. The platform uses Rust for the trade engine, order book management, and trade execution, with Node.js, Express, and MongoDB supporting APIs and data storage. My contribution focuses on deposit and withdrawal functionality, integrating blockchain wallets using Ethers.js and using Alchemy webhooks and monitoring to track relevant blockchain activity and transaction events.",
+  technologies: [
+    "Rust",
+    "Node.js",
+    "Express.js",
+    "MongoDB",
+    "Ethers.js",
+    "Alchemy",
+    "Blockchain Integration",
+    "Trading Systems",
+  ],
+  keyConcepts: [
+    "Trade engine architecture",
+    "Order book management",
+    "Trade execution",
+    "REST API development",
+    "MongoDB data storage",
+    "Blockchain wallet integration",
+    "Cryptocurrency deposits and withdrawals",
+    "Ethers.js blockchain communication",
+    "Alchemy webhooks",
+    "Blockchain transaction monitoring",
+  ],
+  architecturePoints: [
+    "The trade engine is built using Rust to support trade execution and order book management.",
+    "Node.js and Express.js provide API functionality, while MongoDB is used for data storage.",
+    "Deposit and withdrawal workflows integrate with blockchain wallets through Ethers.js.",
+    "Alchemy webhooks and monitoring support the tracking of relevant blockchain events and transactions.",
+    "Contributed specifically to deposit and withdrawal functionality within the broader trading platform.",
+  ],
+  githubUrl: undefined,
+  liveUrl: undefined,
+  isPlaceholderLinks: true,
+},
+  // ==========================================
+  // HASHCODEX — COMPANY PROJECT
+  // ==========================================
+  {
+    id: "bitget-trading",
+    title: "Bitget — Trading Module",
+    category: "FinTech / Trading",
+    badge: "Hashcodex / Chart Integration / Order Lifecycle",
+    shortDescription:
+      "Trading module connecting chart-based trading workflows with order matching, execution, and order-closing operations.",
+    fullDescription:
+      "Worked on the Bitget project at Hashcodex, contributing to its trading module. Worked on integrating trading charts with the application and connecting chart interactions to trading workflows. Contributed to order matching, execution-related flows, and order-closing functionality, helping connect the trading interface with the underlying order-management logic.",
+    technologies: [
+      "React",
+      "JavaScript",
+      "Node.js",
+      "Trading APIs",
+      "Chart Integration",
+      "Order Management",
+    ],
+    keyConcepts: [
+      "Trading chart integration",
+      "Chart-to-order workflow integration",
+      "Order matching workflows",
+      "Order execution lifecycle",
+      "Order closing and status updates",
+      "Frontend and backend trading integration",
+    ],
+    architecturePoints: [
+      "The trading interface connects chart-related interactions with application trading workflows.",
+      "Order-management logic supports matching and order lifecycle operations.",
+      "Application integrations connect trading requests with relevant backend functionality.",
+      "Order status changes are reflected in the corresponding application workflows.",
+    ],
+    githubUrl: undefined,
+    liveUrl: "https://www.bitget.com/",
     isPlaceholderLinks: true,
   },
   {

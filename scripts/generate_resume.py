@@ -54,12 +54,12 @@ class NumberedCanvas(canvas.Canvas):
         # Subtle footer divider
         self.setStrokeColor(colors.HexColor("#CBD5E1"))
         self.setLineWidth(0.5)
-        self.line(36, 28, letter[0] - 36, 28)
+        self.line(36, 26, letter[0] - 36, 26)
         
         # Running footer text
         page_num_str = f"Page {self._pageNumber} of {page_count}"
-        self.drawRightString(letter[0] - 36, 18, page_num_str)
-        self.drawString(36, 18, "A. Kishore  |  Full Stack Developer & AI Systems Engineer  |  kishorekevin3289@gmail.com  |  +91 7904702577")
+        self.drawRightString(letter[0] - 36, 16, page_num_str)
+        self.drawString(36, 16, "A. Kishore  |  Full Stack Developer & AI Systems Engineer  |  kishorekevin3289@gmail.com  |  +91 7904702577")
         
         self.restoreState()
 
@@ -71,11 +71,9 @@ def create_resume_pdf(output_path: str):
         pagesize=letter,
         leftMargin=36,
         rightMargin=36,
-        topMargin=36,
-        bottomMargin=36,
+        topMargin=32,
+        bottomMargin=32,
     )
-
-    content_width = letter[0] - 72  # 540 pt
 
     # Base stylesheet & palette
     styles = getSampleStyleSheet()
@@ -102,8 +100,8 @@ def create_resume_pdf(output_path: str):
         "CandidateTitle",
         parent=styles["Normal"],
         fontName="Helvetica-Bold",
-        fontSize=11,
-        leading=14,
+        fontSize=10.5,
+        leading=13,
         textColor=ACCENT,
         alignment=1,  # Centered
     )
@@ -113,7 +111,7 @@ def create_resume_pdf(output_path: str):
         parent=styles["Normal"],
         fontName="Helvetica",
         fontSize=8.5,
-        leading=12,
+        leading=11.5,
         textColor=MUTED,
         alignment=1,  # Centered
     )
@@ -122,8 +120,8 @@ def create_resume_pdf(output_path: str):
         "SectionHeading",
         parent=styles["Normal"],
         fontName="Helvetica-Bold",
-        fontSize=10,
-        leading=12,
+        fontSize=9.5,
+        leading=11.5,
         textColor=PRIMARY,
         spaceBefore=0,
         spaceAfter=0,
@@ -134,8 +132,8 @@ def create_resume_pdf(output_path: str):
         "ItemTitle",
         parent=styles["Normal"],
         fontName="Helvetica-Bold",
-        fontSize=9.5,
-        leading=12,
+        fontSize=9,
+        leading=11.5,
         textColor=SECONDARY,
     )
 
@@ -144,7 +142,7 @@ def create_resume_pdf(output_path: str):
         parent=styles["Normal"],
         fontName="Helvetica",
         fontSize=8.5,
-        leading=12,
+        leading=11.5,
         textColor=MUTED,
         alignment=2,  # Right-aligned
     )
@@ -154,7 +152,7 @@ def create_resume_pdf(output_path: str):
         parent=styles["Normal"],
         fontName="Helvetica",
         fontSize=8.5,
-        leading=11.5,
+        leading=11,
         textColor=BODY,
     )
 
@@ -163,7 +161,7 @@ def create_resume_pdf(output_path: str):
         parent=styles["Normal"],
         fontName="Helvetica",
         fontSize=8.5,
-        leading=11.5,
+        leading=11,
         textColor=BODY,
         leftIndent=11,
         firstLineIndent=-11,
@@ -174,7 +172,7 @@ def create_resume_pdf(output_path: str):
         parent=styles["Normal"],
         fontName="Helvetica-Bold",
         fontSize=8.5,
-        leading=11.5,
+        leading=11,
         textColor=SECONDARY,
     )
 
@@ -183,7 +181,7 @@ def create_resume_pdf(output_path: str):
         parent=styles["Normal"],
         fontName="Helvetica",
         fontSize=8.5,
-        leading=11.5,
+        leading=11,
         textColor=BODY,
     )
 
@@ -192,7 +190,7 @@ def create_resume_pdf(output_path: str):
     # Helper function for Section Headers
     def build_section_header(title_text):
         p = Paragraph(f"<b>{title_text.upper()}</b>", section_heading)
-        line = HRFlowable(width="100%", thickness=0.8, color=BORDER, spaceBefore=2, spaceAfter=4)
+        line = HRFlowable(width="100%", thickness=0.8, color=BORDER, spaceBefore=2, spaceAfter=3.5)
         return [p, line]
 
     # Helper function for Role / Experience Entry
@@ -202,42 +200,46 @@ def create_resume_pdf(output_path: str):
             Paragraph(f"<b>{company}</b> — <i>{role}</i>", item_title_style),
             Paragraph(f"{period} | {location}", item_meta_style)
         ]
-        t = Table([top_row], colWidths=[360, 180])
+        t = Table([top_row], colWidths=[355, 185])
         t.setStyle(TableStyle([
             ('VALIGN', (0,0), (-1,-1), 'TOP'),
             ('LEFTPADDING', (0,0), (-1,-1), 0),
             ('RIGHTPADDING', (0,0), (-1,-1), 0),
-            ('TOPPADDING', (0,0), (-1,-1), 1),
-            ('BOTTOMPADDING', (0,0), (-1,-1), 2),
+            ('TOPPADDING', (0,0), (-1,-1), 0.5),
+            ('BOTTOMPADDING', (0,0), (-1,-1), 1.5),
         ]))
         elements.append(t)
         for b in bullets:
             elements.append(Paragraph(f"• {b}", bullet_style))
-        elements.append(Spacer(1, 4))
+        elements.append(Spacer(1, 3))
         return elements
 
-    # Helper function for Project Entry (wide right column for links)
+    # Helper function for Project Entry. Keep the project title/link on one row
+    # and place the technology stack on its own line to prevent cramped headings.
+    project_stack_style = ParagraphStyle(
+        "ProjectStack", parent=styles["Normal"], fontName="Helvetica-Oblique",
+        fontSize=7.8, leading=9.2, textColor=MUTED, spaceAfter=1,
+    )
+
     def project_entry(name, tech_stack, link_text, link_url, bullets):
         elements = []
-        name_part = f"<b>{name}</b> | <i>{tech_stack}</i>"
-        link_part = f"<a href='{link_url}'><u>{link_text}</u></a>" if link_url else (f"<i>{link_text}</i>" if link_text else "")
-        
-        top_row = [
-            Paragraph(name_part, item_title_style),
-            Paragraph(link_part, item_meta_style)
-        ]
-        t = Table([top_row], colWidths=[340, 200])
-        t.setStyle(TableStyle([
-            ('VALIGN', (0,0), (-1,-1), 'TOP'),
-            ('LEFTPADDING', (0,0), (-1,-1), 0),
-            ('RIGHTPADDING', (0,0), (-1,-1), 0),
-            ('TOPPADDING', (0,0), (-1,-1), 1),
-            ('BOTTOMPADDING', (0,0), (-1,-1), 2),
+        link_part = (f"<a href='{link_url}'><u>{link_text}</u></a>"
+                     if link_url else (f"<i>{link_text}</i>" if link_text else ""))
+        top_row = [Paragraph(f"<b>{name}</b>", item_title_style),
+                   Paragraph(link_part, item_meta_style)]
+        table = Table([top_row], colWidths=[350, 190])
+        table.setStyle(TableStyle([
+            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+            ('LEFTPADDING', (0, 0), (-1, -1), 0),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+            ('TOPPADDING', (0, 0), (-1, -1), 0),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
         ]))
-        elements.append(t)
-        for b in bullets:
-            elements.append(Paragraph(f"• {b}", bullet_style))
-        elements.append(Spacer(1, 3.5))
+        elements.append(table)
+        elements.append(Paragraph(tech_stack, project_stack_style))
+        for bullet in bullets:
+            elements.append(Paragraph(f"• {bullet}", bullet_style))
+        elements.append(Spacer(1, 3))
         return elements
 
     # =========================================================
@@ -246,43 +248,45 @@ def create_resume_pdf(output_path: str):
 
     # 1. HEADER (Centered, authoritative, clean ATS layout)
     story.append(Paragraph("<b>A. KISHORE</b>", name_style))
-    story.append(Spacer(1, 2))
+    story.append(Spacer(1, 1.5))
     story.append(Paragraph("Full Stack Developer &amp; AI Systems Engineer", title_style))
-    story.append(Spacer(1, 3))
+    story.append(Spacer(1, 2.5))
 
     contact_line_1 = (
         "Madurai, Tamil Nadu, India  |  Phone: +91 7904702577  |  "
         "Email: <a href='mailto:kishorekevin3289@gmail.com'><u>kishorekevin3289@gmail.com</u></a>"
     )
     contact_line_2 = (
-        "Portfolio: <a href='https://kishorekevin.vercel.app/'><u>kishorekevin.vercel.app</u></a>  |  "
+        "Portfolio: <a href='https://kishorekevin.netlify.app/'><u>kishorekevin.netlify.app</u></a>  |  "
         "GitHub: <a href='https://github.com/KISHOREkevin'><u>github.com/KISHOREkevin</u></a>"
     )
     story.append(Paragraph(contact_line_1, contact_bar_style))
     story.append(Paragraph(contact_line_2, contact_bar_style))
-    story.append(HRFlowable(width="100%", thickness=1.2, color=PRIMARY, spaceBefore=4, spaceAfter=6))
+    story.append(HRFlowable(width="100%", thickness=1.1, color=PRIMARY, spaceBefore=3.5, spaceAfter=5))
 
     # 2. PROFESSIONAL SUMMARY
     story.extend(build_section_header("Professional Summary"))
     summary_text = (
         "<b>Results-driven Full Stack Developer &amp; AI Systems Engineer</b> with production experience designing and "
-        "deploying high-reliability web applications, scalable backend microservices, and Applied AI systems. Proficient in "
-        "<b>React.js, Node.js, Fastify, Python, Django, FastAPI, PostgreSQL, and MongoDB</b>. Production background developing "
-        "financial trading platform integrations (MetaTrader 5 / MT5), multi-vendor authenticated APIs, and Retrieval-Augmented "
-        "Generation (RAG) pipelines utilizing LangChain, Ollama, and vector similarity search. Founder of Codex Arch (custom minimal "
-        "Linux OS) with proven expertise in Linux systems administration, workflow automation, and cloud deployments."
+        "deploying high-reliability web applications, scalable backend microservices, financial trading platforms, and Applied AI systems. "
+        "Hands-on expertise in <b>React.js, Node.js, Fastify, Python, FastAPI, Django, PostgreSQL, and MongoDB</b>. Production "
+        "background engineering cryptocurrency deposit and withdrawal workflows with blockchain wallet integrations (<b>Ethers.js, Alchemy</b>), "
+        "MetaTrader 5 (<b>MT5</b>) trading platform integrations, high-security multi-vendor authenticated APIs, and local LLM / "
+        "Retrieval-Augmented Generation (<b>RAG</b>) pipelines using <b>LangChain, Ollama, and vector databases</b>. Founder of Codex Arch "
+        "(custom minimal Linux OS) with proven expertise in Linux systems administration, workflow automation, and cloud deployments."
     )
     story.append(Paragraph(summary_text, body_style))
-    story.append(Spacer(1, 5))
+    story.append(Spacer(1, 4))
 
     # 3. TECHNICAL SKILLS
     story.extend(build_section_header("Technical Skills"))
     skills_rows = [
-        ("Programming Languages:", "Python, JavaScript (ES6+), TypeScript, C, Java, Lua, Bash"),
+        ("Programming Languages:", "Python, JavaScript (ES6+), TypeScript, Rust, C, Java, Lua, Bash"),
         ("Frontend Technologies:", "React.js, Next.js, HTML5, CSS3, Tailwind CSS, Bootstrap, React Native, Expo, Redux, GTK, Qt"),
         ("Backend & APIs:", "Node.js, Fastify, Express.js, Django, FastAPI, REST API Development, Microservices, Asynchronous Programming"),
         ("Databases & ORMs:", "PostgreSQL, MongoDB, Redis, SQL, NoSQL, Sequelize ORM, SQLAlchemy, Pydantic"),
-        ("AI / LLM Engineering:", "Large Language Models (LLMs), RAG, LangChain, LangGraph, Ollama, Local LLMs, Vector Databases, Semantic Search, Prompt Engineering"),
+        ("AI / LLM Engineering:", "Large Language Models (LLMs), RAG, LangChain, LangGraph, Ollama, Local LLMs, Vector Databases, Semantic Search"),
+        ("Blockchain & Trading:", "Ethers.js, Alchemy (Webhooks & Monitoring), Blockchain Wallets, Crypto Deposits/Withdrawals, MT5 Integration, Order Books"),
         ("DevOps, Cloud & Systems:", "Docker, AWS (EC2, Deployments), Linux Server Administration, Git, GitHub, CI/CD, Networking Protocols, System Design"),
     ]
 
@@ -296,13 +300,13 @@ def create_resume_pdf(output_path: str):
     skills_table = Table(skill_table_data, colWidths=[130, 410])
     skills_table.setStyle(TableStyle([
         ('VALIGN', (0,0), (-1,-1), 'TOP'),
-        ('TOPPADDING', (0,0), (-1,-1), 1),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 1.5),
+        ('TOPPADDING', (0,0), (-1,-1), 0.8),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 1),
         ('LEFTPADDING', (0,0), (-1,-1), 0),
         ('RIGHTPADDING', (0,0), (-1,-1), 0),
     ]))
     story.append(skills_table)
-    story.append(Spacer(1, 5))
+    story.append(Spacer(1, 4))
 
     # 4. PROFESSIONAL EXPERIENCE (Core Production Roles on Page 1)
     story.extend(build_section_header("Professional Experience"))
@@ -314,11 +318,11 @@ def create_resume_pdf(output_path: str):
         period="Nov 2025 – Present",
         location="Madurai, Tamil Nadu, India",
         bullets=[
-            "Architect and maintain production full-stack web applications and microservices using <b>React.js, Node.js, Fastify, Sequelize</b>, and <b>PostgreSQL</b>.",
-            "Develop resilient REST APIs, execute relational schema migrations, and implement JWT-based authentication and Redux state management.",
-            "Engineer <b>MetaTrader 5 (MT5)</b> trading platform integrations, coordinating account management, automated copy-trading, and affiliate commission distribution workflows.",
-            "Implement high-security multi-vendor APIs with API-key verification and cryptographic signature validation for institutional clients.",
-            "Investigate and resolve critical production defects and database bottlenecks reported by live users, ensuring uninterrupted service availability."
+            "Architect and deploy production full-stack web applications and microservices using <b>React.js, Node.js, Fastify, Sequelize</b>, and <b>PostgreSQL</b>.",
+            "Contribute to <b>Dopamine</b> trading platform infrastructure, engineering cryptocurrency deposit and withdrawal workflows integrated with blockchain wallets via <b>Ethers.js</b> and <b>Alchemy</b> webhooks for real-time transaction monitoring.",
+            "Engineer <b>MetaTrader 5 (MT5)</b> and <b>NTrader</b> trading platform integrations across Finowiz and Regulus, coordinating copy-trading, account management, and affiliate commission distribution.",
+            "Develop high-security multi-vendor REST APIs with API-key verification and cryptographic signature validation for institutional clients.",
+            "Execute relational PostgreSQL schema migrations and maintain robust backend microservices with FastAPI and Python."
         ]
     ))
 
@@ -330,7 +334,7 @@ def create_resume_pdf(output_path: str):
         location="India",
         bullets=[
             "Built and scaled fintech, cryptocurrency, and trading web applications leveraging the <b>MERN Stack (MongoDB, Express.js, React.js, Node.js)</b>.",
-            "Engineered interactive trading chart modules and connected chart interactions with backend order-matching and order-execution lifecycles.",
+            "Contributed to the <b>Bitget</b> trading module, connecting interactive trading charts with order matching, execution, and order-closing lifecycles.",
             "Implemented secure authentication and consumed high-throughput financial REST APIs supporting real-time trading operations.",
             "Debugged production codebases and enhanced core features, significantly boosting transaction reliability and code modularity."
         ]
@@ -398,20 +402,7 @@ def create_resume_pdf(output_path: str):
     # 6. FEATURED TECHNICAL PROJECTS
     story.extend(build_section_header("Featured Technical Projects"))
 
-    # Project 1: AI Job Matcher
-    story.extend(project_entry(
-        name="AI-Powered Job Matching System",
-        tech_stack="Python, LangChain, Ollama, Vector DB, RAG, Semantic Search",
-        link_text="github.com/KISHOREkevin/job-matcher",
-        link_url="https://github.com/KISHOREkevin/job-matcher",
-        bullets=[
-            "Built a production-oriented RAG system parsing resumes and job postings into structured representations for automated candidate evaluation.",
-            "Engineered document ingestion, data normalization, deduplication, and vector embedding pipelines for high-precision semantic similarity search.",
-            "Executed local LLM inference via Ollama for zero-cost, privacy-preserving candidate matching with structured output generation."
-        ]
-    ))
-
-    # Project 2: Finowiz
+    # Projects
     story.extend(project_entry(
         name="Finowiz — MT5 Trading Platform",
         tech_stack="MERN Stack, MetaTrader 5, Microservices, HMAC Auth",
@@ -423,7 +414,7 @@ def create_resume_pdf(output_path: str):
         ]
     ))
 
-    # Project 3: Metiers
+    # Project 4: Metiers
     story.extend(project_entry(
         name="Metiers — Multi-Provider Service Marketplace",
         tech_stack="Node.js, Fastify, Sequelize ORM, PostgreSQL, REST APIs",
@@ -435,27 +426,42 @@ def create_resume_pdf(output_path: str):
         ]
     ))
 
-    # Project 4: FFmpeg Converter Suite
+    
+
     story.extend(project_entry(
-        name="FFmpeg Video Converter Suite",
-        tech_stack="Node.js, FFmpeg, Docker, JavaScript, Parallel Processing",
-        link_text="video-converters.netlify.app",
-        link_url="https://video-converters.netlify.app/",
-        bullets=[
-            "Constructed a multi-featured media processing platform supporting 8+ operations (conversion, compression, GIF extraction) handling 100+ daily concurrent tasks.",
-            "Optimized resource utilization through worker parallelization and Docker containerization, preventing system contention under heavy workloads."
-        ]
+            name="Dopamine — Trading Platform",
+            tech_stack="Rust, Node.js, Express, MongoDB, Ethers.js, Alchemy, Web3",
+            link_text="Wealwin Technologies Product",
+            link_url="",
+            bullets=[
+                "Contributed to core cryptocurrency deposit and withdrawal workflows, integrating blockchain wallets via <b>Ethers.js</b>.",
+                "Configured <b>Alchemy</b> webhooks and automated transaction monitoring to track real-time on-chain events.",
+                "Integrated with a high-performance <b>Rust</b>-powered trade engine supporting order book management and trade execution."
+            ]
     ))
 
-    # Project 5: Echo Transcription
     story.extend(project_entry(
-        name="Echo — AI Audio Transcription Application",
-        tech_stack="Django, Python, AssemblyAI, Redis, Celery, Cloudinary",
-        link_text="github.com/KISHOREkevin/audio-transcriber",
-        link_url="https://github.com/KISHOREkevin/audio-transcriber",
+            name="AI-Powered Job Matching System",
+            tech_stack="Python, LangChain, Ollama, Vector DB, RAG, Semantic Search",
+            link_text="github.com/KISHOREkevin/job-matcher",
+            link_url="https://github.com/KISHOREkevin/job-matcher",
+            bullets=[
+                "Built a RAG-based job-matching system that parses resumes and job postings into structured representations for automated candidate evaluation, returning a focused <b>top-3</b> match shortlist.",
+                "Engineered document ingestion, data normalization, deduplication, and vector-embedding pipelines, including scheduled <b>daily job ingestion</b> for semantic similarity search.",
+                "Executed local LLM inference via Ollama for zero-cost, privacy-preserving candidate matching with structured output generation."
+            ]
+        ))
+
+    
+    # Project 5: Codex Arch
+    story.extend(project_entry(
+        name="Codex Arch — Custom Minimal Linux OS",
+        tech_stack="Linux, Qtile, Python, Bash, GTK, System Automation, Git",
+        link_text="github.com/KISHOREkevin",
+        link_url="https://github.com/KISHOREkevin",
         bullets=[
-            "Integrated AssemblyAI speech-to-text APIs with Django backend, enabling multilingual audio transcription and speaker recognition.",
-            "Orchestrated asynchronous Celery task queues backed by Redis to eliminate HTTP request timeouts during long audio processing."
+            "Engineered a lightweight keyboard-centric Linux environment with custom Qtile tiling workflows and GTK/Qt utilities, bringing together <b>20+ open-source tools</b>.",
+            "Automated system dotfiles, environment synchronization, and package maintenance via Bash scripts, reducing setup time to under <b>5 minutes</b>."
         ]
     ))
 
@@ -466,7 +472,7 @@ def create_resume_pdf(output_path: str):
         Paragraph("<b>Ultra College of Engineering and Technology</b> — <i>B.Tech in Information Technology</i>", item_title_style),
         Paragraph("May 2021 – May 2025 | Madurai, India", item_meta_style)
     ]
-    t_edu_1 = Table([edu_row_1], colWidths=[360, 180])
+    t_edu_1 = Table([edu_row_1], colWidths=[355, 185])
     t_edu_1.setStyle(TableStyle([
         ('VALIGN', (0,0), (-1,-1), 'TOP'),
         ('LEFTPADDING', (0,0), (-1,-1), 0),
@@ -482,7 +488,7 @@ def create_resume_pdf(output_path: str):
         Paragraph("<b>TVS Higher Secondary School</b> — <i>Higher Secondary Certificate (HSC) &amp; SSLC</i>", item_title_style),
         Paragraph("Madurai, Tamil Nadu, India", item_meta_style)
     ]
-    t_edu_2 = Table([edu_row_2], colWidths=[360, 180])
+    t_edu_2 = Table([edu_row_2], colWidths=[355, 185])
     t_edu_2.setStyle(TableStyle([
         ('VALIGN', (0,0), (-1,-1), 'TOP'),
         ('LEFTPADDING', (0,0), (-1,-1), 0),
@@ -492,7 +498,7 @@ def create_resume_pdf(output_path: str):
     ]))
     story.append(t_edu_2)
     story.append(Paragraph("• HSC (Class XII): <b>86.3%</b> (2020–2021)  |  SSLC (Class X): <b>78.4%</b> (2018–2019)", bullet_style))
-    story.append(Spacer(1, 4))
+    story.append(Spacer(1, 3))
 
     # 8. CERTIFICATIONS
     story.extend(build_section_header("Certifications"))
@@ -531,6 +537,8 @@ def verify_pdf(pdf_path: str):
     assert page_count == 2, f"Expected exactly 2 pages, got {page_count}!"
     assert "A. KISHORE" in full_text, "Candidate name not found in extracted text"
     assert "Wealwin Technologies" in full_text, "Wealwin Technologies not found"
+    assert "Dopamine" in full_text, "Dopamine not found in extracted text"
+    assert "Ethers.js" in full_text, "Ethers.js not found in extracted text"
     assert "Hashcodex" in full_text, "Hashcodex not found"
     assert "Ultra College of Engineering and Technology" in full_text, "Education not found"
     assert "AI-Powered Job Matching System" in full_text, "Projects not found"

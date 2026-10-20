@@ -9,6 +9,7 @@
  */
 import appWindowIcon from "@iconify-icons/ph/app-window";
 import arrowRightIcon from "@iconify-icons/ph/arrow-right";
+import arrowSquareOutIcon from "@iconify-icons/ph/arrow-square-out";
 import arrowsClockwiseIcon from "@iconify-icons/ph/arrows-clockwise";
 import briefcaseIcon from "@iconify-icons/ph/briefcase";
 import cameraIcon from "@iconify-icons/ph/camera";
@@ -28,12 +29,15 @@ import gearSixIcon from "@iconify-icons/ph/gear-six";
 import hardDriveIcon from "@iconify-icons/ph/hard-drive";
 import imageIcon from "@iconify-icons/ph/image";
 import infoIcon from "@iconify-icons/ph/info";
+import linkedinLogoIcon from "@iconify-icons/ph/linkedin-logo";
 import linkSimpleIcon from "@iconify-icons/ph/link-simple";
 import magnifyingGlassIcon from "@iconify-icons/ph/magnifying-glass";
 import mapPinIcon from "@iconify-icons/ph/map-pin";
 import minusIcon from "@iconify-icons/ph/minus";
 import moonIcon from "@iconify-icons/ph/moon";
 import paletteIcon from "@iconify-icons/ph/palette";
+import phoneIcon from "@iconify-icons/ph/phone";
+import printerIcon from "@iconify-icons/ph/printer";
 import squaresFourIcon from "@iconify-icons/ph/squares-four";
 import stackIcon from "@iconify-icons/ph/stack";
 import sunIcon from "@iconify-icons/ph/sun";
@@ -45,6 +49,7 @@ import xIcon from "@iconify-icons/ph/x";
 export const phosphorIcons = {
   appWindow: appWindowIcon,
   arrowRight: arrowRightIcon,
+  arrowSquareOut: arrowSquareOutIcon,
   arrowsClockwise: arrowsClockwiseIcon,
   briefcase: briefcaseIcon,
   camera: cameraIcon,
@@ -64,12 +69,15 @@ export const phosphorIcons = {
   hardDrive: hardDriveIcon,
   image: imageIcon,
   info: infoIcon,
+  linkedinLogo: linkedinLogoIcon,
   linkSimple: linkSimpleIcon,
   magnifyingGlass: magnifyingGlassIcon,
   mapPin: mapPinIcon,
   minus: minusIcon,
   moon: moonIcon,
   palette: paletteIcon,
+  phone: phoneIcon,
+  printer: printerIcon,
   squaresFour: squaresFourIcon,
   stack: stackIcon,
   sun: sunIcon,

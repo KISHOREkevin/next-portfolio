@@ -1,3 +1,4 @@
+
 export interface SkillCategory {
   id: string;
   name: string;
@@ -30,18 +31,21 @@ export const skillsData: SkillCategory[] = [
   {
     id: "backend",
     name: "Backend",
-    description: "Scalable REST APIs, asynchronous services, and production server-side architectures.",
+    description: "Scalable APIs, asynchronous services, trading infrastructure, and production server-side architectures.",
     skills: [
       { name: "Node.js", level: "Core Production", highlight: true, tag: "Runtime" },
       { name: "Express", level: "Core Production", highlight: true, tag: "Framework" },
       { name: "Fastify", level: "Core Production", highlight: true, tag: "Framework" },
       { name: "Django", level: "Core Production", highlight: true, tag: "Framework" },
       { name: "FastAPI", level: "Core Production", highlight: true, tag: "Framework" },
+      { name: "Rust", level: "Deep Experience", highlight: true, tag: "Systems / Trade Engine" },
       { name: "REST API Development", level: "Core Production", highlight: true, tag: "Architecture" },
       { name: "Sequelize", level: "Core Production", tag: "ORM" },
       { name: "SQLAlchemy", level: "Core Production", tag: "ORM" },
       { name: "Pydantic", level: "Core Production", tag: "Validation" },
-      { name: "Async Programming", level: "Core Production", tag: "Concurrency" }
+      { name: "Async Programming", level: "Core Production", tag: "Concurrency" },
+      { name: "FFmpeg", level: "Deep Experience", tag: "Media Processing" },
+      { name: "Celery", level: "Deep Experience", tag: "Background Tasks" }
     ]
   },
   {
@@ -59,7 +63,7 @@ export const skillsData: SkillCategory[] = [
   {
     id: "ai",
     name: "AI / LLM",
-    description: "Applied artificial intelligence, vector search pipelines, and agentic workflows.",
+    description: "Applied artificial intelligence, retrieval pipelines, local inference, and agentic workflows.",
     skills: [
       { name: "Large Language Models (LLMs)", level: "Core Production", highlight: true, tag: "LLMs" },
       { name: "Retrieval-Augmented Generation (RAG)", level: "Core Production", highlight: true, tag: "Architecture" },
@@ -75,22 +79,38 @@ export const skillsData: SkillCategory[] = [
     ]
   },
   {
+    id: "blockchain",
+    name: "Blockchain & Trading",
+    description: "Blockchain wallet integration, transaction monitoring, and trading platform workflows.",
+    skills: [
+      { name: "Ethers.js", level: "Deep Experience", highlight: true, tag: "Blockchain Library" },
+      { name: "Blockchain Integration", level: "Deep Experience", highlight: true, tag: "Web3" },
+      { name: "Alchemy", level: "Deep Experience", tag: "Webhooks / Monitoring" },
+      { name: "Cryptocurrency Deposits & Withdrawals", level: "Deep Experience", highlight: true, tag: "Transaction Workflows" },
+      { name: "Order Book Management", level: "Deep Experience", tag: "Trading Systems" },
+      { name: "Trade Execution", level: "Deep Experience", tag: "Trading Systems" },
+      { name: "MT5 / MetaTrader Integration", level: "Deep Experience", tag: "Trading Integration" }
+    ]
+  },
+  {
     id: "devops",
     name: "DevOps & Cloud",
     description: "Containerization, cloud infrastructure, version control, and Linux systems.",
     skills: [
       { name: "Docker", level: "Core Production", highlight: true, tag: "Containerization" },
-      { name: "AWS", level: "Core Production", highlight: true, tag: "Cloud (EC2, Deployments)" },
+      { name: "AWS", level: "Core Production", highlight: true, tag: "Cloud / EC2 / Deployments" },
       { name: "Git", level: "Core Production", highlight: true, tag: "Version Control" },
       { name: "GitHub", level: "Core Production", highlight: true, tag: "Collaboration" },
       { name: "Linux", level: "Core Production", highlight: true, tag: "OS / Shell" },
-      { name: "Bash Scripting", level: "Core Production", highlight: true, tag: "Automation" }
+      { name: "Bash Scripting", level: "Core Production", highlight: true, tag: "Automation" },
+      { name: "Cloudinary", level: "Deep Experience", tag: "Media Storage" },
+      { name: "CI/CD", level: "Deep Experience", tag: "Deployment Automation" }
     ]
   },
   {
     id: "systems",
     name: "Systems",
-    description: "Networking protocols, cloud backends, system design, and OS architecture.",
+    description: "Networking, operating systems, cloud backends, and system architecture.",
     skills: [
       { name: "Networks", level: "Deep Experience", tag: "Infrastructure" },
       { name: "Firebase", level: "Deep Experience", tag: "BaaS" },
@@ -98,16 +118,20 @@ export const skillsData: SkillCategory[] = [
       { name: "Supabase", level: "Deep Experience", tag: "BaaS" },
       { name: "Cloud Computing", level: "Deep Experience", tag: "Architecture" },
       { name: "System Design", level: "Deep Experience", highlight: true, tag: "Architecture" },
-      { name: "Operating Systems", level: "Core Production", highlight: true, tag: "Systems" }
+      { name: "Operating Systems", level: "Core Production", highlight: true, tag: "Systems" },
+      { name: "Qtile", level: "Deep Experience", tag: "Linux Window Manager" },
+      { name: "Neovim", level: "Deep Experience", tag: "Developer Tooling" },
+      { name: "SSH / SFTP", level: "Deep Experience", tag: "Remote Administration" }
     ]
   },
   {
     id: "languages",
     name: "Programming Languages",
-    description: "Core languages used across frontend, backend, automation, and systems programming.",
+    description: "Languages used across web development, AI applications, automation, and systems programming.",
     skills: [
-      { name: "Python", level: "Core Production", highlight: true, tag: "General / AI" },
+      { name: "Python", level: "Core Production", highlight: true, tag: "Backend / AI" },
       { name: "JavaScript", level: "Core Production", highlight: true, tag: "Web / Runtime" },
+      { name: "Rust", level: "Deep Experience", highlight: true, tag: "Systems / Trading" },
       { name: "C", level: "Deep Experience", tag: "Systems" },
       { name: "Java", level: "Proficient", tag: "Object-Oriented" },
       { name: "Lua", level: "Specialized", tag: "Scripting / Config" }
@@ -116,17 +140,19 @@ export const skillsData: SkillCategory[] = [
   {
     id: "problem_solving",
     name: "Problem Solving",
-    description: "Algorithmic thinking, data structures, and computational optimization.",
+    description: "Algorithmic thinking, data structures, debugging, and computational optimization.",
     skills: [
       { name: "Data Structures", level: "Core Production", highlight: true, tag: "Computer Science" },
       { name: "Algorithms", level: "Core Production", highlight: true, tag: "Computer Science" },
-      { name: "Competitive Programming", level: "Deep Experience", tag: "Problem Solving" }
+      { name: "Competitive Programming", level: "Deep Experience", tag: "Problem Solving" },
+      { name: "Production Debugging", level: "Core Production", highlight: true, tag: "Troubleshooting" },
+      { name: "Performance Optimization", level: "Deep Experience", tag: "Optimization" }
     ]
   },
   {
     id: "soft_skills",
     name: "Soft Skills",
-    description: "Professional collaboration, engineering discipline, and technical leadership.",
+    description: "Professional collaboration, engineering discipline, and technical communication.",
     skills: [
       { name: "Communication", level: "Core Production", tag: "Interpersonal" },
       { name: "Collaboration", level: "Core Production", tag: "Teamwork" },

@@ -17,27 +17,30 @@ export const experienceData: ExperienceItem[] = [
     role: "Full Stack Developer",
     period: "Nov 2025 – Present",
     location: "Madurai, Tamil Nadu, India",
-    summary: "Developing and maintaining client-facing full-stack applications, robust REST APIs, PostgreSQL database migrations, and MT5/MetaTrader trading platform workflows.",
+    summary: "Engineering production full-stack client solutions, scalable backend microservices, blockchain wallet integrations, and MetaTrader 5 (MT5) / NTrader trading platforms.",
     highlights: [
-      "Developed and maintained full-stack web applications for multiple client projects using React.js, Node.js, Fastify, Sequelize, and PostgreSQL/SQL.",
-      "Implemented authentication with JWT, Redux state management, and protected routes across client-facing applications.",
-      "Built and maintained REST APIs, database migrations, and backend services supporting production systems.",
-      "Worked on MT5/MetaTrader-related integrations and trading account management functionality.",
-      "Handled production debugging, database operations, and deployment-related issues, contributing to scalable API architectures."
+      "Architect and deploy production full-stack web applications and microservices using React.js, Node.js, Fastify, Sequelize, and PostgreSQL.",
+      "Contribute to Dopamine trading platform infrastructure, engineering cryptocurrency deposit and withdrawal workflows integrated with blockchain wallets via Ethers.js and Alchemy webhooks for real-time transaction monitoring.",
+      "Engineer MetaTrader 5 (MT5) and NTrader trading platform integrations across Finowiz and Regulus, coordinating copy-trading, account management, and affiliate commission distribution.",
+      "Develop high-security multi-vendor REST APIs with API-key verification and cryptographic signature validation for institutional clients.",
+      "Execute relational PostgreSQL schema migrations and maintain robust backend microservices with FastAPI and Python."
     ],
     technologies: [
       "React.js",
       "Node.js",
       "Fastify",
-      "Sequelize",
+      "FastAPI",
+      "Python",
       "PostgreSQL",
-      "SQL",
-      "JWT",
-      "Redux",
+      "Sequelize",
+      "Rust",
+      "Ethers.js",
+      "Alchemy",
+      "MetaTrader 5",
+      "NTrader",
       "REST APIs",
-      "MT5 Integration",
-      "Database Migrations",
-      "Production Debugging"
+      "Microservices",
+      "JWT"
     ],
     category: "full-stack"
   },
@@ -49,10 +52,10 @@ export const experienceData: ExperienceItem[] = [
     location: "India",
     summary: "Engineered fintech, cryptocurrency, and trading-related web applications using the MERN stack with secure authentication and third-party API integrations.",
     highlights: [
-      "Developed and maintained fintech, cryptocurrency, and trading-related web applications using the MERN stack (React.js, Node.js, Express.js, MongoDB).",
-      "Built and consumed REST APIs, and implemented authentication and backend services for production trading-related workflows.",
-      "Fixed bugs and implemented new features within existing production codebases, improving reliability and code quality.",
-      "Gained hands-on experience with financial and trading application workflows and third-party API integrations."
+      "Developed and scaled fintech, cryptocurrency, and trading web applications leveraging the MERN stack (React.js, Node.js, Express.js, MongoDB).",
+      "Engineered Bitget trading module workflows, connecting interactive chart interactions with backend order matching, execution, and order-closing lifecycles.",
+      "Implemented secure JWT authentication, session handling, and consumed high-throughput financial REST APIs.",
+      "Diagnosed and resolved production bugs, optimizing trade execution flows and system responsiveness."
     ],
     technologies: [
       "React.js",
@@ -61,6 +64,8 @@ export const experienceData: ExperienceItem[] = [
       "MongoDB",
       "MERN Stack",
       "REST APIs",
+      "Trading Charts",
+      "Order Management",
       "Authentication",
       "Fintech Workflows",
       "Git"
