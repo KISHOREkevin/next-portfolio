@@ -1,4 +1,3 @@
-
 export interface ProjectItem {
   id: string;
   title: string;
@@ -22,12 +21,7 @@ export interface ProjectItem {
 
 export const projectsData: ProjectItem[] = [
   // ==========================================
-  // EXISTING PERSONAL PROJECTS — PRESERVED
-  // ==========================================
-  
-
-  // ==========================================
-  // WEALWIN TECHNOLOGIES — COMPANY PROJECTS
+  // 1: FINOWIZ — LIVE MT5 TRADING PLATFORM
   // ==========================================
   {
     id: "finowiz",
@@ -37,7 +31,7 @@ export const projectsData: ProjectItem[] = [
     shortDescription:
       "Third-party MT5-integrated trading platform featuring copy trading, affiliate workflows, commission distribution, microservices, and authenticated multi-vendor APIs.",
     fullDescription:
-      "Contributed to Finowiz, a trading platform built with the MERN stack and integrated with MetaTrader 5 (MT5). Worked on copy-trading functionality, commission management, affiliate-related copy trading, and commission distribution workflows. Contributed to microservices integration and resolved issues reported by live users. Also developed multi-vendor API functionality with API-key and signature-based authentication to support authenticated integrations with external vendors.",
+      "Contributed to Finowiz, a live trading platform built with the MERN stack and integrated with MetaTrader 5 (MT5). Worked on copy-trading functionality, commission management, affiliate-related copy trading, and commission distribution workflows. Contributed to microservices integration and resolved issues reported by live users. Also developed multi-vendor API functionality with API-key and signature-based authentication to support authenticated integrations with external vendors.",
     technologies: [
       "React",
       "Node.js",
@@ -74,47 +68,195 @@ export const projectsData: ProjectItem[] = [
     liveUrl: "https://www.finowizprime.com/",
     isPlaceholderLinks: true,
   },
- {
+
+  // ==========================================
+  // 2: REGULUS — TRADING PLATFORM & PAYMENTS
+  // ==========================================
+  {
     id: "regulus",
     title: "Regulus — Trading Platform",
     category: "FinTech / Trading Infrastructure",
-    badge: "Python / FastAPI / MT5 / NTrader",
+    badge: "Python / FastAPI / MT5 / NTrader / Payment Gateways",
     shortDescription:
-      "Trading platform built with FastAPI and PostgreSQL, initially integrated with MT5 and later transitioned to NTrader.",
+      "Trading platform built with FastAPI and PostgreSQL, featuring MT5 and NTrader integration, alongside multi-gateway payment processing via Rozapay, Smilepay, Letknowpay, and Unipayment.",
     fullDescription:
-      "Contributed to Regulus, a trading platform built using Python, FastAPI, PostgreSQL, and SQLAlchemy. Worked on a trading architecture initially integrated with the MT5 third-party platform through microservices. The trading integration was later switched from MT5 to NTrader. Contributed to backend services and integrations supporting the platform's trading workflows.",
+      "Contributed to Regulus, a comprehensive trading platform engineered with Python, FastAPI, PostgreSQL, and SQLAlchemy. Developed backend services coordinating trading integrations, initially connecting with MetaTrader 5 (MT5) through microservices and later transitioning to NTrader. Built secure deposit, withdrawal, and transaction reconciliation workflows integrating multiple third-party payment gateways, including Rozapay (custom fiat gateway, not Razorpay), Smilepay, Letknowpay, and Unipayment, complete with signature validation, automated webhook handlers, and merchant account settlement.",
     technologies: [
       "Python",
       "FastAPI",
       "PostgreSQL",
       "SQLAlchemy",
-      "REST APIs",
-      "Microservices",
+      "Payment Gateways",
+      "Rozapay",
+      "Smilepay",
+      "Letknowpay",
+      "Unipayment",
       "MetaTrader 5",
       "NTrader",
+      "REST APIs",
+      "Microservices",
     ],
     keyConcepts: [
-      "Trading platform backend development",
-      "MT5 third-party integration",
-      "Transition from MT5 to NTrader",
-      "Microservices integration",
-      "FastAPI endpoint development",
-      "PostgreSQL persistence",
-      "SQLAlchemy ORM",
-      "Trading workflow coordination",
+      "Multi-gateway payment integration (Rozapay, Smilepay, Letknowpay, Unipayment)",
+      "Deposit and withdrawal transaction reconciliation",
+      "Automated payment webhook handlers and signature validation",
+      "Trading platform backend development with FastAPI",
+      "MT5 third-party integration and transition to NTrader",
+      "Relational schema persistence with SQLAlchemy and PostgreSQL",
+      "Microservices coordination for trading accounts",
     ],
     architecturePoints: [
-      "FastAPI provides backend endpoints for platform functionality.",
+      "FastAPI provides asynchronous backend REST endpoints for platform functionality.",
+      "Payment gateway integration modules interface with Rozapay, Smilepay, Letknowpay, and Unipayment for deposit and withdrawal pipelines.",
+      "Automated webhook handlers process payment confirmation callbacks and verify cryptographic signatures.",
       "SQLAlchemy manages relational data access and persistence in PostgreSQL.",
-      "The initial trading integration connected the platform to MT5.",
-      "The third-party trading integration was subsequently switched to NTrader.",
-      "Microservices connect the relevant trading components and backend responsibilities.",
-      "Backend services coordinate application workflows with the configured trading integration.",
+      "The initial trading integration connected the platform to MT5 and was subsequently switched to NTrader.",
+      "Microservices connect trading components, payment processors, and backend account services.",
     ],
     githubUrl: undefined,
     liveUrl: "https://app.regulus.org/",
     isPlaceholderLinks: true,
   },
+
+  // ==========================================
+  // 3: DOPAMINE — TRADING PLATFORM & PAYMENTS
+  // ==========================================
+  {
+    id: "dopamine-trading",
+    title: "Dopamine — Trading Platform",
+    category: "FinTech / Trading Infrastructure",
+    badge: "Rust Trade Engine / Web3 / Multi-Gateway Payments",
+    shortDescription:
+      "Trading platform featuring a Rust-powered trade engine and order book, Node.js APIs, blockchain wallet tracking via Ethers.js and Alchemy, and multi-gateway payment processing with Rozapay, Smilepay, Letknowpay, and Unipayment.",
+    fullDescription:
+      "Dopamine is an internal product of Wealwin Technologies developed with core trading infrastructure engineered from scratch. The platform uses Rust for the high-throughput trade engine, order book management, and trade execution, with Node.js, Express, and MongoDB managing APIs and platform services. Contributed to core deposit and withdrawal infrastructure, implementing multi-currency payment gateway integrations with Rozapay (custom fiat gateway, not Razorpay), Smilepay, Letknowpay, and Unipayment, alongside blockchain wallet integrations via Ethers.js and Alchemy webhooks for real-time transaction monitoring and automated ledger reconciliation.",
+    technologies: [
+      "Rust",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "Payment Gateways",
+      "Rozapay",
+      "Smilepay",
+      "Letknowpay",
+      "Unipayment",
+      "Ethers.js",
+      "Alchemy",
+      "Blockchain Integration",
+      "Trading Systems",
+    ],
+    keyConcepts: [
+      "High-throughput Rust trade engine architecture",
+      "Order book management and trade execution",
+      "Multi-gateway payment processing (Rozapay, Smilepay, Letknowpay, Unipayment)",
+      "Cryptocurrency and fiat deposit and withdrawal workflows",
+      "Blockchain wallet communication via Ethers.js",
+      "Alchemy webhooks and real-time on-chain transaction monitoring",
+      "REST API development and transaction ledgering in MongoDB",
+      "Automated webhook verification and balance reconciliation",
+    ],
+    architecturePoints: [
+      "The trade engine is engineered with Rust for low-latency order matching and order book management.",
+      "Payment gateway integration modules interface with Rozapay, Smilepay, Letknowpay, and Unipayment for deposit and withdrawal pipelines.",
+      "Blockchain integration service utilizes Ethers.js and Alchemy webhooks to track cryptocurrency transactions on-chain.",
+      "Node.js and Express manage secure client APIs, transaction status polling, and balance adjustments in MongoDB.",
+      "Automated webhook verification handles payment confirmation callbacks and cryptographic signatures.",
+    ],
+    githubUrl: undefined,
+    liveUrl: undefined,
+    isPlaceholderLinks: true,
+  },
+
+  // ==========================================
+  // 4: AI-POWERED JOB MATCHING SYSTEM
+  // ==========================================
+  {
+    id: "job-matcher",
+    title: "AI-Powered Job Matching System",
+    category: "AI / LLM",
+    badge: "Python / LangChain / Ollama / Vector DB / RAG",
+    shortDescription:
+      "Production-oriented candidate evaluation system using RAG, local LLM inference via Ollama, LangChain, and vector embeddings for semantic candidate-job matching.",
+    fullDescription:
+      "Engineered an automated job matching system utilizing Retrieval-Augmented Generation (RAG) and local Large Language Models via Ollama. The pipeline ingests unstructured resumes and job descriptions, normalizes and deduplicates the text, and stores dense vector embeddings in a vector database. LangChain orchestrates semantic similarity search and queries local LLMs to evaluate candidate-job fit, returning structured scoring, skills gap analysis, and interview recommendation insights with zero cloud API inference costs.",
+    technologies: [
+      "Python",
+      "LangChain",
+      "Ollama",
+      "Vector Databases",
+      "Retrieval-Augmented Generation (RAG)",
+      "Local LLMs",
+      "Semantic Search",
+      "Embeddings",
+      "FastAPI",
+    ],
+    keyConcepts: [
+      "Retrieval-Augmented Generation (RAG) architecture",
+      "Local LLM inference via Ollama for zero-cost evaluation",
+      "Vector similarity search and dense embeddings",
+      "Document ingestion, normalization, and deduplication",
+      "LangChain pipeline orchestration and prompt engineering",
+      "Structured JSON extraction from unstructured text",
+    ],
+    architecturePoints: [
+      "Document ingestion module processes PDF/text resumes and job specifications.",
+      "Embedding model generates dense vector representations stored in a vector index.",
+      "Semantic search retrieves the most relevant candidates based on cosine similarity.",
+      "Ollama runs local inference (Llama/Mistral) for candidate evaluation and scoring.",
+      "LangChain coordinates prompt templates, memory, and output validation parsers.",
+    ],
+    githubUrl: "https://github.com/KISHOREkevin/job-matcher",
+    liveUrl: undefined,
+    isPlaceholderLinks: false,
+  },
+
+  // ==========================================
+  // 5: CODEX ARCH — CUSTOM MINIMAL LINUX OS
+  // ==========================================
+  {
+    id: "codex-arch",
+    title: "Customized Operating System — Codex Arch",
+    category: "Systems & Tools",
+    badge: "Linux / Systems / Open Source",
+    shortDescription:
+      "Minimal keyboard-centric Linux OS built with Qtile, Bash, and Python, adopted by 10+ beta testers with automated update scripts reducing setup from hours to under 5 minutes.",
+    fullDescription:
+      "Created a keyboard-centric, minimal OS with Qtile, Bash, and Python. Adopted as the primary OS by 10+ beta testers. Automated system updates via shell scripts, reducing manual maintenance time by 40%. Engineered system-wide dotfiles for Linux. Scripted volume and brightness controls and Neovim IDE setup. Built keyboard-centric workflows using Qtile. Integrated 20+ open-source tools, including Rofi and Picom. Built custom Music Player and Pomodoro Timer tools using Python, GTK, and Qt. Automated configuration synchronization via Git, reducing setup time from hours to under 5 minutes for new deployments.",
+    technologies: [
+      "Linux",
+      "Qtile",
+      "Python",
+      "Bash",
+      "GTK",
+      "Qt",
+      "Neovim",
+      "Rofi",
+      "Picom",
+      "Git",
+    ],
+    keyConcepts: [
+      "Adopted as the primary OS by 10+ beta testers",
+      "Automated updates reducing manual maintenance by 40%",
+      "System-wide Linux dotfiles and Neovim configuration",
+      "Keyboard-centric tiling workflows with Qtile",
+      "Integration of 20+ open-source tools",
+      "Custom GTK and Qt applications",
+      "Git-based setup automation reducing deployment setup to under 5 minutes",
+    ],
+    architecturePoints: [
+      "Qtile handles dynamic tiling, keyboard shortcuts, and desktop widgets.",
+      "Modular shell scripts automate updates, package synchronization, and system maintenance.",
+      "GTK and Qt provide lightweight desktop applications.",
+      "A centralized dotfile repository with Git bootstrapping simplifies fresh installations.",
+    ],
+    githubUrl: "https://github.com/KISHOREkevin",
+    liveUrl: undefined,
+    isPlaceholderLinks: false,
+  },
+
+  // ==========================================
+  // TOP 6: METIERS — SERVICE MARKETPLACE
+  // ==========================================
   {
     id: "metiers",
     title: "Metiers — Multi-Provider Service Marketplace",
@@ -154,90 +296,54 @@ export const projectsData: ProjectItem[] = [
     isPlaceholderLinks: true,
   },
 
- 
-
+  // ==========================================
+  // TOP 7: BROKING BRIDGE — TRADING & LIQUIDITY
+  // ==========================================
   {
     id: "broking-bridge",
     title: "Broking Bridge — Trading Infrastructure",
     category: "FinTech / Trading Infrastructure",
-    badge: "FastAPI / PostgreSQL / Liquidity",
+    badge: "FastAPI / PostgreSQL / Liquidity / Payment Gateways",
     shortDescription:
-      "Broking and liquidity infrastructure following an architecture similar to Regulus Liquidity for coordinating trading operations.",
+      "Broking and liquidity infrastructure coordinating trading operations and multi-gateway client funding via Rozapay, Smilepay, Letknowpay, and Unipayment.",
     fullDescription:
-      "Contributed to Broking Bridge, a trading infrastructure project with an architecture and functionality similar to Regulus Liquidity. Worked within backend services supporting broking, liquidity-related integrations, and trade-processing workflows. The system follows a similar architectural approach to Regulus Liquidity, focusing on coordinating trading operations across connected components.",
+      "Contributed to Broking Bridge, a trading and liquidity infrastructure platform architected on Python, FastAPI, and PostgreSQL. Engineered backend modules supporting broking operations, liquidity provider integrations, and client trade processing. Implemented multi-gateway deposit and settlement pipelines integrating Rozapay (custom fiat gateway, not Razorpay), Smilepay, Letknowpay, and Unipayment payment gateways, enabling streamlined client onboarding, fund routing, automated webhook verification, and account balance reconciliation.",
     technologies: [
       "Python",
       "FastAPI",
       "PostgreSQL",
       "SQLAlchemy",
+      "Payment Gateways",
+      "Rozapay",
+      "Smilepay",
+      "Letknowpay",
+      "Unipayment",
+      "Liquidity Systems",
+      "Trading Integrations",
       "REST APIs",
       "Microservices",
-      "Trading Integrations",
-      "Liquidity Systems",
-      "Trade Processing",
     ],
     keyConcepts: [
-      "Broking and liquidity workflows",
-      "Trading component integration",
-      "Backend API development",
-      "Trade-processing coordination",
-      "Relational data persistence",
-      "Architecture similar to Regulus Liquidity",
+      "Multi-gateway payment processing (Rozapay, Smilepay, Letknowpay, Unipayment)",
+      "Client deposit and settlement workflows",
+      "Automated webhook verification and payment callbacks",
+      "Broking and liquidity management",
+      "Trade-processing coordination and account ledgering",
+      "Asynchronous FastAPI backend microservices",
     ],
     architecturePoints: [
-      "Backend API services coordinate broking and liquidity-related workflows.",
-      "Trading integration components connect relevant platform services.",
-      "Trade-processing workflows coordinate operations across connected components.",
-      "The overall architecture follows an approach similar to Regulus Liquidity.",
+      "Payment integration services coordinate deposits and withdrawals through Rozapay, Smilepay, Letknowpay, and Unipayment.",
+      "Webhook listeners verify gateway signatures and update client account balances asynchronously.",
+      "Liquidity bridging components connect broker platforms with external liquidity providers.",
+      "PostgreSQL and SQLAlchemy handle multi-tenant balance records, trade executions, and transaction audit trails.",
     ],
     githubUrl: undefined,
     liveUrl: "https://demo.brokingbridge.com/",
     isPlaceholderLinks: true,
   },
- {
-  id: "dopamine-trading",
-  title: "Dopamine — Trading Platform",
-  category: "FinTech / Trading Infrastructure",
-  badge: "Wealwin Technologies / Trade Engine / Blockchain Integration",
-  shortDescription:
-    "A trading platform built from scratch, featuring a Rust-powered trade engine and order book management, Node.js APIs, and blockchain-integrated deposits and withdrawals.",
-  fullDescription:
-    "Dopamine is an internal product of Wealwin Technologies, developed with core trading infrastructure built from scratch. The platform uses Rust for the trade engine, order book management, and trade execution, with Node.js, Express, and MongoDB supporting APIs and data storage. My contribution focuses on deposit and withdrawal functionality, integrating blockchain wallets using Ethers.js and using Alchemy webhooks and monitoring to track relevant blockchain activity and transaction events.",
-  technologies: [
-    "Rust",
-    "Node.js",
-    "Express.js",
-    "MongoDB",
-    "Ethers.js",
-    "Alchemy",
-    "Blockchain Integration",
-    "Trading Systems",
-  ],
-  keyConcepts: [
-    "Trade engine architecture",
-    "Order book management",
-    "Trade execution",
-    "REST API development",
-    "MongoDB data storage",
-    "Blockchain wallet integration",
-    "Cryptocurrency deposits and withdrawals",
-    "Ethers.js blockchain communication",
-    "Alchemy webhooks",
-    "Blockchain transaction monitoring",
-  ],
-  architecturePoints: [
-    "The trade engine is built using Rust to support trade execution and order book management.",
-    "Node.js and Express.js provide API functionality, while MongoDB is used for data storage.",
-    "Deposit and withdrawal workflows integrate with blockchain wallets through Ethers.js.",
-    "Alchemy webhooks and monitoring support the tracking of relevant blockchain events and transactions.",
-    "Contributed specifically to deposit and withdrawal functionality within the broader trading platform.",
-  ],
-  githubUrl: undefined,
-  liveUrl: undefined,
-  isPlaceholderLinks: true,
-},
+
   // ==========================================
-  // HASHCODEX — COMPANY PROJECT
+  // TOP 8: BITGET — TRADING MODULE
   // ==========================================
   {
     id: "bitget-trading",
@@ -274,121 +380,52 @@ export const projectsData: ProjectItem[] = [
     liveUrl: "https://www.bitget.com/",
     isPlaceholderLinks: true,
   },
-  {
-    id: "job-matcher",
-    title: "AI-Powered Job Matching System",
-    category: "AI / LLM",
-    badge: "AI / RAG / Developer Tool",
-    shortDescription:
-      "Production-oriented RAG job matching platform using Python, LangChain, Ollama, vector database, and semantic similarity search.",
-    fullDescription:
-      "Built a production-oriented RAG-based job matching system using Python, LangChain, Ollama, embeddings, and a vector database. Implemented document processing and resume parsing to extract structured candidate data. Used embeddings and semantic similarity search to retrieve relevant job listings for a given profile. Implemented job ingestion, data cleaning, normalization, deduplication, vector storage, and retrieval pipelines. Ran local LLMs via Ollama and implemented structured LLM outputs to power AI-based job matching.",
-    technologies: [
-      "Python",
-      "LangChain",
-      "Ollama",
-      "LLMs",
-      "Embeddings",
-      "Vector Database",
-      "RAG",
-      "Semantic Search",
-    ],
-    keyConcepts: [
-      "Resume parsing and structured candidate data extraction",
-      "Semantic similarity search via vector embeddings",
-      "Job ingestion, normalization, and deduplication pipeline",
-      "Local LLM inference via Ollama for privacy and offline execution",
-      "Retrieval-Augmented Generation (RAG) for contextual evaluation",
-      "Structured LLM outputs for candidate-job alignment",
-    ],
-    architecturePoints: [
-      "Document ingestion parses candidate resumes into structured schema representations.",
-      "Vector embeddings are generated and stored in a vector collection.",
-      "Semantic retrieval matches candidate profiles against job requirements.",
-      "Local LLMs orchestrated via LangChain evaluate contextual alignment and generate structured match results.",
-    ],
-    githubUrl: "https://github.com/KISHOREkevin/job-matcher",
-    liveUrl: undefined,
-    isPlaceholderLinks: false,
-  },
 
-  {
-    id: "codex-arch",
-    title: "Customized Operating System — Codex Arch",
-    category: "Systems & Tools",
-    badge: "Linux / Systems / Open Source",
-    shortDescription:
-      "Minimal keyboard-centric Linux OS built with Qtile, Bash, and Python, adopted by 10+ beta testers with automated update scripts.",
-    fullDescription:
-      "Created a keyboard-centric, minimal OS with Qtile, Bash, and Python. Adopted as the primary OS by 10+ beta testers. Automated system updates via shell scripts, reducing manual maintenance time by 40%. Engineered system-wide dotfiles for Linux. Scripted volume and brightness controls and Neovim IDE setup. Built keyboard-centric workflows using Qtile. Integrated 20+ open-source tools, including Rofi and Picom. Built custom Music Player and Pomodoro Timer tools using Python, GTK, and Qt. Automated configuration synchronization via Git, reducing setup time from hours to under 5 minutes for new deployments.",
-    technologies: [
-      "Linux",
-      "Qtile",
-      "Python",
-      "Bash",
-      "GTK",
-      "Qt",
-      "Neovim",
-      "Rofi",
-      "Picom",
-      "Git",
-    ],
-    keyConcepts: [
-      "Adopted as the primary OS by 10+ beta testers",
-      "Automated updates reducing manual maintenance by 40%",
-      "System-wide Linux dotfiles and Neovim configuration",
-      "Keyboard-centric tiling workflows with Qtile",
-      "Integration of 20+ open-source tools",
-      "Custom GTK and Qt applications",
-      "Git-based setup automation reducing deployment setup to under 5 minutes",
-    ],
-    architecturePoints: [
-      "Qtile handles dynamic tiling, keyboard shortcuts, and desktop widgets.",
-      "Modular shell scripts automate updates, package synchronization, and system maintenance.",
-      "GTK and Qt provide lightweight desktop applications.",
-      "A centralized dotfile repository with Git bootstrapping simplifies fresh installations.",
-    ],
-    githubUrl: "https://github.com/KISHOREkevin",
-    liveUrl: undefined,
-    isPlaceholderLinks: false,
-  },
-
+  // ==========================================
+  // TOP 9: FFMPEG VIDEO CONVERTER SUITE
+  // ==========================================
   {
     id: "ffmpeg-suite",
     title: "FFmpeg Video Converter Suite",
     category: "Full-Stack",
     badge: "Video Processing / Backend / DevOps",
     shortDescription:
-      "Multi-feature video suite handling 100+ concurrent operations daily, with parallel processing and Docker-based optimization.",
+      "Web-based video conversion platform using Node.js, Express, FFmpeg, and Docker for scalable, parallel video processing.",
     fullDescription:
-      "Built a multi-feature video processing tool with 8+ functions, including conversion, compression, GIF creation, and media extraction, using FFmpeg and Node.js. Designed to handle 100+ concurrent operations daily. Optimized performance through parallel processing and Docker containerization, reducing resource usage through more efficient processing workflows.",
+      "Built a web-based video conversion suite that supports 8+ video processing operations, including format conversion, compression, resolution scaling, and GIF extraction. Handled 100+ daily video processing tasks with optimized server resource utilization. Containerized the application using Docker for consistent cross-platform deployment.",
     technologies: [
-      "FFmpeg",
       "Node.js",
+      "Express",
+      "FFmpeg",
       "Docker",
-      "Parallel Processing",
       "JavaScript",
-      "Backend",
+      "HTML5",
+      "CSS3",
+      "REST APIs",
     ],
     keyConcepts: [
-      "Multiple media operations including conversion and compression",
-      "Concurrent media-processing workflows",
-      "Parallel processing pipelines",
+      "FFmpeg integration and command execution",
+      "Video conversion, compression, and scaling pipelines",
+      "Asynchronous job processing",
       "Docker containerization",
-      "Resource-aware processing",
+      "Server resource management and optimization",
+      "RESTful API design for media processing",
     ],
     architecturePoints: [
-      "Node.js orchestrates media-processing operations.",
-      "FFmpeg handles video and audio transformations.",
-      "Parallel processing enables multiple media jobs to run efficiently.",
-      "Docker provides a consistent runtime environment.",
-      "Processing workloads are organized to reduce resource contention.",
+      "Express handles file upload endpoints and job lifecycle tracking.",
+      "FFmpeg processes video files through optimized CLI operations.",
+      "Docker ensures consistent runtime environments across development and production.",
+      "Temporary file lifecycle management cleans up storage after task completion.",
+      "Asynchronous execution avoids blocking the event loop during heavy encoding.",
     ],
-    githubUrl: "https://github.com/KISHOREkevin/video-converter",
+    githubUrl: "https://github.com/KISHOREkevin/video-converters",
     liveUrl: "https://video-converters.netlify.app/",
     isPlaceholderLinks: false,
   },
 
+  // ==========================================
+  // TOP 10: ECHO — AI AUDIO TRANSCRIPTION
+  // ==========================================
   {
     id: "echo-transcription",
     title: "Audio Transcription Application — Echo",
@@ -426,6 +463,10 @@ export const projectsData: ProjectItem[] = [
     liveUrl: undefined,
     isPlaceholderLinks: false,
   },
+
+  // ==========================================
+  // TOP 11: CAREER CART — JOB CRM PLATFORM
+  // ==========================================
   {
     id: "career-cart",
     title: "Job Portal Management System — Career Cart",
@@ -464,6 +505,4 @@ export const projectsData: ProjectItem[] = [
     liveUrl: "https://job-crm-application.onrender.com/",
     isPlaceholderLinks: false,
   },
-
-  
 ];

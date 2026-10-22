@@ -286,7 +286,7 @@ def create_resume_pdf(output_path: str):
         ("Backend & APIs:", "Node.js, Fastify, Express.js, Django, FastAPI, REST API Development, Microservices, Asynchronous Programming"),
         ("Databases & ORMs:", "PostgreSQL, MongoDB, Redis, SQL, NoSQL, Sequelize ORM, SQLAlchemy, Pydantic"),
         ("AI / LLM Engineering:", "Large Language Models (LLMs), RAG, LangChain, LangGraph, Ollama, Local LLMs, Vector Databases, Semantic Search"),
-        ("Blockchain & Trading:", "Ethers.js, Alchemy (Webhooks & Monitoring), Blockchain Wallets, Crypto Deposits/Withdrawals, MT5 Integration, Order Books"),
+        ("Blockchain & FinTech:", "Payment Gateways (Rozapay, Smilepay, Letknowpay, Unipayment), Ethers.js, Alchemy, Crypto Deposits/Withdrawals, MT5, Order Books"),
         ("DevOps, Cloud & Systems:", "Docker, AWS (EC2, Deployments), Linux Server Administration, Git, GitHub, CI/CD, Networking Protocols, System Design"),
     ]
 
@@ -319,10 +319,10 @@ def create_resume_pdf(output_path: str):
         location="Madurai, Tamil Nadu, India",
         bullets=[
             "Architect and deploy production full-stack web applications and microservices using <b>React.js, Node.js, Fastify, Sequelize</b>, and <b>PostgreSQL</b>.",
-            "Contribute to <b>Dopamine</b> trading platform infrastructure, engineering cryptocurrency deposit and withdrawal workflows integrated with blockchain wallets via <b>Ethers.js</b> and <b>Alchemy</b> webhooks for real-time transaction monitoring.",
+            "Engineered multi-gateway payment processing integrations across <b>Rozapay, Smilepay, Letknowpay, and Unipayment</b> alongside blockchain wallet workflows for automated deposits, withdrawals, and ledger reconciliation.",
+            "Contribute to <b>Dopamine</b> trading platform infrastructure, engineering cryptocurrency deposit and withdrawal workflows integrated with blockchain wallets via <b>Ethers.js</b> and <b>Alchemy</b> webhooks.",
             "Engineer <b>MetaTrader 5 (MT5)</b> and <b>NTrader</b> trading platform integrations across Finowiz and Regulus, coordinating copy-trading, account management, and affiliate commission distribution.",
-            "Develop high-security multi-vendor REST APIs with API-key verification and cryptographic signature validation for institutional clients.",
-            "Execute relational PostgreSQL schema migrations and maintain robust backend microservices with FastAPI and Python."
+            "Develop high-security multi-vendor REST APIs with API-key verification and cryptographic signature validation for institutional clients."
         ]
     ))
 
@@ -402,10 +402,10 @@ def create_resume_pdf(output_path: str):
     # 6. FEATURED TECHNICAL PROJECTS
     story.extend(build_section_header("Featured Technical Projects"))
 
-    # Projects
+    # Project 1: Finowiz
     story.extend(project_entry(
         name="Finowiz — MT5 Trading Platform",
-        tech_stack="MERN Stack, MetaTrader 5, Microservices, HMAC Auth",
+        tech_stack="MERN Stack, MetaTrader 5, Microservices, HMAC Auth, Affiliate Engine",
         link_text="Live: finowizprime.com",
         link_url="https://www.finowizprime.com/",
         bullets=[
@@ -414,45 +414,42 @@ def create_resume_pdf(output_path: str):
         ]
     ))
 
-    # Project 4: Metiers
+    # Project 2: Regulus
     story.extend(project_entry(
-        name="Metiers — Multi-Provider Service Marketplace",
-        tech_stack="Node.js, Fastify, Sequelize ORM, PostgreSQL, REST APIs",
-        link_text="Live: metiers.cd",
-        link_url="https://metiers.cd/",
+        name="Regulus — Trading Microservices & Payment Gateways",
+        tech_stack="Python, FastAPI, PostgreSQL, MT5, NTrader, Rozapay, Smilepay, Letknowpay, Unipayment",
+        link_text="Wealwin Technologies Project",
+        link_url="",
         bullets=[
-            "Architected backend microservices and high-throughput REST endpoints for a multi-vendor on-demand home service marketplace.",
-            "Engineered relational PostgreSQL schemas and Sequelize ORM models to manage provider dispatch, customer ordering, and status lifecycles."
+            "Engineered backend microservices in Python and FastAPI supporting trading operations during broker platform transition from <b>MT5 to NTrader</b>.",
+            "Implemented multi-gateway payment processing across <b>Rozapay, Smilepay, Letknowpay, and Unipayment</b> for automated deposits, withdrawals, and account balancing."
         ]
     ))
 
-    
-
+    # Project 3: Dopamine
     story.extend(project_entry(
-            name="Dopamine — Trading Platform",
-            tech_stack="Rust, Node.js, Express, MongoDB, Ethers.js, Alchemy, Web3",
-            link_text="Wealwin Technologies Product",
-            link_url="",
-            bullets=[
-                "Contributed to core cryptocurrency deposit and withdrawal workflows, integrating blockchain wallets via <b>Ethers.js</b>.",
-                "Configured <b>Alchemy</b> webhooks and automated transaction monitoring to track real-time on-chain events.",
-                "Integrated with a high-performance <b>Rust</b>-powered trade engine supporting order book management and trade execution."
-            ]
+        name="Dopamine — Trading Platform & Payment Gateways",
+        tech_stack="Rust, Node.js, Express, MongoDB, Web3, Rozapay, Smilepay, Letknowpay, Unipayment",
+        link_text="Wealwin Technologies Product",
+        link_url="",
+        bullets=[
+            "Contributed to core deposit and withdrawal workflows, integrating blockchain wallets (<b>Ethers.js, Alchemy</b>) alongside multi-gateway fiat payment processors (<b>Rozapay, Smilepay, Letknowpay, Unipayment</b>).",
+            "Integrated with high-throughput <b>Rust</b> trade engine and order book execution modules with Node.js and MongoDB platform services."
+        ]
     ))
 
+    # Project 4: AI-Powered Job Matching System
     story.extend(project_entry(
-            name="AI-Powered Job Matching System",
-            tech_stack="Python, LangChain, Ollama, Vector DB, RAG, Semantic Search",
-            link_text="github.com/KISHOREkevin/job-matcher",
-            link_url="https://github.com/KISHOREkevin/job-matcher",
-            bullets=[
-                "Built a RAG-based job-matching system that parses resumes and job postings into structured representations for automated candidate evaluation, returning a focused <b>top-3</b> match shortlist.",
-                "Engineered document ingestion, data normalization, deduplication, and vector-embedding pipelines, including scheduled <b>daily job ingestion</b> for semantic similarity search.",
-                "Executed local LLM inference via Ollama for zero-cost, privacy-preserving candidate matching with structured output generation."
-            ]
-        ))
+        name="AI-Powered Job Matching System",
+        tech_stack="Python, LangChain, Ollama, Vector DB, RAG, Semantic Search",
+        link_text="github.com/KISHOREkevin/job-matcher",
+        link_url="https://github.com/KISHOREkevin/job-matcher",
+        bullets=[
+            "Built a RAG-based job-matching system parsing resumes and job postings into structured representations for automated candidate evaluation, returning a focused <b>top-3</b> match shortlist.",
+            "Engineered vector-embedding pipelines and daily job ingestion, executing local LLM inference via <b>Ollama</b> for zero-cost, privacy-preserving semantic candidate matching."
+        ]
+    ))
 
-    
     # Project 5: Codex Arch
     story.extend(project_entry(
         name="Codex Arch — Custom Minimal Linux OS",
@@ -460,8 +457,8 @@ def create_resume_pdf(output_path: str):
         link_text="github.com/KISHOREkevin",
         link_url="https://github.com/KISHOREkevin",
         bullets=[
-            "Engineered a lightweight keyboard-centric Linux environment with custom Qtile tiling workflows and GTK/Qt utilities, bringing together <b>20+ open-source tools</b>.",
-            "Automated system dotfiles, environment synchronization, and package maintenance via Bash scripts, reducing setup time to under <b>5 minutes</b>."
+            "Engineered a lightweight keyboard-centric Linux OS with custom Qtile tiling workflows and GTK/Qt utilities, adopted by <b>10+ beta testers</b>.",
+            "Automated system dotfiles, environment synchronization, and package maintenance via Bash scripts, reducing fresh setup time to under <b>5 minutes</b>."
         ]
     ))
 
@@ -538,6 +535,11 @@ def verify_pdf(pdf_path: str):
     assert "A. KISHORE" in full_text, "Candidate name not found in extracted text"
     assert "Wealwin Technologies" in full_text, "Wealwin Technologies not found"
     assert "Dopamine" in full_text, "Dopamine not found in extracted text"
+    assert "Regulus" in full_text, "Regulus not found in extracted text"
+    assert "Rozapay" in full_text, "Rozapay not found in extracted text"
+    assert "Smilepay" in full_text, "Smilepay not found in extracted text"
+    assert "Letknowpay" in full_text, "Letknowpay not found in extracted text"
+    assert "Unipayment" in full_text, "Unipayment not found in extracted text"
     assert "Ethers.js" in full_text, "Ethers.js not found in extracted text"
     assert "Hashcodex" in full_text, "Hashcodex not found"
     assert "Ultra College of Engineering and Technology" in full_text, "Education not found"

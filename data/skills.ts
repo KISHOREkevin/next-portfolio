@@ -80,9 +80,10 @@ export const skillsData: SkillCategory[] = [
   },
   {
     id: "blockchain",
-    name: "Blockchain & Trading",
-    description: "Blockchain wallet integration, transaction monitoring, and trading platform workflows.",
+    name: "Blockchain, FinTech & Trading",
+    description: "Blockchain wallet integration, multi-gateway payment processing, and trading platform workflows.",
     skills: [
+      { name: "Payment Gateways (Rozapay, Smilepay, Letknowpay, Unipayment)", level: "Core Production", highlight: true, tag: "Payment Processing" },
       { name: "Ethers.js", level: "Deep Experience", highlight: true, tag: "Blockchain Library" },
       { name: "Blockchain Integration", level: "Deep Experience", highlight: true, tag: "Web3" },
       { name: "Alchemy", level: "Deep Experience", tag: "Webhooks / Monitoring" },

@@ -197,7 +197,8 @@ export function ResumeApp() {
                 deploying high-reliability web applications, scalable backend microservices, financial
                 trading platform integrations, and Applied AI systems. Hands-on expertise building production
                 client solutions with <strong>React.js, Node.js, Fastify, Python, FastAPI, Django, Sequelize,
-                PostgreSQL, and MongoDB</strong>. Production background engineering cryptocurrency deposit and
+                PostgreSQL, and MongoDB</strong>. Production background engineering multi-gateway payment processing
+                (<strong>Rozapay, Smilepay, Letknowpay, Unipayment</strong>), cryptocurrency deposit and
                 withdrawal workflows with blockchain wallet integrations (<strong>Ethers.js, Alchemy</strong>),
                 MetaTrader 5 (<strong>MT5</strong>) copy-trading platforms, high-security multi-vendor authenticated
                 APIs, and local LLM / Retrieval-Augmented Generation (<strong>RAG</strong>) pipelines using{" "}

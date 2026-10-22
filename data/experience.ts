@@ -21,6 +21,7 @@ export const experienceData: ExperienceItem[] = [
     highlights: [
       "Architect and deploy production full-stack web applications and microservices using React.js, Node.js, Fastify, Sequelize, and PostgreSQL.",
       "Contribute to Dopamine trading platform infrastructure, engineering cryptocurrency deposit and withdrawal workflows integrated with blockchain wallets via Ethers.js and Alchemy webhooks for real-time transaction monitoring.",
+      "Engineered multi-gateway payment integrations across Rozapay (custom fiat gateway, not Razorpay), Smilepay, Letknowpay, and Unipayment alongside blockchain wallet workflows for automated deposits, withdrawals, and ledger reconciliation.",
       "Engineer MetaTrader 5 (MT5) and NTrader trading platform integrations across Finowiz and Regulus, coordinating copy-trading, account management, and affiliate commission distribution.",
       "Develop high-security multi-vendor REST APIs with API-key verification and cryptographic signature validation for institutional clients.",
       "Execute relational PostgreSQL schema migrations and maintain robust backend microservices with FastAPI and Python."
@@ -34,6 +35,11 @@ export const experienceData: ExperienceItem[] = [
       "PostgreSQL",
       "Sequelize",
       "Rust",
+      "Payment Gateways",
+      "Rozapay",
+      "Smilepay",
+      "Letknowpay",
+      "Unipayment",
       "Ethers.js",
       "Alchemy",
       "MetaTrader 5",
